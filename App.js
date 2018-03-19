@@ -17,7 +17,7 @@ const DATA = [
 export default class App extends React.Component {
   renderCard(item){
     return (
-      <Card
+      <Card key = {item.id}
         title = {item.text}
         image = {{uri: item.uri}}
 
