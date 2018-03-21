@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { PanResponder, View, Text, Animated } from 'react-native';
 
 class Deck extends Component {
+
     constructor(props) {
         super(props);
+
+        const position = new Animated.ValueXY();
         const panResponder =  PanResponder.create({
             // Functions that will be called at different points of its lifecycle
             
@@ -13,15 +16,16 @@ class Deck extends Component {
             
             // Every time user drags the card this function is called
             onPanResponderMove: (event, gesture) => {
-                console.log('gesture', gesture)
+                position.setValue({x: gesture.dx, y: gesture.dy});
+
             },
 
             // Called anytime if the user lets go of the card
             onPanResponderRelease: () => {
-                console.log('RELEASED')
+
             }
         });
-        this.state = { panResponder };
+        this.state = { panResponder, position };
     }
     renderCards(){
         return this.props.data.map(item => {
@@ -30,9 +34,15 @@ class Deck extends Component {
     }
     render() {
         return(
-            <View {...this.state.panResponder.panHandlers}> 
+            // <View>
+            //     { this.renderCards() }
+            // </View>
+            <Animated.View 
+                style = { this.state.position.getLayout()}
+                {...this.state.panResponder.panHandlers}
+            > 
                 { this.renderCards() }
-            </View>
+            </Animated.View>
         )
     }
 }
