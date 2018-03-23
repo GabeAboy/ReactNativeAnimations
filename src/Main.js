@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image } from 'react-native';
+import { Video } from 'expo';
 import { Button } from 'react-native-elements';
 
 
@@ -17,13 +18,22 @@ export default class Main extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container} >
+                <Video
+                    source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+                    shouldPlay
+                    isLooping
+                    volume={0.0}
+                    resizeMode="cover"
+                    style={{ SCREEN_WIDTH, height: 300 }}
+                />
                 <View style={styles.header}>
                     <Image
                         source={require('../img/logo.jpg')}
                     />
                     <Text > Skiezy </Text>
                 </View>
-                {/* <View style = { styles.body }/> */}
+
+
                 <View style={styles.footer}>
                     <Button
                         large
@@ -49,19 +59,25 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: 'space-between',
+        zIndex: 5,
+        paddingTop: 24,
         backgroundColor: 'black',
+        zIndex: 0
     },
+
     header: {
-        height: SCREEN_HEIGHT - (SCREEN_HEIGHT * .80),
+        height: 200,
         width: SCREEN_WIDTH,
-        backgroundColor: 'white',
+        opacity: 0.5,
+        backgroundColor: 'red',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex: 1
     },
     footer: {
         height: SCREEN_HEIGHT - (SCREEN_HEIGHT * .80),
         width: SCREEN_WIDTH,
-        backgroundColor: 'yellow'
+        backgroundColor: 'yellow',
+        zIndex: 2
     }
 });
