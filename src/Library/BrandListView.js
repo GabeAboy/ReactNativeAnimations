@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import GeoDistanceIcon from './GeoDistanceIcon';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class Button extends Component {
 
@@ -15,27 +15,34 @@ class Button extends Component {
         const { title, backgroundColor, textColor } = this.props;
         return (
             <View style={{
-                width: 320, height: 45, backgroundColor: 'red',
+                width: '100%', height: 110,
                 flexDirection: 'row'
             }}>
+                <GeoDistanceIcon count={this.state.count} />
                 <View style={{
-                    flex: 1, backgroundColor: 'blue', justifyContent: 'center', alignItems: 'center'
+                    flex: 4,
+                    borderColor: 'grey',
+                    backgroundColor: 'black', flexDirection:'row',
+                    borderTopWidth: 1, justifyContent: 'center',
+                    paddingLeft: 25, alignItems: 'flex-start'
                 }}>
-                    <Icon name="map-marker" size={30} color="#900" style={{ position: 'absolute', }} />
-                    <View style={{
-                        height: 15, width: 15,
-                        backgroundColor: 'green',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <Text style={{
-                            color: 'white',
-                            fontSize: 10
-                        }}>{this.state.count}</Text>
-                    </View>
+
                 </View>
-                <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}><Text>{this.props.brand}</Text></View>
+                <View style = {
+                    {
+                        backgroundColor:'red', flex:1
+                    }
+                }>
+
+                </View>
+
+                <View style = {
+                    {
+                        backgroundColor:'blue', flex:4
+                    }
+                }>
+
+                </View>
             </View>
 
         );
