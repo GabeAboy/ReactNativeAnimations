@@ -14,7 +14,6 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentWillMount(){
         this.setState({ data: this.props.data})
-        console.log(this.state.data)
     }
 
     state = { selected: new Map() };
@@ -43,6 +42,10 @@ export default class MultiSelectList extends React.PureComponent {
             id={item.id}
             onPressItem={this._onPressItem}
             // selected={!!this.state.selected.get(item.id)}
+            logo={item.img}
+            trailsAvailable={item.trailsAvailable}
+            trailsTotal = {item.trailsTotal}
+            weatherReport={item.weatherReport}
             brand={item.title}
         />
     );
@@ -53,10 +56,11 @@ export default class MultiSelectList extends React.PureComponent {
             <FlatList
                 stickyHeaderIndices={[0]}
                 ListHeaderComponent={this.renderHeader}
-                data={this.props.data}
+                data={this.state.data}
                 extraData={this.state}
                 keyExtractor={this._keyExtractor}
                 renderItem={this._renderItem}
+                
             />
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, Dimensions } from 'react-native';
+import { View, Text, TouchableHighlight, Dimensions, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeoDistanceIcon from './GeoDistanceIcon';
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -11,16 +11,32 @@ class BrandListView extends Component {
             count: 2
         }
     }
+    componentDidMount() {
+        console.log(this.props)
+    }
     render() {
-        const { brand } = this.props;
+        const { brand, logo } = this.props;
         return (
             <View style={{
                 width: '100%', height: 110,
-                flexDirection: 'row'
+                flexDirection: 'row',
+                justifyContent: 'center'
             }}>
-                <GeoDistanceIcon count={this.state.count} />
+                {/* <GeoDistanceIcon count={this.state.count} /> */}
                 <View style={{
-                    flex: 4,
+                    flex: 2, justifyContent: 'center', alignItems: 'center'
+                }}>
+                    <Image
+                        source={require('../../img/merchant/sugar.png')}
+                        style={{
+
+                            height: 60, width: 60, borderRadius: 30
+                        }}>
+
+                    </Image>
+                </View>
+                <View style={{
+                    flex: 6,
                     borderBottomColor: '#CED0CE',
                     borderBottomWidth: 1
 
@@ -31,44 +47,57 @@ class BrandListView extends Component {
                             flex: 2,
                             alignItems: 'flex-start',
                             justifyContent: 'flex-end',
-                            paddingLeft: 5, marginTop:10
+                            paddingLeft: 5, marginTop: 10
                         }
                     }>
                         <Text style={
                             {
                                 fontSize: 25
                             }
-                        }>{brand}</Text>
+                        }>
+                            {brand}
+                        </Text>
                     </View>
 
                     <View style={
                         {
                             flex: 4,
+
                             flexDirection: 'row',
-                            paddingLeft: 5,
-                            paddingTop: 6
+                            paddingLeft: 10,
+                            paddingTop:5
                         }
                     }>
                         <View style={{
                             flex: 1
                         }}>
                             <Text style={styles.titleText}>Open Trails</Text>
-                            <Text style={styles.subText}>7/10</Text>
+                            <Text style={styles.subText}>
+                                {this.props.trailsAvailable}/{this.props.trailsTotal}
+                            </Text>
                         </View>
 
                         <View style={{
                             flex: 1,
+                            alignItems:'center'
 
                         }}>
                             <Text style={styles.titleText}>Snow</Text>
-                            <Text style={styles.subText}>Powder</Text>
+                            <Text style={styles.subText}>{this.props.weatherReport}</Text>
                         </View>
+                        <View style={{
+                            flex: .5,
+                            alignItems: 'center',
+                            justifyContent: 'flex-start'
 
+                        }}>
+                            <GeoDistanceIcon count={'2.0'} />
+                        </View>
                     </View>
 
                 </View>
                 <View style={{
-                    flex: 1,
+                    flex: .9,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderBottomColor: "#CED0CE",
@@ -87,7 +116,6 @@ const styles = {
         fontSize: 20
     },
     subText: {
-        paddingLeft: 5,
         color: '#9a9ea5',
         fontSize: 15
     }

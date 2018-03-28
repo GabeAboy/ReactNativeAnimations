@@ -8,7 +8,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 import { StackNavigator, Easing } from 'react-navigation';
 const Router = StackNavigator(
   {
-    Home: { screen: Main },
+    Home: { screen: LiftsNearBy },
     LiftsNearBy: { screen: LiftsNearBy }
   },
   {

@@ -8,21 +8,22 @@ class GeoDistanceIcon extends Component {
             <View style={{
                 flex: 1, justifyContent: 'center', alignItems: 'center'
             }}>
-                <Icon name="map-marker" size={55} color="#900" style={{ position: 'absolute' }} />
+                <Icon name="map-marker" size={45} color="#9a9ea5" style={{ position: 'absolute' }} />
                 <View style={{
-                    height: 20, width: 20,
+                    height: 21, width: 21,
                     borderRadius: 10,
                     justifyContent: 'center',
                     alignItems: 'center',
                     position: 'absolute',
-                    top:20,
-                    left:16,
-                    backgroundColor:'green'
+                    top:5,
+                    left:5,
+                    backgroundColor:'black'
                    
                 }}>
                     <Text style={{
                         color: 'white',
-                        fontSize: 10
+                        fontSize: 10,
+                        fontWeight:'bold'
                     }}>{this.props.count}</Text>
                 </View>
             </View>

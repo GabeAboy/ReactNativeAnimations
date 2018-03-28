@@ -2,14 +2,31 @@ import React, { Component } from 'react';
 import { View, Text, Dimensions, FlatList, SectionList, SearchBar, List } from 'react-native';
 import BrandListView from './Library/BrandListView';
 import MultiSelectList from './Library/MyListItem';
+import * as dumbData from '../MockDTO/liftsNearBy';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class LiftsNearBy extends Component {
-
+    componentDidMount() {
+    }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.font}>Lifts Near You!</Text>
+                    <View style={{
+                        flex: 3, backgroundColor: 'red'
+                    }}>
+
+                    </View>
+                    <View style={{
+                        flex: 2,
+                        alignItems:'flex-start',
+                        justifyContent:'flex-end'
+                    }}>
+                    <Text style = {
+                        {
+                            fontSize:20,fontWeight:'bold'
+                        }
+                    }>Find merchants near you!</Text>
+                    </View>
                 </View>
                 <View style={{
                     flex: 4,
@@ -19,15 +36,14 @@ class LiftsNearBy extends Component {
                         width: '100%'
 
                     }}>
-                        <MultiSelectList data={dumbData} title='name' />
+                        <MultiSelectList data={dumbData.default.data} title='name' />
                     </View>
                 </View>
-            </View>
+            </View >
 
         );
     }
 }
-var dumbData = [{ title: 'Smugglers' }, { title: 'Stowe' }, { title: 'Sweden ' }, { title: 'Puerto Rico' }, { title: 'Killington' }, { title: 'Argentina' }];
 
 const styles = {
     container: {
@@ -40,10 +56,7 @@ const styles = {
         height: 44,
     },
     header: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        width: SCREEN_WIDTH
+        flex: 1
     },
     font: {
         marginLeft: 25,
