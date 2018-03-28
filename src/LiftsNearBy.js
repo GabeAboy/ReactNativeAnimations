@@ -4,9 +4,7 @@ import BrandListView from './Library/BrandListView';
 import MultiSelectList from './Library/MyListItem';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class LiftsNearBy extends Component {
-    renderHeader = () => {
-        return <SearchBar placeholder="Type Here..." lightTheme round />;
-    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -14,14 +12,14 @@ class LiftsNearBy extends Component {
                     <Text style={styles.font}>Lifts Near You!</Text>
                 </View>
                 <View style={{
-                    flex: 4, 
-                    justifyContent:'flex-start'
+                    flex: 4,
+                    justifyContent: 'flex-start'
                 }}>
                     <View style={{
-                        width:'100%'
+                        width: '100%'
 
                     }}>
-                        <MultiSelectList data={[{ title: 'asd' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'b' }, { title: 'basdas' }, { title: 'sd' }]} title='name' />
+                        <MultiSelectList data={dumbData} title='name' />
                     </View>
                 </View>
             </View>
@@ -29,6 +27,8 @@ class LiftsNearBy extends Component {
         );
     }
 }
+var dumbData = [{ title: 'Smugglers' }, { title: 'Stowe' }, { title: 'Sweden ' }, { title: 'Puerto Rico' }, { title: 'Killington' }, { title: 'Argentina' }];
+
 const styles = {
     container: {
         flex: 1,

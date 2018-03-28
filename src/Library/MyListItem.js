@@ -5,12 +5,28 @@ import { SearchBar } from 'react-native-elements'
 
 
 export default class MultiSelectList extends React.PureComponent {
-    state = { selected: new Map() };
+    
+    constructor(props) {
+        super(props);
+        this.state = {
 
+        }
+    }
+    componentWillMount(){
+        this.setState({ data: this.props.data})
+        console.log(this.state.data)
+    }
+
+    state = { selected: new Map() };
     _keyExtractor = (item, index) => item.id;
+    onChange = (text) => {
+        var filterLength = text.length;
+        this.setState({data: this.props.data.filter(word => word.title.substring(0,filterLength).includes(text))});
+        console.log('hello there friend ',',',this.state.data)
+    }
     renderHeader = () => {
-        return <SearchBar placeholder="Type Here..." lightTheme round />;
-      };
+        return <SearchBar onChangeText={(text) => this.onChange(text)} placeholder="Type Here..." lightTheme round />;
+    };
     _onPressItem = (id) => {
         // updater functions are preferred for transactional updates
         this.setState((state) => {
@@ -23,16 +39,19 @@ export default class MultiSelectList extends React.PureComponent {
 
     _renderItem = ({ item }) => (
         <BrandListView
+            key={item.id}
             id={item.id}
             onPressItem={this._onPressItem}
-            selected={!!this.state.selected.get(item.id)}
+            // selected={!!this.state.selected.get(item.id)}
             brand={item.title}
         />
     );
+  
 
     render() {
         return (
             <FlatList
+                stickyHeaderIndices={[0]}
                 ListHeaderComponent={this.renderHeader}
                 data={this.props.data}
                 extraData={this.state}
