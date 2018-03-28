@@ -21,26 +21,60 @@ class Button extends Component {
                 <GeoDistanceIcon count={this.state.count} />
                 <View style={{
                     flex: 4,
-                    borderColor: 'grey',
-                    backgroundColor: 'black', flexDirection:'row',
-                    borderTopWidth: 1, justifyContent: 'center',
-                    paddingLeft: 25, alignItems: 'flex-start'
+                    borderBottomColor: '#CED0CE',
+                    borderBottomWidth: 1
+
                 }}>
 
-                </View>
-                <View style = {
-                    {
-                        backgroundColor:'red', flex:1
-                    }
-                }>
+                    <View style={
+                        {
+                            flex: 2,
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-end',
+                            paddingLeft: 5
+                        }
+                    }>
+                        <Text style={
+                            {
+                                fontSize: 25,
+                            }
+                        }>Smugglers CrNotch</Text>
+                    </View>
+
+                    <View style={
+                        {
+                            flex: 4,
+                            flexDirection: 'row',
+                            paddingLeft: 5,
+                            paddingTop: 10
+                        }
+                    }>
+                        <View style={{
+                            flex: 1
+                        }}>
+                            <Text style = {styles.titleText}>Open Trails</Text>
+                            <Text style = {styles.subText}>7/10</Text>
+                        </View>
+
+                        <View style={{
+                            flex: 1,
+                            
+                        }}>
+                            <Text style = {styles.titleText}>Snow</Text>
+                            <Text style = {styles.subText}>Powder</Text>
+                        </View>
+
+                    </View>
 
                 </View>
-
-                <View style = {
-                    {
-                        backgroundColor:'blue', flex:4
-                    }
-                }>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomColor: "#CED0CE",
+                    borderBottomWidth: 2
+                }}>
+                    <Icon name="angle-right" size={55} color="#CED0CE" />
 
                 </View>
             </View>
@@ -48,5 +82,13 @@ class Button extends Component {
         );
     }
 }
-
+const styles = {
+    titleText: {
+        fontSize:20
+    },
+    subText:{
+        color:'#9a9ea5',
+        fontSize:15
+    }
+}
 export default Button;
