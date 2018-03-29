@@ -65,7 +65,7 @@ class BrandListView extends Component {
 
                             flexDirection: 'row',
                             paddingLeft: 10,
-                            paddingTop:5
+                            paddingTop: 5
                         }
                     }>
                         <View style={{
@@ -79,25 +79,28 @@ class BrandListView extends Component {
 
                         <View style={{
                             flex: 1,
-                            alignItems:'center'
+                            alignItems: 'center'
 
                         }}>
                             <Text style={styles.titleText}>Snow</Text>
                             <Text style={styles.subText}>{this.props.weatherReport}</Text>
                         </View>
-                        <View style={{
-                            flex: .5,
-                            alignItems: 'center',
-                            justifyContent: 'flex-start'
 
-                        }}>
-                            <GeoDistanceIcon count={'2.0'} />
-                        </View>
                     </View>
 
                 </View>
                 <View style={{
-                    flex: .9,
+                    flex: 1.1,
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    paddingTop:10,
+                    borderBottomWidth:1, borderColor:'#CED0CE'
+
+                }}>
+                    <GeoDistanceIcon count={'2.0'} />
+                </View>
+                <View style={{
+                    flex: 1.1,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderBottomColor: "#CED0CE",
