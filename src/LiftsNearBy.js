@@ -5,60 +5,22 @@ import MultiSelectList from './Library/MyListItem';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as dumbData from '../MockDTO/liftsNearBy';
 import Hamburger from 'react-native-hamburger';
+import DrawerExample from './Library/Navigator'
+import Ball from './Ball'
+import * as complo from '../img/logo.jpg'
+import NaviBar from './Library/NaviBar';
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class LiftsNearBy extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            active: false
-        }
-    }
+
     componentDidMount() {
     }
-    
+
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <View style={{
-                        flex: 3,
-                        flexDirection: 'row'
-                    }}>
-                        <View style={{
-                            flex: 1, paddingTop: 15,
-                            alignItems: 'center'
-                        }}>
-                            <Hamburger active = {this.state.active}
-                                type='spinCross'
-                                color='black'
-                                onPress={() => this.setState({active:!this.state.active})} />
-                            
-                        </View>
-                        <View style={{
-                            flex: 4, backgroundColor:'red'
-                        }}>
-                          
-                        </View>
-                        <View style={{
-                            flex: 1, alignItems: 'center',
-                            paddingTop: 15
-                        }}>
-                            <Icon name="shopping-cart" size={30} color="black" />
 
-                        </View>
-                    </View>
-                    <View style={{
-                        flex: 2,
-                        alignItems: 'flex-start',
-                        justifyContent: 'flex-end'
-                    }}>
-                        <Text style={
-                            {
-                                fontSize: 20, fontWeight: 'bold'
-                            }
-                        }>Find merchants near you!</Text>
-                    </View>
-                </View>
+                <NaviBar/>
                 <View style={{
                     flex: 4,
                     justifyContent: 'flex-start'
@@ -70,7 +32,7 @@ class LiftsNearBy extends Component {
                         <MultiSelectList data={dumbData.default.data} title='name' />
                     </View>
                 </View>
-            </View >
+            </View>
 
         );
     }
@@ -85,8 +47,11 @@ const styles = {
         fontSize: 18,
         height: 44,
     },
+    burgerKing: {
+        flex: 1, justifyContent: 'flex-start', flexDirection: 'row'
+    },
     header: {
-        flex: 1
+        flex: .5, backgroundColor: '#4286f4', paddingTop: 20
     },
     font: {
         marginLeft: 25,

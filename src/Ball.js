@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+export default class Ball extends Component {
+    static navigationOption = {
+        tabBarLabel: 'Screen 1',
+        drawerIcon: () => {
+            return (
+                <Icon name="angle-right" size={55} color="#CED0CE" />
 
-class Ball extends Component {
-
+            );
+        }
+    }
     render(){
         return (
                 <View style={styles.ball} />
@@ -11,11 +19,6 @@ class Ball extends Component {
 }
 const styles = {
     ball: {
-        height: 60,
-        width: 60,
-        borderRadius: 30,
-        borderWidth: 30,
-        borderColor: 'black'
+        flex:1,justifyContent: 'center', alignItems: 'center', backgroundColor:'red'
     }
 }
-export default Ball;

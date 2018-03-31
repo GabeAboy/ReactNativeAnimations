@@ -16,7 +16,7 @@ class GeoDistanceIcon extends Component {
                     alignItems: 'center',
                     position: 'absolute',
                     top:22,
-                    left:10,
+                    left:1,
                     backgroundColor:'black'
                    
                 }}>

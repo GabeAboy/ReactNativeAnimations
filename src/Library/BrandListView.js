@@ -3,6 +3,7 @@ import { View, Text, TouchableHighlight, Dimensions, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeoDistanceIcon from './GeoDistanceIcon';
 const SCREEN_WIDTH = Dimensions.get('window').width;
+var icon;
 class BrandListView extends Component {
 
     constructor(props) {
@@ -12,7 +13,6 @@ class BrandListView extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.props)
     }
     render() {
         const { brand, logo } = this.props;
@@ -22,12 +22,11 @@ class BrandListView extends Component {
                 flexDirection: 'row',
                 justifyContent: 'center'
             }}>
-                {/* <GeoDistanceIcon count={this.state.count} /> */}
                 <View style={{
                     flex: 2, justifyContent: 'center', alignItems: 'center'
                 }}>
                     <Image
-                        source={require('../../img/merchant/sugar.png')}
+                        source={this.props.logo}
                         style={{
 
                             height: 60, width: 60, borderRadius: 30
@@ -93,8 +92,8 @@ class BrandListView extends Component {
                     flex: 1.1,
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    paddingTop:10,
-                    borderBottomWidth:1, borderColor:'#CED0CE'
+                    paddingTop: 10,
+                    borderBottomWidth: 1, borderColor: '#CED0CE'
 
                 }}>
                     <GeoDistanceIcon count={'2.0'} />

@@ -25,8 +25,9 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ width: SCREEN_WIDTH, height: 24, backgroundColor: 'black' }} />
-        <Router />
+        <Router navigationBarStyle={{
+          width: SCREEN_WIDTH, height: 24, backgroundColor: '#4286f4'
+        }} />
       </View>
 
     );
