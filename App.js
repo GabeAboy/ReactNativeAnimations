@@ -3,13 +3,22 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import Main from './src/Main';
 import { Card, Button } from 'react-native-elements'
 import LiftsNearBy from './src/LiftsNearBy';
+import Commerse from './src/Commerse';
+import one from './src/screens/one'
+import two from './src/screens/two'
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
-import { StackNavigator, Easing } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
+
+
+
 const Router = StackNavigator(
+  
   {
     Home: { screen: LiftsNearBy },
-    LiftsNearBy: { screen: LiftsNearBy }
+    LiftsNearBy: { screen: LiftsNearBy },
+    Commerse: { screen: Commerse}
   },
   {
     headerMode: 'none',
@@ -19,6 +28,7 @@ const Router = StackNavigator(
     }
   }
 );
+
 
 export default class App extends React.Component {
 
@@ -39,7 +49,6 @@ const styles = StyleSheet.create({
 
     height: SCREEN_HEIGHT,
     width: SCREEN_WIDTH,
-    backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'

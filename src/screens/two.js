@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-export class two extends Component {
+export default class two extends Component {
 
     render() {
         return (
@@ -12,6 +12,5 @@ export class two extends Component {
 const styles = {
     ball: {
         flex: 1,
-        backgroundColor: 'red'
     }
 }

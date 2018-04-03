@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import GeoDistanceIcon from './GeoDistanceIcon';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 var icon;
-class BrandListView extends Component {
+export default class BrandListView extends Component {
 
     constructor(props) {
         super(props);
@@ -122,4 +122,3 @@ const styles = {
         fontSize: 15
     }
 }
-export default BrandListView;

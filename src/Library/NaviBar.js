@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Hamburger from 'react-native-hamburger';
+import { Drawer } from 'native-base';
 export default class NaviBar extends Component {
     constructor(props) {
         super(props)
@@ -24,7 +25,11 @@ export default class NaviBar extends Component {
                             <Hamburger active={this.state.active}
                                 type='spinCross'
                                 color='black'
-                                onPress={() => this.setState({ active: !this.state.active })} />
+                                onPress={() => {
+                                    console.log('dsf', this.props)
+                                    this.setState({ active: !this.state.active })
+                                    this.props.toggleDrawer()
+                                }} />
                         </View>
                         <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }} source={require('../../img/spot.png')}
                             resizeMode='contain' />
@@ -34,7 +39,7 @@ export default class NaviBar extends Component {
                         flex: 1, alignItems: 'flex-end', justifyContent: 'center'
                     }}>
                         <View style={{
-                            height: '100%', width: 70, paddingTop:14
+                            height: '100%', width: 70, paddingTop: 14
                         }}>
                             <Icon style={{ marginLeft: 20 }} name="shopping-cart" size={25} color="black" />
                         </View>
@@ -55,7 +60,7 @@ const styles = {
         flex: 1, justifyContent: 'flex-start', flexDirection: 'row'
     },
     header: {
-        height:80, backgroundColor: '#4286f4', paddingTop: 30, paddingBottom:10
+        height: 80, backgroundColor: '#4286f4', paddingTop: 30, paddingBottom: 10
     },
     font: {
         marginLeft: 25,

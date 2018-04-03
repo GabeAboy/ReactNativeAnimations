@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import Ball from '../Ball'
 export default class one extends Component {
 
     render() {

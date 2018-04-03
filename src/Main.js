@@ -33,9 +33,9 @@ export default class Main extends Component {
                         <Button title='SIGN UP FREE' backgroundColor='#84bd00' textColor='white' />
                         <Button title='CONTINUE WITH FACEBOOK' backgroundColor='#3b5998' textColor='white' />
                         <Text style={{ marginBottom: 5 }}>Already a user?</Text>
-                        <Button title='LOG IN' backgroundColor='#ecebe8' textColor='black' 
+                        <Button title='LOG IN' backgroundColor='#ecebe8' textColor='black'
                             onPress={() =>
-                                navigate('LiftsNearBy')
+                                navigate('LiftsNearBy', { navigate: navigate })
                             } />
 
                     </View>

@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, FlatList, List } from 'react-native';
+import { View, Text, TouchableHighlight, Dimensions, FlatList, List } from 'react-native';
 import BrandListView from './BrandListView';
 import { SearchBar } from 'react-native-elements'
 
 
 export default class MultiSelectList extends React.PureComponent {
-
+    
     constructor(props) {
         super(props);
         this.state = {
-
+            
         }
     }
     componentWillMount() {
         this.setState({ data: this.props.data })
+        console.log("WHATS UPPPPP  ",this.props.navigation)
+        navigation = this.props;
     }
 
     state = { selected: new Map() };
@@ -55,24 +57,30 @@ export default class MultiSelectList extends React.PureComponent {
     };
 
     _renderItem = ({ item }) => (
-        <BrandListView
-            key={item.id}
-            id={item.id}
-            onPressItem={this._onPressItem}
-            // selected={!!this.state.selected.get(item.id)}
-            logo={item.img}
-            trailsAvailable={item.trailsAvailable}
-            trailsTotal={item.trailsTotal}
-            weatherReport={item.weatherReport}
-            brand={item.title}
-        />
+        
+        <TouchableHighlight onPress={() =>
+            navigation('Commerse')
+        } >
+            <BrandListView
+                key={item.id}
+                id={item.id}
+                onPressItem={this._onPressItem}
+                // selected={!!this.state.selected.get(item.id)}
+                logo={item.img}
+                trailsAvailable={item.trailsAvailable}
+                trailsTotal={item.trailsTotal}
+                weatherReport={item.weatherReport}
+                brand={item.title}
+            />
+        </TouchableHighlight>
     );
 
 
     render() {
+        
         return (
+
             <FlatList
-                stickyHeaderIndices={[0]}
                 ListHeaderComponent={this.renderHeader}
                 data={this.state.data}
                 extraData={this.state}
