@@ -16,7 +16,7 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 const Router = StackNavigator(
   
   {
-    Home: { screen: LiftsNearBy },
+    Home: { screen: Main },
     LiftsNearBy: { screen: LiftsNearBy },
     Commerse: { screen: Commerse}
   },

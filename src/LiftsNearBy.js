@@ -6,9 +6,7 @@ import NaviBar from './Library/NaviBar';
 import Drawer from 'react-native-drawer'
 import DrawerContainer from './Library/DrawerContainer';
 export default class LiftsNearBy extends Component {
-    componentDidMount() {
-        openControlPanel()
-    }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -26,11 +24,15 @@ export default class LiftsNearBy extends Component {
 
 
     }
+    componentDidUpdate(){
+        console.log('hello')
+    }
     render() {
         const { navigate } = this.props;
         return (
             <Drawer
                 type="overlay"
+                tapToClose={true}   
                 ref={(ref) => this._drawer = ref}
                 openDrawerOffset={0.2}
                 closedDrawerOffset={-3}
@@ -47,7 +49,7 @@ export default class LiftsNearBy extends Component {
                             width: '100%'
 
                         }}>
-                            <MyListItem data={dumbData.default.data} title='name' />
+                            <MyListItem navigation = {this.props.navigation}data={dumbData.default.data} title='name' />
                         </View>
                     </View>
                 </View>

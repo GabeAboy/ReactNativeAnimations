@@ -14,7 +14,7 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentWillMount() {
         this.setState({ data: this.props.data })
-        console.log("WHATS UPPPPP  ",this.props.navigation)
+        console.log("WHATS UPPPPP  ",this.props)
         navigation = this.props;
     }
 
@@ -57,20 +57,24 @@ export default class MultiSelectList extends React.PureComponent {
     };
 
     _renderItem = ({ item }) => (
+        <TouchableHighlight 
         
-        <TouchableHighlight onPress={() =>
-            navigation('Commerse')
+        underlayColor='#86b0f4'
+        onPress={() =>
+             this.props.navigation.navigate('Commerse',{item})
         } >
             <BrandListView
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}
-                // selected={!!this.state.selected.get(item.id)}
+                 //selected={!!this.state.selected.get(item.id)}
                 logo={item.img}
                 trailsAvailable={item.trailsAvailable}
                 trailsTotal={item.trailsTotal}
                 weatherReport={item.weatherReport}
                 brand={item.title}
+                navigation={this.props.navigation}
+                
             />
         </TouchableHighlight>
     );

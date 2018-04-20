@@ -35,7 +35,7 @@ export default class Main extends Component {
                         <Text style={{ marginBottom: 5 }}>Already a user?</Text>
                         <Button title='LOG IN' backgroundColor='#ecebe8' textColor='black'
                             onPress={() =>
-                                navigate('LiftsNearBy', { navigate: navigate })
+                                navigate('LiftsNearBy', { navigation: navigate })
                             } />
 
                     </View>
