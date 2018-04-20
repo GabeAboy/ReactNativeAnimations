@@ -22,12 +22,12 @@ export default class LiftsNearBy extends Component {
         this._drawer.open()
     };
     componentDidMount() {
-        console.log('hi')
+        console.log('hi', this.props)
 
 
     }
     render() {
-        const { navigate } = this.props;
+        const { navigation } = this.props;
         return (
             <Drawer
                 type="overlay"
@@ -47,7 +47,7 @@ export default class LiftsNearBy extends Component {
                             width: '100%'
 
                         }}>
-                            <MyListItem data={dumbData.default.data} title='name' />
+                            <MyListItem data={dumbData.default.data} navigate = {navigation} title='name' />
                         </View>
                     </View>
                 </View>

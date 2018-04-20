@@ -14,8 +14,8 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentWillMount() {
         this.setState({ data: this.props.data })
-        console.log("WHATS UPPPPP  ",this.props.navigation)
-        navigation = this.props;
+        console.log("WHATS UPPPPP  ",this.props)
+        
     }
 
     state = { selected: new Map() };
@@ -59,7 +59,7 @@ export default class MultiSelectList extends React.PureComponent {
     _renderItem = ({ item }) => (
         
         <TouchableHighlight onPress={() =>
-            navigation('Commerse')
+            this.props.navigate.navigate('Commerse')
         } >
             <BrandListView
                 key={item.id}
