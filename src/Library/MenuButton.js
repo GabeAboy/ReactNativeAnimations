@@ -5,8 +5,7 @@ export default class MenuButton extends Component {
     render() {
         return (
             <View style={styles.ball}>
-                
-                <Text>{this.props.Text}</Text>
+                <Text>{this.props.Title}</Text>
             </View>
         );
     }
@@ -14,8 +13,7 @@ export default class MenuButton extends Component {
 const styles = {
     ball: {
         width:'100%',
-        height:85,
-        backgroundColor: 'blue',
+        height:85
         
     }
 }

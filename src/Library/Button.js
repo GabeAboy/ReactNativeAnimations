@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class Button extends Component {
 
     render() {
         const { title, backgroundColor, textColor } = this.props;
         return (
-            <TouchableHighlight 
+            <TouchableOpacity 
             onPress={this.props.onPress}
-            underlayColor='red'
             style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -20,7 +19,7 @@ class Button extends Component {
 
             }}>
                 <Text style={{color:textColor}}>{title}</Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
     }
 }

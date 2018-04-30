@@ -3,15 +3,13 @@ import { View, Image, TouchableHighlight, Text } from 'react-native';
 
 export default class DrawerHeader extends Component {
     _onPressButton = () => {
-        console.log('hello')
     }
     render() {
         return (
             <View style={styles.ball} >
-                <Image style={{ height: "100%", width: "100%", position: 'absolute', zIndex: 1 }} source={require('../..//img/gridOne.jpg')}
-                    resizeMode='cover' />
-                <View style={{ position: 'absolute', zIndex: 2, marginTop: 50 }}>
-                    <View style={{ flex: 1.5, justifyContent: 'center' }} >
+                
+                <View style={{flex:1, marginTop: 20 }}>
+                    <View style={{ flex: 1.5 }} >
                         <View style={{
                             marginTop: 25,
                             marginLeft: 25,
@@ -23,7 +21,7 @@ export default class DrawerHeader extends Component {
                         }}>
                         </View>
                     </View>
-                    <View style={{ flex: .7, justifyContent: 'flex-start', marginTop: 10 }} >
+                    <View style={{ flex: .7, justifyContent: 'flex-start', paddingTop: 20 }} >
                         <Text style={styles.font}>Gabriel Aboy</Text>
                         <Text style={styles.font}>Burlington Vermont, 05401</Text>
                     </View>
@@ -35,9 +33,7 @@ export default class DrawerHeader extends Component {
 const styles = {
     ball: {
         height: '30%',
-        width: '100%',
-        position: 'absolute',
-        zIndex: 1
+        width: '100%'
     },
     font: {
         marginLeft: 25,

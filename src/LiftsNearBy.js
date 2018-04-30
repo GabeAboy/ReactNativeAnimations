@@ -22,7 +22,6 @@ export default class LiftsNearBy extends Component {
         this._drawer.open()
     };
     componentDidMount() {
-        console.log('hi', this.props)
 
 
     }
