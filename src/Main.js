@@ -28,13 +28,17 @@ export default class Main extends Component {
                     </View>
                     <View style={styles.footer}>
 
-                        <Button title='SIGN UP FREE' backgroundColor='#22c41f' textColor='white' />
+                        <Button
+                            title='SIGN UP FREE' backgroundColor='#22c41f' textColor='white'
+                            onPress={() =>
+                                navigate('SignUp', { navigation: navigate })}
+                        />
                         <Button title='CONTINUE WITH FACEBOOK' backgroundColor='#3b5998' textColor='white' />
-                        <Text style={{ marginBottom: 5 }}>Already a user?</Text>
+                        <Text style={{ marginBottom: 5 }}>Aleady a user?</Text>
                         <Button title='LOG IN' backgroundColor='#ecebe8' textColor='black'
                             onPress={() =>
-                                navigate('LogIn', { navigation: navigate })
-                            } />
+                                navigate('LogIn', { navigation: navigate })}
+                        />
 
                     </View>
                 </View>

@@ -27,7 +27,7 @@ export default class Main extends Component {
                     }} name="angle-left" size={35} color="white" />
                 </View>
                 <View style={styles.title}>
-                    <Text style={styles.titleFont}>Sign In</Text>
+                    <Text style={styles.titleFont}>Sign Up</Text>
                 </View>
                 <View style={styles.body}>
                     <View style={{ width: '90%' }}>
@@ -40,6 +40,7 @@ export default class Main extends Component {
                     <View style={{ width: '90%' }}>
                         <Text style={styles.textFont}>Password</Text>
                         <TextInput
+                            underlineColorAndroid='red'
                             style={styles.input}
                             onChangeText={(text) => this.setState({ text })}
                         />
@@ -54,9 +55,8 @@ export default class Main extends Component {
                         borderRadius: 25, marginBottom: 15
                     }}>
                         <Text onPress={() =>
-                            navigate('LiftsNearBy', { navigation: navigate })} style={styles.submitText}>LOGIN</Text>
+                            navigate('LiftsNearBy', { navigation: navigate })} style={styles.submitText}>Next</Text>
                     </View>
-                    <Text style={styles.textFont}>Having trouble logging in? Get help here.</Text>
                 </View>
 
 
