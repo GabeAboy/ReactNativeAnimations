@@ -13,6 +13,7 @@ export default class MultiSelectList extends React.PureComponent {
         }
     }
     componentWillMount() {
+        // Delete me
         this.setState({ data: this.props.data })
         
     }
