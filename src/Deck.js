@@ -6,7 +6,6 @@ class Deck extends Component {
     
     constructor(props) {
         super(props);
-        console.log('asd', SCREEN_WIDTH)
         const position = new Animated.ValueXY();
         const panResponder =  PanResponder.create({
             // Functions that will be called at different points of its lifecycle

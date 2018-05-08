@@ -4,9 +4,8 @@ import Main from './src/Main';
 import { Card, Button } from 'react-native-elements'
 import LiftsNearBy from './src/LiftsNearBy';
 import Commerse from './src/Commerse';
-import one from './src/screens/one'
-import two from './src/screens/two'
-
+import LogIn from './src/LogIn';
+import SignUp from './src/SignUp'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
@@ -14,11 +13,13 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 
 const Router = StackNavigator(
-  
+
   {
     Home: { screen: Main },
+    LogIn: { screen: LogIn },
+    SignUp: { screen: SignUp },
     LiftsNearBy: { screen: LiftsNearBy },
-    Commerse: { screen: Commerse}
+    Commerse: { screen: Commerse }
   },
   {
     headerMode: 'none',

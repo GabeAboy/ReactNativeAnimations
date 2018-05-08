@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import TextCarousel from 'react-native-text-carousel';
 import Button from './Library/Button';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -18,8 +17,7 @@ export default class Main extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container} >
-                <Image source={require('../img/backG.jpg')}
-                    resizeMode='contain' />
+
 
                 <View style={styles.innerContain}>
                     <View style={styles.header}>
@@ -30,13 +28,17 @@ export default class Main extends Component {
                     </View>
                     <View style={styles.footer}>
 
-                        <Button title='SIGN UP FREE' backgroundColor='#84bd00' textColor='white' />
+                        <Button
+                            title='SIGN UP FREE' backgroundColor='#22c41f' textColor='white'
+                            onPress={() =>
+                                navigate('SignUp', { navigation: navigate })}
+                        />
                         <Button title='CONTINUE WITH FACEBOOK' backgroundColor='#3b5998' textColor='white' />
-                        <Text style={{ marginBottom: 5 }}>Already a user?</Text>
+                        <Text style={{ marginBottom: 5 }}>Aleady a user?</Text>
                         <Button title='LOG IN' backgroundColor='#ecebe8' textColor='black'
                             onPress={() =>
-                                navigate('LiftsNearBy', { navigation: navigate })
-                            } />
+                                navigate('LogIn', { navigation: navigate })}
+                        />
 
                     </View>
                 </View>
@@ -59,8 +61,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
-        position: 'absolute',
-        zIndex: 1
+        // position: 'absolute',
+        // zIndex: 1,
+        backgroundColor: '#4286f4'
     },
     header: {
         height: 220,
@@ -72,7 +75,8 @@ const styles = StyleSheet.create({
     footer: {
         height: SCREEN_HEIGHT - (SCREEN_HEIGHT * .72),
         width: SCREEN_WIDTH,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 20
     },
     logo: {
         height: 75,

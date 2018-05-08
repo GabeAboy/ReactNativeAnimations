@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Hamburger from 'react-native-hamburger';
 import { Drawer } from 'native-base';
+class Logo extends React.Component {
+    render() {
+        if (this.props.comp) {
+            return (
+                <Text style = {{paddingTop:15,
+                                paddingLeft:5}}>{this.props.comp}</Text>
+            )
+        }
+        else {
+            return (
+                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }} source={require('../../img/spot.png')}
+                resizeMode='contain' />
+            )
+        }
+    }
+  }
+
 export default class NaviBar extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
             active: false
         }
     }
+    
     render() {
+        const Delete = this.props.company;
         return (
             <View style={styles.header}>
 
@@ -26,13 +46,11 @@ export default class NaviBar extends Component {
                                 type='spinCross'
                                 color='black'
                                 onPress={() => {
-                                    console.log('dsf', this.props)
                                     this.setState({ active: !this.state.active })
                                     this.props.toggleDrawer()
                                 }} />
                         </View>
-                        <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }} source={require('../../img/spot.png')}
-                            resizeMode='contain' />
+                        <Logo comp = {Delete}/>
                     </View>
 
                     <View style={{

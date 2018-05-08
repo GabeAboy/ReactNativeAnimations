@@ -7,24 +7,15 @@ export default class MenuButton extends Component {
     render() {
         return (
             <View style={styles.ball}>
-                <Icon style={{
-                    paddingLeft: 35
-                }} name={this.props.icon} size={35} color="#CED0CE" />
-                <Text style={{
-                    fontSize: 20,
-                    paddingLeft: 25
-                }}>{this.props.buttonName}</Text>
+                <Text>{this.props.Title}</Text>
             </View>
         );
     }
 }
 const styles = {
     ball: {
-        width: '100%',
-        height: 85,
-        borderWidth: 2,
-        borderColor: 'white',
-        flexDirection: 'row',
-        alignItems: 'center'
+        width:'100%',
+        height:85
+        
     }
 }

@@ -14,6 +14,7 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentWillMount() {
         this.setState({ data: this.props.data })
+<<<<<<< HEAD
         console.log("WHATS UPPPPP  ",this.props)
         navigation = this.props;
     }
@@ -24,6 +25,9 @@ export default class MultiSelectList extends React.PureComponent {
         var filterLength = text.length;
         this.setState({ data: this.props.data.filter(word => word.title.substring(0, filterLength).includes(text)) });
         console.log('hello there friend ', ',', this.state.data)
+=======
+        
+>>>>>>> saveCarousel
     }
     renderHeader = () => {
         return (
@@ -46,22 +50,11 @@ export default class MultiSelectList extends React.PureComponent {
             </View>
         )
     };
-    _onPressItem = (id) => {
-        // updater functions are preferred for transactional updates
-        this.setState((state) => {
-            // copy the map rather than modifying state.
-            const selected = new Map(state.selected);
-            selected.set(id, !selected.get(id)); // toggle
-            return { selected };
-        });
-    };
 
     _renderItem = ({ item }) => (
-        <TouchableHighlight 
         
-        underlayColor='#86b0f4'
-        onPress={() =>
-             this.props.navigation.navigate('Commerse',{item})
+        <TouchableHighlight key={item.id} onPress={() =>
+            this.props.navigate.navigate('Commerse',{company:item.title,data:item,navigation:this.props.navigate})
         } >
             <BrandListView
                 key={item.id}
@@ -85,10 +78,11 @@ export default class MultiSelectList extends React.PureComponent {
         return (
 
             <FlatList
+                key={this.key}
                 ListHeaderComponent={this.renderHeader}
                 data={this.state.data}
                 extraData={this.state}
-                keyExtractor={this._keyExtractor}
+                keyExtractor={(item, index) => index}
                 renderItem={this._renderItem}
 
             />
