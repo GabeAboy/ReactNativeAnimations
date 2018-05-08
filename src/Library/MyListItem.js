@@ -14,20 +14,7 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentWillMount() {
         this.setState({ data: this.props.data })
-<<<<<<< HEAD
-        console.log("WHATS UPPPPP  ",this.props)
-        navigation = this.props;
-    }
-
-    state = { selected: new Map() };
-    _keyExtractor = (item, index) => item.id;
-    onChange = (text) => {
-        var filterLength = text.length;
-        this.setState({ data: this.props.data.filter(word => word.title.substring(0, filterLength).includes(text)) });
-        console.log('hello there friend ', ',', this.state.data)
-=======
         
->>>>>>> saveCarousel
     }
     renderHeader = () => {
         return (
