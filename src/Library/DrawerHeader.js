@@ -15,10 +15,13 @@ export default class DrawerHeader extends Component {
                             marginLeft: 25,
                             borderWidth: 1,
                             borderColor: 'white',
-                            backgroundColor:'gray',
+                            backgroundColor: 'gray',
                             width: 75, height: 75,
                             borderRadius: 40
                         }}>
+                            <Image style={{ height: "100%", width: "100%" }} source={require('../../img/default-user.png')}
+                                resizeMode='cover' />
+
                         </View>
                     </View>
                     <View style={{ flex: .7, justifyContent: 'flex-start', paddingTop: 20 }} >

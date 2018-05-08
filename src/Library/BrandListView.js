@@ -13,6 +13,7 @@ export default class BrandListView extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props.key)
     }
     render() {
         const { brand, logo } = this.props;

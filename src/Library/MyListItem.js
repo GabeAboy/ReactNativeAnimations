@@ -47,12 +47,14 @@ export default class MultiSelectList extends React.PureComponent {
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}
-                // selected={!!this.state.selected.get(item.id)}
+                 //selected={!!this.state.selected.get(item.id)}
                 logo={item.img}
                 trailsAvailable={item.trailsAvailable}
                 trailsTotal={item.trailsTotal}
                 weatherReport={item.weatherReport}
                 brand={item.title}
+                navigation={this.props.navigation}
+                
             />
         </TouchableHighlight>
     );

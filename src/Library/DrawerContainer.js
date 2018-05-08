@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import DrawerHeader from './DrawerHeader'
 import MenuButton from './MenuButton'
-import Icon from 'react-native-vector-icons/FontAwesome';
 export default class DrawerContainer extends Component {
 
     render() {
         return (
             <View style={styles.ball}>
                 <DrawerHeader />
-                <View style = {{flex:1}}>
-                    <MenuButton Title='History'/>
-                    <MenuButton Title='Billing'/>
-                    <MenuButton Title='Edit'/>
-                    <MenuButton Title='Terms of Agreement'/>
+                <View style={{ flex: 1 }}>
+                    <MenuButton icon='wrench' buttonName='Settings' />
+                    <MenuButton icon='history' buttonName='History' />
                 </View>
             </View>
         );
