@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video } from 'react-native';
 import TextCarousel from 'react-native-text-carousel';
-import Button from './Library/Button';
+import Button from '../components/Button';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 // Container for initial launch
@@ -23,7 +23,7 @@ export default class Main extends Component {
                     <View style={styles.header}>
                         <Image
                             style={styles.logo}
-                            source={require('../img/spot.png')}
+                            source={require('../../img/spot.png')}
                         />
                     </View>
                     <View style={styles.footer}>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import MyListItem from './Library/MyListItem';
-import * as dumbData from '../MockDTO/liftsNearBy';
-import NaviBar from './Library/NaviBar';
+import MountainListComp from '../components/MountainListComp';
+import * as dumbData from '../../MockDTO/liftsNearBy';
+import NaviBar from '../components/NaviBar';
 import Drawer from 'react-native-drawer'
-import DrawerContainer from './Library/DrawerContainer';
+import DrawerContainer from '../components/DrawerContainer';
 export default class LiftsNearBy extends Component {
 
     constructor(props) {
@@ -48,7 +48,7 @@ export default class LiftsNearBy extends Component {
                             width: '100%'
 
                         }}>
-                            <MyListItem data={dumbData.default.data} navigate = {navigation} title='name' />
+                            <MountainListComp data={dumbData.default.data} navigate = {navigation} title='name' />
                         </View>
                     </View>
                 </View>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, Dimensions, FlatList, List } from 'react-native';
-import BrandListView from './BrandListView';
+import MountainListUI from './MountainListUI';
 import { SearchBar } from 'react-native-elements'
 
 
@@ -42,9 +42,9 @@ export default class MultiSelectList extends React.PureComponent {
     _renderItem = ({ item }) => (
         
         <TouchableHighlight key={item.id} onPress={() =>
-            this.props.navigate.navigate('Commerse',{company:item.title,data:item,navigation:this.props.navigate})
+            this.props.navigate.navigate('MountainStore',{company:item.title,data:item,navigation:this.props.navigate})
         } >
-            <BrandListView
+            <MountainListUI
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}

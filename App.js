@@ -1,34 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import Main from './src/Main';
-import { Card, Button } from 'react-native-elements'
-import LiftsNearBy from './src/LiftsNearBy';
-import Commerse from './src/Commerse';
-import LogIn from './src/LogIn';
-import SignUp from './src/SignUp'
+import { StyleSheet, View, Dimensions } from 'react-native';
+
+import Router from './src/navigation/RootNavigation'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
-
-
-
-const Router = StackNavigator(
-
-  {
-    Home: { screen: Main },
-    LogIn: { screen: LogIn },
-    SignUp: { screen: SignUp },
-    LiftsNearBy: { screen: LiftsNearBy },
-    Commerse: { screen: Commerse }
-  },
-  {
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: {
-      gesturesEnabled: false,
-    }
-  }
-);
 
 
 export default class App extends React.Component {
