@@ -3,18 +3,11 @@ import { Dimensions, StyleSheet, Text, View, Image, Video } from 'react-native';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
 import * as firebase from 'firebase'
+import firebaseConfig from '../../keys/firebasekeys'
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
-// Container for initial launch
-// UAC login/signUp
-//     facebook passport
-//     logo
-const firebaseConfig = {
-    apiKey: "AIzaSyBpuSJ2b-vKqJlgT5lYFe_5KRVEpGSmrfk",
-    authDomain: "skieasy-e12b4.firebaseapp.com",
-    // databaseURL: "https://skieasy-e12b4.firebaseio.com",
-    // storageBucket: "gs://skieasy-e12b4.appspot.com",
-}
+
 firebase.initializeApp(firebaseConfig)
 export default class Main extends Component {
     componentDidUpdate(){
