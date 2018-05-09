@@ -9,6 +9,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "facebookScheme": "fb1634938636614030",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

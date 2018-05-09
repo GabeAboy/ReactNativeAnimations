@@ -2,14 +2,44 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video } from 'react-native';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
+import * as firebase from 'firebase'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 // Container for initial launch
 // UAC login/signUp
 //     facebook passport
 //     logo
+const firebaseConfig = {
+    apiKey: "AIzaSyBpuSJ2b-vKqJlgT5lYFe_5KRVEpGSmrfk",
+    authDomain: "skieasy-e12b4.firebaseapp.com",
+    // databaseURL: "https://skieasy-e12b4.firebaseio.com",
+    // storageBucket: "gs://skieasy-e12b4.appspot.com",
+}
+firebase.initializeApp(firebaseConfig)
 export default class Main extends Component {
+    componentDidUpdate(){
+        firebase.auth().onAuthStateChanged((user)=>{
+            if(user != null){
+                console.log('USER',user)
+                this.props.navigation('MountainFinder', { navigation: this.props.navigation })
+            }
+        })
+    }
+    async loginWithFacebook() {
+        const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1634938636614030', {
+            permissions: ['public_profile'],
+          });
+        if (type == 'success') {
+            const credential = firebase.auth.FacebookAuthProvider.credential(token)
 
+            firebase.auth()
+                .signInAndRetrieveDataWithCredential(credential)
+                .catch((error) => {
+                    console.log(error)
+                })
+            console.log('success')
+        }
+    }
     static navigationOptions = {
         title: 'Welcome',
     };
@@ -17,8 +47,6 @@ export default class Main extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container} >
-
-
                 <View style={styles.innerContain}>
                     <View style={styles.header}>
                         <Image
@@ -33,11 +61,23 @@ export default class Main extends Component {
                             onPress={() =>
                                 navigate('SignUp', { navigation: navigate })}
                         />
-                        <Button title='CONTINUE WITH FACEBOOK' backgroundColor='#3b5998' textColor='white' />
-                        <Text style={{ marginBottom: 5 }}>Aleady a user?</Text>
-                        <Button title='LOG IN' backgroundColor='#ecebe8' textColor='black'
+                        <Button
+                            onPress={() => {
+                                this.loginWithFacebook()
+                            }}
+                            title='CONTINUE WITH FACEBOOK'
+                            backgroundColor='#3b5998'
+                            textColor='white' />
+                        <Text style={{ marginBottom: 5 }}>
+                            Aleady a user?
+                        </Text>
+                        <Button
                             onPress={() =>
-                                navigate('LogIn', { navigation: navigate })}
+                                navigate(' LogIn', { navigation: navigate })
+                            }
+                            title='LOG IN'
+                            backgroundColor='#ecebe8'
+                            textColor='black'
                         />
 
                     </View>
