@@ -11,7 +11,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 //     logo
 export default class Main extends Component {
     componentDidMount() {
-        console.log('HELLO', this.props)
     }
     static navigationOptions = {
         title: 'Welcome',

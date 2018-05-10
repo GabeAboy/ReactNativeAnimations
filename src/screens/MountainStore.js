@@ -19,7 +19,6 @@ class Part extends React.Component {
 
 export default class one extends Component {
     componentDidMount() {
-        console.log('new log', this.props.navigation.state.params.data)
     }
     render() {
         return (

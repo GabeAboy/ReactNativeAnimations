@@ -24,7 +24,6 @@ export default class LiftsNearBy extends Component {
 
     }
     componentDidUpdate(){
-        console.log('hello')
     }
     render() {
         const { navigation } = this.props;

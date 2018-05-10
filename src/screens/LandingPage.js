@@ -10,11 +10,13 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 firebase.initializeApp(firebaseConfig)
 export default class Main extends Component {
-    componentDidUpdate(){
+    componentDidMount(){
+        console.log('load')
         firebase.auth().onAuthStateChanged((user)=>{
             if(user != null){
                 console.log('USER',user)
-                this.props.navigation('MountainFinder', { navigation: this.props.navigation })
+                console.log(this.props)
+                this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
             }
         })
     }
@@ -30,7 +32,7 @@ export default class Main extends Component {
                 .catch((error) => {
                     console.log(error)
                 })
-            console.log('success')
+            console.log('successs')
         }
     }
     static navigationOptions = {
@@ -66,7 +68,7 @@ export default class Main extends Component {
                         </Text>
                         <Button
                             onPress={() =>
-                                navigate(' LogIn', { navigation: navigate })
+                                navigate('LogIn', { navigation: navigate })
                             }
                             title='LOG IN'
                             backgroundColor='#ecebe8'
@@ -94,8 +96,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
-        // position: 'absolute',
-        // zIndex: 1,
         backgroundColor: '#4286f4'
     },
     header: {
