@@ -5,11 +5,43 @@ import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
+import * as firebase from 'firebase'
+import firebaseConfig from '../../keys/firebasekeys'
 // Container for initial launch
 // UAC login/signUp
 //     facebook passport
 //     logo
+ // Set the configuration for your app
+  // TODO: Replace with your project's config object
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+
+
 export default class Main extends Component {
+    constructor(props){
+        super(props)
+        this.state = ({
+            email:'',
+            password:''
+        })
+    }
+    signUpUser = (email,password)=>{
+        try{
+            if(this.state.password.length < 6){
+                alert('Please enter more than 6 characters')
+                return;
+            }
+            console.log('start')
+            firebase.auth().createUserWithEmailAndPassword(email,password)
+            console.log('done')
+
+        }catch(error){
+            console.log(error.toString())
+        }
+    }
+    logIn = (email,password)=>{
+        console.log(email,password)
+    }
+
     componentDidMount() {
     }
     static navigationOptions = {
@@ -33,7 +65,7 @@ export default class Main extends Component {
                         <Text style={styles.textFont}>Email or username</Text>
                         <TextInput
                             style={styles.input}
-                            onChangeText={(text) => this.setState({ text })}
+                            onChangeText={(email) => this.setState({ email })}
                         />
                     </View>
                     <View style={{ width: '90%' }}>
@@ -41,7 +73,8 @@ export default class Main extends Component {
                         <TextInput
                             underlineColorAndroid='red'
                             style={styles.input}
-                            onChangeText={(text) => this.setState({ text })}
+                            
+                            onChangeText={(password) => this.setState({ password })}
                         />
                     </View>
                 </View>
@@ -53,8 +86,9 @@ export default class Main extends Component {
                         alignItems: 'center', backgroundColor: 'grey', opacity: .5,
                         borderRadius: 25, marginBottom: 15
                     }}>
-                        <Text onPress={() =>
-                            navigate('LiftsNearBy', { navigation: navigate })} style={styles.submitText}>Next</Text>
+                        <Text onPress={() => this.signUpUser(this.state.email,this.state.password)}
+                            //navigate('LiftsNearBy', { navigation: navigate })}
+                             style={styles.submitText}>Next</Text>
                     </View>
                 </View>
 
