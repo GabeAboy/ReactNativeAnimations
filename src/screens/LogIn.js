@@ -9,7 +9,40 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 // UAC login/signUp
 //     facebook passport
 //     logo
-export default class Main extends Component {
+import * as firebase from 'firebase'
+import firebaseConfig from '../../keys/firebasekeys'
+// Container for initial launch
+// UAC login/signUp
+//     facebook passport
+//     logo
+ // Set the configuration for your app
+  // TODO: Replace with your project's config object
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+
+export default class Login extends Component {
+    constructor(props){
+        super(props)
+        this.state = ({
+            email:'',
+            password:''
+        })
+    }
+    logInUser = (email,password)=>{
+        try{
+            if(this.state.password.length < 6){
+                alert('Please enter more than 6 characters')
+                return;
+            }
+            console.log('start')
+            firebase.auth().signInWithEmailAndPassword(email,password).then((user)=>{
+                console.log('user', user)
+            })
+            console.log('done')
+
+        }catch(error){
+            console.log(error.toString())
+        }
+    }
     componentDidMount() {
     }
     static navigationOptions = {
@@ -33,14 +66,14 @@ export default class Main extends Component {
                         <Text style={styles.textFont}>Email or username</Text>
                         <TextInput
                             style={styles.input}
-                            onChangeText={(text) => this.setState({ text })}
+                            onChangeText={(email) => this.setState({ email })}
                         />
                     </View>
                     <View style={{ width: '90%' }}>
                         <Text style={styles.textFont}>Password</Text>
                         <TextInput
                             style={styles.input}
-                            onChangeText={(text) => this.setState({ text })}
+                            onChangeText={(password) => this.setState({ password })}
                         />
                     </View>
                 </View>
@@ -52,8 +85,13 @@ export default class Main extends Component {
                         alignItems: 'center', backgroundColor: 'grey', opacity: .5,
                         borderRadius: 25, marginBottom: 15
                     }}>
-                        <Text onPress={() =>
-                            navigate('MountainFinder', { navigation: navigate })} style={styles.submitText}>LOGIN</Text>
+                        <Text onPress={() =>{
+                           // navigate('MountainFinder', { navigation: navigate })
+                           this.logInUser(this.state.email,this.state.password)
+                            }
+                        } style={styles.submitText}>
+                            LOGIN
+                        </Text>
                     </View>
                     <Text style={styles.textFont}>Having trouble logging in? Get help here.</Text>
                 </View>
