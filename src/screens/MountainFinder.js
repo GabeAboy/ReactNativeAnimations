@@ -4,9 +4,9 @@ import MountainListComp from '../components/MountainListComp';
 import * as dumbData from '../../MockDTO/liftsNearBy';
 import NaviBar from '../components/NaviBar';
 import Drawer from 'react-native-drawer'
-import DrawerContainer from '../components/DrawerContainer';
+import DrawerContainer from '../components/drawer/DrawerContainer';
+import * as firebase from 'firebase'
 export default class LiftsNearBy extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -23,8 +23,7 @@ export default class LiftsNearBy extends Component {
 
 
     }
-    componentDidUpdate(){
-    }
+    
     render() {
         const { navigation } = this.props;
         return (
@@ -35,7 +34,7 @@ export default class LiftsNearBy extends Component {
                 openDrawerOffset={0.2}
                 closedDrawerOffset={-3}
                 styles={drawerStyles}
-                content={<DrawerContainer />}
+                content={<DrawerContainer navigation = {navigation}/>}
             >
                 <View style={{ flex: 1 }}>
                     <NaviBar toggleDrawer={this.openControlPanel} navigation={this.openControlPanel} />

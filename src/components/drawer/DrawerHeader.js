@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableHighlight, Text } from 'react-native';
+import * as firebase from 'firebase'
 
 export default class DrawerHeader extends Component {
-    _onPressButton = () => {
+    constructor(props){
+        super(props)
+        this.state = {
+            User:''
+        }
+    }
+    componentDidMount(){
+     
     }
     render() {
         return (
-            <View style={styles.ball} >
-                
-                <View style={{flex:1, marginTop: 20 }}>
+            <View style={styles.headerContainer} >
+
+                <View style={{ flex: 1, marginTop: 20 }}>
                     <View style={{ flex: 1.5 }} >
                         <View style={{
                             marginTop: 25,
@@ -19,13 +27,13 @@ export default class DrawerHeader extends Component {
                             width: 75, height: 75,
                             borderRadius: 40
                         }}>
-                            <Image style={{ height: "100%", width: "100%" }} source={require('../../img/default-user.png')}
+                            <Image style={{ height: "100%", width: "100%" }} source={require('../../../img/default-user.png')}
                                 resizeMode='cover' />
 
                         </View>
                     </View>
                     <View style={{ flex: .7, justifyContent: 'flex-start', paddingTop: 20 }} >
-                        <Text style={styles.font}>Gabriel Aboy</Text>
+                        <Text style={styles.font}>sd</Text>
                         <Text style={styles.font}>Burlington Vermont, 05401</Text>
                     </View>
                 </View>
@@ -34,9 +42,10 @@ export default class DrawerHeader extends Component {
     }
 }
 const styles = {
-    ball: {
+    headerContainer: {
         height: '30%',
-        width: '100%'
+        width: '100%',
+        backgroundColor:'#4286f4'
     },
     font: {
         marginLeft: 25,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, TouchableHighlight } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Right, Left, Body, Icon } from 'native-base';
 
 const cards = [
@@ -59,9 +59,9 @@ export default class DeckSwiperExample extends Component {
                                     </Right>
                                 </CardItem>
                                 <CardItem cardBody>
-                                    <View style={{ height: 300, flex: 1,backgroundColor:'red' }} >
+                                    <TouchableOpacity onPress = {()=>{console.log('delete')}}style={{ height: 300, flex: 1,backgroundColor:'red' }} >
 
-                                    </View>
+                                    </TouchableOpacity>
                                 </CardItem>
                                 <CardItem style={{ justifyContent: 'space-around' }}>
                                     <Text>{this.props.comp.weatherReport}</Text>

@@ -7,12 +7,12 @@ class Part extends React.Component {
     render() {
         { }
         return (
-            <View style={{
+            <TouchableOpacity style={{
                 flex: 1,
-                borderWidth: 4, borderColor: 'red'
+                borderWidth: 4, borderColor: 'blue'
             }}>
 
-            </View>
+            </TouchableOpacity>
         )
     }
 }

@@ -11,11 +11,11 @@ import SignUp from '../screens/SignUp'
 const Routes = StackNavigator(
 
     {
+        MountainFinder: { screen: MountainFinder },
+        MountainStore: { screen: MountainStore },
         LandingPage: { screen: LandingPage },
         LogIn: { screen: LogIn },
         SignUp: { screen: SignUp },
-        MountainFinder: { screen: MountainFinder },
-        MountainStore: { screen: MountainStore }
     },
     {
         headerMode: 'none',
