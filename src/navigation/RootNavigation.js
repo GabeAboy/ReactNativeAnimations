@@ -11,9 +11,9 @@ import SignUp from '../screens/SignUp'
 const Routes = StackNavigator(
 
     {
+        LandingPage: { screen: LandingPage },
         MountainFinder: { screen: MountainFinder },
         MountainStore: { screen: MountainStore },
-        LandingPage: { screen: LandingPage },
         LogIn: { screen: LogIn },
         SignUp: { screen: SignUp },
     },

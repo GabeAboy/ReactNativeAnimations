@@ -11,35 +11,38 @@ import firebaseConfig from '../../keys/firebasekeys'
 // UAC login/signUp
 //     facebook passport
 //     logo
- // Set the configuration for your app
-  // TODO: Replace with your project's config object
+// Set the configuration for your app
+// TODO: Replace with your project's config object
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
 
 export default class Main extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = ({
-            email:'',
-            password:''
+            email: '',
+            password: ''
         })
     }
-    signUpUser = (email,password)=>{
-        try{
-            if(this.state.password.length < 6){
+    clicked = () =>{
+        console.log('asdasd')
+    }
+    signUpUser = (email, password) => {
+        try {
+            if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
                 return;
             }
             console.log('start')
-            firebase.auth().createUserWithEmailAndPassword(email,password)
+            firebase.auth().createUserWithEmailAndPassword(email, password)
             console.log('done')
 
-        }catch(error){
+        } catch (error) {
             console.log(error.toString())
         }
     }
-    logIn = (email,password)=>{
-        console.log(email,password)
+    logIn = (email, password) => {
+        console.log(email, password)
     }
 
     componentDidMount() {
@@ -73,7 +76,7 @@ export default class Main extends Component {
                         <TextInput
                             underlineColorAndroid='red'
                             style={styles.input}
-                            
+
                             onChangeText={(password) => this.setState({ password })}
                         />
                     </View>
@@ -86,10 +89,13 @@ export default class Main extends Component {
                         alignItems: 'center', backgroundColor: 'grey', opacity: .5,
                         borderRadius: 25, marginBottom: 15
                     }}>
-                        <Text onPress={() => this.signUpUser(this.state.email,this.state.password)}
+                        <Text onPress={() => this.signUpUser(this.state.email, this.state.password)}
                             //navigate('LiftsNearBy', { navigation: navigate })}
-                             style={styles.submitText}>Next</Text>
+                            style={styles.submitText}>Next</Text>
                     </View>
+                </View>
+                <View onPress ={this.clicked()} style={{ height: 50, width: '100%', justifyContent:'center', alignItems:'center'}}>
+                    <Text>Mountains, click here to partner register with SkiEasy.</Text>
                 </View>
 
 
