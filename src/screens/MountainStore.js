@@ -17,7 +17,7 @@ class Part extends React.Component {
     }
 }
 
-export default class one extends Component {
+export default class MountainStore extends Component {
     componentDidMount() {
     }
     render() {

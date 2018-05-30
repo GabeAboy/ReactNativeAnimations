@@ -15,31 +15,50 @@ import firebaseConfig from '../../keys/firebasekeys'
 // UAC login/signUp
 //     facebook passport
 //     logo
- // Set the configuration for your app
-  // TODO: Replace with your project's config object
+// Set the configuration for your app
+// TODO: Replace with your project's config object
+// Login check if user exist, check if its admin, if it is check if email has been authenticated
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
 export default class Login extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = ({
-            email:'',
-            password:''
+            email: '',
+            password: ''
         })
     }
-    logInUser = (email,password)=>{
-        try{
-            if(this.state.password.length < 6){
+    componentDidMount() {
+        console.log('Lkkkogin', this.props)
+    }
+    
+    logInUser = () => {
+        console.log('What the fuck pressed')
+        try {
+            if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
                 return;
             }
-            console.log('start')
-            firebase.auth().signInWithEmailAndPassword(email,password).then((user)=>{
-                console.log('user', user)
+            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((result) => {
+                const currentUser = result.user.uid;
+                return firebase.database().ref('/permissions/' + currentUser)
+                    .once('value')
+                    .then(function (snapshot) {
+                        let isMerchant = snapshot.val().merchant;
+                        if (isMerchant) {
+                            // Admin
+                            console.log('What the fuck pressed',this.props)
+                            this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
+                        }
+                        else {
+                            // Client
+                            this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
+                        }
+                    });
             })
             console.log('done')
 
-        }catch(error){
+        } catch (error) {
             console.log(error.toString())
         }
     }
@@ -59,12 +78,13 @@ export default class Login extends Component {
                     }} name="angle-left" size={35} color="white" />
                 </View>
                 <View style={styles.title}>
-                    <Text style={styles.titleFont}>Sign In</Text>
+                    <Text style={styles.titleFont}>Log In</Text>
                 </View>
                 <View style={styles.body}>
                     <View style={{ width: '90%' }}>
                         <Text style={styles.textFont}>Email or username</Text>
                         <TextInput
+                            underlineColorAndroid='transparent'
                             style={styles.input}
                             onChangeText={(email) => this.setState({ email })}
                         />
@@ -72,6 +92,7 @@ export default class Login extends Component {
                     <View style={{ width: '90%' }}>
                         <Text style={styles.textFont}>Password</Text>
                         <TextInput
+                            underlineColorAndroid='transparent'
                             style={styles.input}
                             onChangeText={(password) => this.setState({ password })}
                         />
@@ -85,10 +106,10 @@ export default class Login extends Component {
                         alignItems: 'center', backgroundColor: 'grey', opacity: .5,
                         borderRadius: 25, marginBottom: 15
                     }}>
-                        <Text onPress={() =>{
-                           // navigate('MountainFinder', { navigation: navigate })
-                           this.logInUser(this.state.email,this.state.password)
-                            }
+                        <Text onPress={() => {
+                            // navigate('MountainFinder', { navigation: navigate })
+                            this.logInUser.bind(this)
+                        }
                         } style={styles.submitText}>
                             LOGIN
                         </Text>

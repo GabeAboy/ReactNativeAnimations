@@ -4,18 +4,30 @@ import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
 import * as firebase from 'firebase'
 import firebaseConfig from '../../keys/firebasekeys'
+import { addTypenameToDocument } from 'apollo-utilities';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 firebase.initializeApp(firebaseConfig)
-export default class Main extends Component {
-    componentDidMount(){
-        console.log('load')
-        firebase.auth().onAuthStateChanged((user)=>{
-            if(user != null){
-                console.log('USER',user)
-                console.log(this.props)
+export default class LandingPage extends Component {
+
+    componentDidMount() {
+        console.log('Save successful, LandingPage')
+        /* **TODO**
+                1. How does spotify keep me logged in?
+                2. Is there any case that onAuthStateChanged upon login automatically log me in
+                    #Cache
+                    #State
+                    #FB Integration
+        */
+        // Does this ever find a user when its the first time you load?
+        // How does spotify keep me logged in
+        // Try having spotify logged in.. logout of facebook and document what happens 
+
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user != null && user.providerData[0].providerId == 'facebook.com') {
                 this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
             }
         })
@@ -23,7 +35,7 @@ export default class Main extends Component {
     async loginWithFacebook() {
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1634938636614030', {
             permissions: ['public_profile'],
-          });
+        });
         if (type == 'success') {
             const credential = firebase.auth.FacebookAuthProvider.credential(token)
 
@@ -74,11 +86,9 @@ export default class Main extends Component {
                             backgroundColor='#ecebe8'
                             textColor='black'
                         />
-
                     </View>
+                    <View style={{ height: 20, width: '100%' }} />
                 </View>
-
-
             </View>
         )
     }

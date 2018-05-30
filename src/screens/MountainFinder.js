@@ -6,7 +6,7 @@ import NaviBar from '../components/NaviBar';
 import Drawer from 'react-native-drawer'
 import DrawerContainer from '../components/drawer/DrawerContainer';
 import * as firebase from 'firebase'
-export default class LiftsNearBy extends Component {
+export default class MountainFinder extends Component {
     constructor(props) {
         super(props)
         this.state = {
