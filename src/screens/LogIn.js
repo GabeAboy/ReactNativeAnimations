@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, Video, TextInput } from 'react-native';
+import { Dimensions, StyleSheet, TouchableHighlight, Text, View, Image, Video, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
+import LoadingGIF from '../components/eventHandlers/LoadingGIF'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 // Container for initial launch
@@ -29,11 +30,10 @@ export default class Login extends Component {
         })
     }
     componentDidMount() {
-        console.log('Lkkkogin', this.props)
     }
-    
-    logInUser = () => {
-        console.log('What the fuck pressed')
+
+    logInUser = (navigate) => {
+        console.log('What the fuck pressed', navigate)
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
@@ -41,18 +41,21 @@ export default class Login extends Component {
             }
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((result) => {
                 const currentUser = result.user.uid;
-                return firebase.database().ref('/permissions/' + currentUser)
+                firebase.database().ref('/permissions/' + currentUser)
                     .once('value')
-                    .then(function (snapshot) {
-                        let isMerchant = snapshot.val().merchant;
-                        if (isMerchant) {
+                    .then((snapshot) => {
+                        console.log('What is this ',snapshot)
+                        if (snapshot.val()) {
+                            console.log('entering incorrectly')
+                            let isMerchant = snapshot.val().merchant;
                             // Admin
-                            console.log('What the fuck pressed',this.props)
-                            this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
+                            console.log('What the fuck pressed', this.props)
+                            navigate('MountainProfile', { navigation: navigate })
                         }
                         else {
                             // Client
-                            this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
+                            console.log('false')
+                            navigate('MountainFinder', { navigation: navigate })
                         }
                     });
             })
@@ -63,6 +66,7 @@ export default class Login extends Component {
         }
     }
     componentDidMount() {
+        console.log('LOGIN', this.props)
     }
     static navigationOptions = {
         title: 'Welcome',
@@ -70,19 +74,38 @@ export default class Login extends Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.container} >
-                <View style={{ width: '100%', height: 24 }} />
-                <View style={styles.nav}>
-                    <Icon onPress={() => {
-                        this.props.navigation.goBack()
-                    }} name="angle-left" size={35} color="white" />
+            <View
+                style={styles.container} >
+                <View
+                    style={{
+                        width: '100%',
+                        height: 24
+                    }} />
+                <View
+                    style={styles.nav}>
+                    <Icon
+                        onPress={() => {
+                            this.props.navigation.goBack()
+                        }}
+                        name="angle-left"
+                        size={35}
+                        color="white" />
                 </View>
-                <View style={styles.title}>
-                    <Text style={styles.titleFont}>Log In</Text>
+                <View
+                    style={styles.title}>
+                    <Text
+                        style={styles.titleFont}>
+                        Log In
+                    </Text>
                 </View>
-                <View style={styles.body}>
-                    <View style={{ width: '90%' }}>
-                        <Text style={styles.textFont}>Email or username</Text>
+                <View
+                    style={styles.body}>
+                    <View
+                        style={{ width: '90%' }}>
+                        <Text
+                            style={styles.textFont}>
+                            Email or username
+                        </Text>
                         <TextInput
                             underlineColorAndroid='transparent'
                             style={styles.input}
@@ -98,26 +121,32 @@ export default class Login extends Component {
                         />
                     </View>
                 </View>
-                <View style={styles.submit}>
-                    <View style={{
-                        width: 180,
-                        height: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center', backgroundColor: 'grey', opacity: .5,
-                        borderRadius: 25, marginBottom: 15
-                    }}>
-                        <Text onPress={() => {
-                            // navigate('MountainFinder', { navigation: navigate })
-                            this.logInUser.bind(this)
-                        }
-                        } style={styles.submitText}>
+                <View
+                    style={styles.submit}>
+                    <TouchableHighlight
+                        style={{
+                            width: 180,
+                            height: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'grey',
+                            opacity: .5,
+                            borderRadius: 25,
+                            marginBottom: 15
+                        }}
+                        onPress={() => {
+                            this.logInUser(navigate)
+                        }}>
+                        <Text
+                            style={styles.submitText}>
                             LOGIN
-                        </Text>
-                    </View>
-                    <Text style={styles.textFont}>Having trouble logging in? Get help here.</Text>
+                            </Text>
+                    </TouchableHighlight>
+                    <Text
+                        style={styles.textFont}>
+                        Having trouble logging in? Get help here.
+                    </Text>
                 </View>
-
-
             </View>
         )
     }

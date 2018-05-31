@@ -66,9 +66,11 @@ export default class MountainRegistration extends Component {
                 }).then(result => {
                     this.setState({ componentLoad: false })
                     firebase.auth().signOut()
-                }).then(()=>{
+                }).then(() => {
                     console.log('user made')
-                }).catch(()=>{
+                    this.props.navigation.navigate('LogIN', { navigation: this.props.navigation })
+                }).catch((error) => {
+                    console.log('Error: ', error)
                     this.setState({ componentLoad: false })
                     this.props.navigation.navigate('DisplayError', { navigation: this.props.navigation })
 
@@ -146,14 +148,14 @@ export default class MountainRegistration extends Component {
                                     borderRadius: 25, marginBottom: 15
                                 }}>
                                     <TouchableHighlight onPress={() => this.signUpUser(this.state.email, this.state.password)}>
-                                    <Text style={styles.submitText}>Next</Text>
+                                        <Text style={styles.submitText}>Next</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
                         </View>
                 }
             </View>
-                //navigate('Route to administration page', { navigation: navigate })}
+            //navigate('Route to administration page', { navigation: navigate })}
         )
     }
 };

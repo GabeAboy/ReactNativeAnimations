@@ -23,7 +23,6 @@ export default class DrawerContainer extends Component {
                 this.setState = { user: profile }
             } else {
                 // No user is signed in.
-                console.log('fail')
             }
         });
     }

@@ -33,7 +33,9 @@ export default class SignUp extends Component {
                 alert('Please enter more than 6 characters')
                 return;
             }
-            firebase.auth().createUserWithEmailAndPassword(email, password)
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(()=>{
+                this.props.navigation.navigate('LogIn', { navigation: this.props.navigation })
+            })
 
         } catch (error) {
             console.log(error.toString())
@@ -55,7 +57,7 @@ export default class SignUp extends Component {
         return (
             <View style={styles.container} >
                 <View style={{ width: '100%', height: 24 }} />
-                <NaviDrink navigate = {this.props.navigation}/>
+                <NaviDrink navigate={this.props.navigation} />
                 <View style={styles.title}>
                     <Text style={styles.titleFont}>Sign Up</Text>
                 </View>
@@ -79,17 +81,20 @@ export default class SignUp extends Component {
                     </View>
                 </View>
                 <View style={styles.submit}>
-                    <View style={{
+                    <TouchableHighlight style={{
                         width: 180,
                         height: 50,
                         justifyContent: 'center',
                         alignItems: 'center', backgroundColor: 'grey', opacity: .5,
                         borderRadius: 25, marginBottom: 15
-                    }}>
-                        <Text onPress={() => this.signUpUser(this.state.email, this.state.password)}
+                    }}
+                        onPress={() => this.signUpUser(this.state.email, this.state.password)}
+                    >
+                        <Text
                             //navigate('LiftsNearBy', { navigation: navigate })}
-                            style={styles.submitText}>Next</Text>
-                    </View>
+                            style={styles.submitText}>Next
+                        </Text>
+                    </TouchableHighlight>
                 </View>
                 <TouchableHighlight
                     underlayColor='#4D9AD5'
