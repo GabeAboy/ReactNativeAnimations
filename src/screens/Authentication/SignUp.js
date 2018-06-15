@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video, TextInput, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextCarousel from 'react-native-text-carousel';
-import Button from '../components/Button';
+import Button from '../../components/Button';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import * as firebase from 'firebase'
-import NaviDrink from '../components/NaviDrink'
-import firebaseConfig from '../../keys/firebasekeys'
+import NaviDrink from '../../components/NaviDrink'
+import firebaseConfig from '../../../keys/firebasekeys'
 // Container for initial launch
 // UAC login/signUp
 //     facebook passport

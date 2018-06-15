@@ -12,6 +12,7 @@
     "react-native-hamburger": "0.0.2",
     "react-native-text-carousel": "0.0.1",
     "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "^1.5.8"
+    "react-navigation": "^1.5.8",
+    "uuid": "^3.2.1"
   }
 }

@@ -4,14 +4,18 @@ import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
 import * as firebase from 'firebase'
 import firebaseConfig from '../../keys/firebasekeys'
-import { addTypenameToDocument } from 'apollo-utilities';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 firebase.initializeApp(firebaseConfig)
 export default class LandingPage extends Component {
-
+    constructor() {
+        super();
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ];
+    }
     componentDidMount() {
         console.log('Save successful, LandingPage')
         /* **TODO**

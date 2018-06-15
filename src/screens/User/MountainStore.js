@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import NaviBar from '../components/NaviBar'
-import Carousel from '../components/Carousel'
+import NaviBar from '../../components/NaviBar'
+import Carousel from '../../components/Carousel'
 import Icon from 'react-native-vector-icons/FontAwesome';
 class Part extends React.Component {
     render() {

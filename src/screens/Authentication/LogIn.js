@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet, TouchableHighlight, Text, View, Image, Video, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextCarousel from 'react-native-text-carousel';
-import Button from '../components/Button';
-import LoadingGIF from '../components/eventHandlers/LoadingGIF'
+import Button from '../../components/Button';
+import LoadingGIF from '../../components/eventHandlers/LoadingGIF'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 // Container for initial launch
@@ -11,7 +11,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 //     facebook passport
 //     logo
 import * as firebase from 'firebase'
-import firebaseConfig from '../../keys/firebasekeys'
+import firebaseConfig from '../../../keys/firebasekeys'
 // Container for initial launch
 // UAC login/signUp
 //     facebook passport
@@ -44,7 +44,7 @@ export default class Login extends Component {
                 firebase.database().ref('/permissions/' + currentUser)
                     .once('value')
                     .then((snapshot) => {
-                        console.log('What is this ',snapshot)
+                        console.log('What is this ', snapshot)
                         if (snapshot.val()) {
                             console.log('entering incorrectly')
                             let isMerchant = snapshot.val().merchant;
@@ -115,6 +115,7 @@ export default class Login extends Component {
                     <View style={{ width: '90%' }}>
                         <Text style={styles.textFont}>Password</Text>
                         <TextInput
+                            secureTextEntry={true}
                             underlineColorAndroid='transparent'
                             style={styles.input}
                             onChangeText={(password) => this.setState({ password })}

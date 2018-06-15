@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
 import { Container, Header, Icon, Title, Content, Right, Body, Left, Picker, Form } from "native-base";
 import * as firebase from 'firebase'
-import firebaseConfig from '../../keys/firebasekeys'
+import firebaseConfig from '../../../keys/firebasekeys'
 
-import LoadingGIF from '../components/eventHandlers/LoadingGIF'
-import NaviDrink from '../components/NaviDrink'
+import LoadingGIF from '../../components/eventHandlers/LoadingGIF'
+import NaviDrink from '../../components/NaviDrink'
 
 // Get a reference to the database service
 var database = firebase.database();

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import MountainListComp from '../components/MountainListComp';
-import * as dumbData from '../../MockDTO/liftsNearBy';
-import NaviBar from '../components/NaviBar';
+import MountainListComp from '../../components/MountainListComp';
+import * as dumbData from '../../../MockDTO/liftsNearBy';
+import NaviBar from '../../components/NaviBar';
 import Drawer from 'react-native-drawer'
-import DrawerContainer from '../components/drawer/DrawerContainer';
+import DrawerContainer from '../../components/drawer/DrawerContainer';
 import * as firebase from 'firebase'
 export default class MountainFinder extends Component {
     constructor(props) {
