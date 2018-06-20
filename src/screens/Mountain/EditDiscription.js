@@ -149,7 +149,7 @@ export default class EditDiscription extends Component {
 
                         {/* bundle and send to firebase  */}
                         <Button onPress={this.updateDatabase.bind(this)} block success>
-                            <Text>Success</Text>
+                            <Text>Save Changes</Text>
                         </Button>
                     </Form>
                 </Content>

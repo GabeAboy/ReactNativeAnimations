@@ -62,7 +62,9 @@ export default class LandingPage extends Component {
                     <View style={styles.header}>
                         <Image
                             style={styles.logo}
-                            source={require('../../img/spot.png')}
+                            source={require('../../img/myLogo.png')}
+                            resizeMode='contain'
+
                         />
                     </View>
                     <View style={styles.footer}>
@@ -123,10 +125,10 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT - (SCREEN_HEIGHT * .72),
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
     },
     logo: {
-        height: 75,
-        width: 250
+        height: '80%',
+        width: '100%'
     }
 });

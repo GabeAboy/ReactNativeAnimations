@@ -21,16 +21,17 @@ import LoadingGIF from '../components/eventHandlers/LoadingGIF'
 import DisplayError from '../components/eventHandlers/DisplayError'
 const Routes = StackNavigator(
     {
+        
         LandingPage: { screen: LandingPage },
         MountainProfile: { screen: MountainProfile },
         LoadingGIF: { screen: LoadingGIF },
         //Main frames
-          
+        
         MountainRegistration: { screen: MountainRegistration },
         MountainFinder: { screen: MountainFinder },
         EditProfile: { screen: EditProfile },
         MountainStore: { screen: MountainStore },
-
+        
         //Registrations
         LogIn: { screen: LogIn },
         SignUp: { screen: SignUp },

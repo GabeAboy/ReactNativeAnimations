@@ -7,18 +7,21 @@ class Logo extends React.Component {
     render() {
         if (this.props.comp) {
             return (
-                <Text style = {{paddingTop:15,
-                                paddingLeft:5}}>{this.props.comp}</Text>
+                <Text style={{
+                    paddingTop: 15,
+                    paddingLeft: 5
+                }}>{this.props.comp}</Text>
             )
         }
         else {
             return (
-                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }} source={require('../../img/spot.png')}
-                resizeMode='contain' />
+                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }}
+                    source={require('../../img/spot.png')}
+                    resizeMode='contain' />
             )
         }
     }
-  }
+}
 
 export default class NaviBar extends Component {
 
@@ -28,7 +31,7 @@ export default class NaviBar extends Component {
             active: false
         }
     }
-    
+
     render() {
         const Delete = this.props.company;
         return (
@@ -50,7 +53,7 @@ export default class NaviBar extends Component {
                                     this.props.toggleDrawer()
                                 }} />
                         </View>
-                        <Logo comp = {Delete}/>
+                        <Logo comp={Delete} />
                     </View>
 
                     <View style={{

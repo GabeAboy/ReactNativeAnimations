@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, TextInput, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, TextInput, ScrollView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../../components/Button';
@@ -25,8 +25,11 @@ export default class MountainProfile extends Component {
             numerator: '0',
             snowCondition: 'Weather',
             image: null,
+            uploading: false,
+            profile: null
         })
     }
+
     componentDidMount() {
         console.log('Mountain Profile')
         this.getProfileInformation()
@@ -34,10 +37,23 @@ export default class MountainProfile extends Component {
     static navigationOptions = {
         title: 'MountainProfile',
     };
+    getPermissionsAsync = async () => {
+        const { Location, Permissions } = Expo;
+        console.log('checking your platform')
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+            return;
+        } else {
+            throw new Error('Permission permission not granted');
+        }
+    }
     _pickImage = async () => {
-        console.log('Image picked')
+        if (Platform.OS === 'ios') {
+            getPermissionsAsync()
+        }
         let pickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: false,
+            base64: true,
             aspect: [4, 3]
         });
         this._handleImagePicked(pickerResult);
@@ -46,10 +62,9 @@ export default class MountainProfile extends Component {
     _handleImagePicked = async pickerResult => {
         try {
             this.setState({ uploading: true });
-            console.log('picker', pickerResult)
             if (!pickerResult.cancelled) {
                 uploadUrl = await this.uploadImageAsync(pickerResult.uri);
-                this.setState({ image: uploadUrl });
+                this.setState({ image: pickerResult.uri });
             }
         } catch (e) {
             console.log(e);
@@ -58,35 +73,60 @@ export default class MountainProfile extends Component {
             this.setState({ uploading: false });
         }
     };
-
-    uploadImageAsync = async uri => {
-        console.log('hell',uri)
+    uploadImageAsync = async (uri) => {
+        console.log(uri)
         const response = await fetch(uri);
         const blob = await response.blob();
         const ref = firebase
             .storage()
-            .ref()
-            .child(uuid.v4());
-        console.log('done')
+            .ref(`${this.state.profile}/icon`)
+            .child('mountainIcon');
+
         const snapshot = await ref.put(blob);
         return snapshot.downloadURL;
     }
     getProfileInformation = () => {
         firebase.auth().onAuthStateChanged((profile) => {
-            console.log(profile.uid)
-            console.log('asdasd')
             let mountainAdminId = profile.uid
+            this.setState({ profile: mountainAdminId });
             firebase.database().ref('/adminDiscription/' + mountainAdminId)
                 .once('value')
                 .then((snapshot) => {
-                    console.log('What is this ', snapshot)
                     //this.setState(snapshot)
                     this.setState({ address: snapshot.val().address })
                     this.setState({ businessName: snapshot.val().businessName })
                     this.setState({ demoninator: snapshot.val().demoninator })
                     this.setState({ numerator: snapshot.val().numerator })
                     this.setState({ snowCondition: snapshot.val().snowCondition })
-                    console.log('shit', this.state)
+                });
+
+            var storage = firebase.storage();
+            var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);
+            // Get the download URL
+            pathReference.getDownloadURL()
+                .then((url) => {
+                    this.setState({ image: url })
+                }).catch((error) => {
+                    console.error(error)
+                    // A full list of error codes is available at
+                    // https://firebase.google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/object_not_found':
+                            // Image not found and setstate to error
+                            var defaultImage = require('../../../img/download.png')
+                            this.setState({ image: defaultImage })
+                            // File doesn't exist
+                            break;
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break;
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break;
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect the server response
+                            break;
+                    }
                 });
         })
     }
@@ -114,7 +154,7 @@ export default class MountainProfile extends Component {
                         style={{ paddingRight: 20, paddingLeft: 20 }} />
                     <Text>Log out</Text>
                 </View>
-                <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white' }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: 'white' }}>
                     <View
                         style={{
 
@@ -125,7 +165,8 @@ export default class MountainProfile extends Component {
                             <View style={{ width: '100%', height: '100%' }}>
                                 <Image
                                     style={{ width: '100%', height: '100%' }}
-                                    source={this.state.image ? { uri: this.state.image } : require('../../../img/download.png')}
+                                    source={this.state.image ? { uri: this.state.image } : this.state.image}
+
                                     //||require('../../../img/download.png')
                                     resizeMode='cover' />
                                 <View style={styles.imageEdit}>
@@ -160,7 +201,7 @@ export default class MountainProfile extends Component {
                                 <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.snowCondition || 'Default'}</Text>
                             </View>
                             <View style={{ paddingLeft: 10, alignItems: 'center', flex: 1, flexDirection: 'row', }}>
-                                <Icon name='diamond'
+                                <Icon name='map'
                                     size={15}
                                     color="black"
                                 />
@@ -248,7 +289,7 @@ export default class MountainProfile extends Component {
                             </View>
                         </View>
                     </View>
-                    {/* <View style={{ flex: 1, backgroundColor: 'blue' }} /> */}
+                    <View style={{ flex: 1, backgroundColor: 'blue' }} />
                 </ScrollView>
 
             </View>

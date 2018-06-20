@@ -107,6 +107,8 @@ export default class Login extends Component {
                             Email or username
                         </Text>
                         <TextInput
+                            keyboardType='email-address'
+                            keyboardAppearance='dark'
                             underlineColorAndroid='transparent'
                             style={styles.input}
                             onChangeText={(email) => this.setState({ email })}
@@ -115,6 +117,7 @@ export default class Login extends Component {
                     <View style={{ width: '90%' }}>
                         <Text style={styles.textFont}>Password</Text>
                         <TextInput
+                            autoCapitalize='none'
                             secureTextEntry={true}
                             underlineColorAndroid='transparent'
                             style={styles.input}
@@ -130,8 +133,7 @@ export default class Login extends Component {
                             height: 50,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: 'grey',
-                            opacity: .5,
+                            backgroundColor: '#2fb768',
                             borderRadius: 25,
                             marginBottom: 15
                         }}

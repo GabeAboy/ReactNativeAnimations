@@ -3,14 +3,21 @@ import { View, Image, TouchableHighlight, Text } from 'react-native';
 import * as firebase from 'firebase'
 
 export default class DrawerHeader extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            User:''
+            userName: '',
+            photoURL: '',
         }
     }
-    componentDidMount(){
-     
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged((profile) => {
+            console.log(profile)
+            console.log('asdasd')
+            this.setState({ userName: profile.displayName })
+            this.setState({ photoURL: profile.photoURL })
+            console.log(this.state)
+        });
     }
     render() {
         return (
@@ -27,14 +34,14 @@ export default class DrawerHeader extends Component {
                             width: 75, height: 75,
                             borderRadius: 40
                         }}>
-                            <Image style={{ height: "100%", width: "100%" }} source={require('../../../img/default-user.png')}
-                                resizeMode='cover' />
+                            <Image style={{ height: "100%", borderRadius: 40, width: "100%" }}
+                                source={this.state.photoURL ? source = { uri: this.state.photoURL } : require('../../../img/default-user.png')}
+                                resizeMode='contain' />
 
                         </View>
                     </View>
                     <View style={{ flex: .7, justifyContent: 'flex-start', paddingTop: 20 }} >
-                        <Text style={styles.font}>sd</Text>
-                        <Text style={styles.font}>Burlington Vermont, 05401</Text>
+                        <Text style={styles.font}>{this.state.userName ? this.state.userName : 'Name'}</Text>
                     </View>
                 </View>
             </View>
@@ -45,7 +52,7 @@ const styles = {
     headerContainer: {
         height: '30%',
         width: '100%',
-        backgroundColor:'#4286f4'
+        backgroundColor: '#4286f4'
     },
     font: {
         marginLeft: 25,
