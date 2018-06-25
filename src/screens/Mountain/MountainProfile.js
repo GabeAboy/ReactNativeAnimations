@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, TextInput, ScrollView, Platform } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, FlatList, TextInput, ScrollView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../../components/Button';
+import EditLiftTickets from './EditLiftTickets';
+import AdminLiftTicketDisplay from './AdminLiftTicketDisplay'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import Header from '../../components/Header'
@@ -26,12 +28,25 @@ export default class MountainProfile extends Component {
             snowCondition: 'Weather',
             image: null,
             uploading: false,
-            profile: null
+            profile: null,
+            liftTickets: []
         })
     }
+    
+    componentDidUpdate() {
+        console.log(
+            'update', this.state
+        )
 
+    }
     componentDidMount() {
+        console.log(
+            'mount', this.state
+        )
         console.log('Mountain Profile')
+        if (Platform.OS === 'ios') {
+            this.getPermissionsAsync()
+        }
         this.getProfileInformation()
     }
     static navigationOptions = {
@@ -48,9 +63,7 @@ export default class MountainProfile extends Component {
         }
     }
     _pickImage = async () => {
-        if (Platform.OS === 'ios') {
-            getPermissionsAsync()
-        }
+
         let pickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: false,
             base64: true,
@@ -99,7 +112,18 @@ export default class MountainProfile extends Component {
                     this.setState({ numerator: snapshot.val().numerator })
                     this.setState({ snowCondition: snapshot.val().snowCondition })
                 });
+            firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
+                .once('value')
+                .then((snapshot) => {
+                    console.log(snapshot)
+                    const snap = snapshot.val()
+                    let result = Object.keys(snap).map(function (key) {
+                        return snap[key];
+                    });
+                    this.setState({ liftTickets: result })
 
+                })
+            console.log('this', this.state)
             var storage = firebase.storage();
             var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);
             // Get the download URL
@@ -107,11 +131,12 @@ export default class MountainProfile extends Component {
                 .then((url) => {
                     this.setState({ image: url })
                 }).catch((error) => {
-                    console.error(error)
+                    console.log('type of ', typeof error.code)
                     // A full list of error codes is available at
                     // https://firebase.google.com/docs/storage/web/handle-errors
                     switch (error.code) {
-                        case 'storage/object_not_found':
+
+                        case '404':
                             // Image not found and setstate to error
                             var defaultImage = require('../../../img/download.png')
                             this.setState({ image: defaultImage })
@@ -134,7 +159,10 @@ export default class MountainProfile extends Component {
         const { navigate } = this.props.navigation;
         return (
 
+
+
             <View style={styles.container}>
+
                 <Header />
                 <View
                     style={{
@@ -154,11 +182,12 @@ export default class MountainProfile extends Component {
                         style={{ paddingRight: 20, paddingLeft: 20 }} />
                     <Text>Log out</Text>
                 </View>
+
                 <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: 'white' }}>
                     <View
                         style={{
-
-                            flex: 1,
+                            height: SCREEN_HEIGHT / 4.5,
+                            width: SCREEN_WIDTH,
                             flexDirection: 'row'
                         }}>
                         <TouchableHighlight onPress={this._pickImage} style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }} >
@@ -166,7 +195,6 @@ export default class MountainProfile extends Component {
                                 <Image
                                     style={{ width: '100%', height: '100%' }}
                                     source={this.state.image ? { uri: this.state.image } : this.state.image}
-
                                     //||require('../../../img/download.png')
                                     resizeMode='cover' />
                                 <View style={styles.imageEdit}>
@@ -209,7 +237,15 @@ export default class MountainProfile extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: .3, borderBottomWidth: 1, borderBottomColor: 'gray' }} >
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        height: SCREEN_HEIGHT / 15,
+                        width: SCREEN_WIDTH,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'gray'
+                    }} >
                         <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditProfile', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
                             <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
                                 <Icon name='pencil-square-o'
@@ -223,8 +259,23 @@ export default class MountainProfile extends Component {
                     </View>
 
 
-                    <View style={{ flex: 3 }} >
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: .4, borderBottomColor: 'gray', borderBottomWidth: 1 }}>
+                    <View style={{
+                        height: SCREEN_HEIGHT / 1.68,
+                        width: SCREEN_WIDTH,
+                        marginTop: 10,
+                        borderTopWidth: 1,
+                        borderColor: 'gray',
+                        borderBottomWidth: 1
+                    }} >
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            height: SCREEN_HEIGHT / 15,
+                            width: SCREEN_WIDTH,
+                            borderBottomColor: 'gray',
+                            borderBottomWidth: 1
+                        }}>
                             <Icon name='users'
                                 size={15}
                                 color="black"
@@ -234,10 +285,24 @@ export default class MountainProfile extends Component {
 
                         </View>
                         <View style={{ flex: 4, backgroundColor: 'white' }}>
-                            <Text style={{ paddingTop: 10, paddingBottom: 10, paddingLeft: 10 }}>Choose up to 6 photos of your business</Text>
+                            <Text style={{
+                                paddingTop: 10,
+                                paddingBottom: 10,
+                                paddingLeft: 10
+                            }}>Choose up to 6 photos of your business</Text>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <View style={{ width: '70%', justifyContent: 'center', alignItems: 'center', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                <View style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }} >
+                                    <View style={{
+                                        width: '70%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center', height: '70%',
+                                        borderRadius: 10,
+                                        backgroundColor: 'orange'
+                                    }} >
                                         <Icon name='file-image-o'
                                             size={25}
                                             color="black"
@@ -289,144 +354,69 @@ export default class MountainProfile extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{ flex: 1, backgroundColor: 'blue' }} />
+                    <View style={{
+                        height: SCREEN_HEIGHT - 73,
+                        width: SCREEN_WIDTH,
+                        borderTopWidth: 1,
+                        borderBottomWidth: 1,
+                        marginTop: 10,
+                        borderColor: 'gray',
+                    }} >
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            height: SCREEN_HEIGHT / 15,
+                            width: SCREEN_WIDTH,
+                            borderBottomColor: 'gray',
+                            borderBottomWidth: 1,
+
+                        }}>
+                            <Icon name='wrench'
+                                size={15}
+                                color="black"
+                                style={{ paddingLeft: 20 }}
+                            />
+                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Lift Ticket Management</Text>
+
+                        </View>
+                        <FlatList
+                            data={this.state.liftTickets}// Comes from state and before that didMount
+                            renderItem={({ item }) => <AdminLiftTicketDisplay
+                                key={item.key}
+                                title={item.title}
+                                reguPrice={item.reguPrice}
+                                holiPrice={item.holiPrice}
+                                timeOne={item.timeOne}
+                                timeTwo={item.timeTwo} />}
+                        />
+
+                        <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            height: SCREEN_HEIGHT / 15,
+                            width: SCREEN_WIDTH,
+                            borderBottomWidth: 1,
+                            borderBottomColor: 'gray'
+                        }} >
+                            <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditLiftTickets', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
+                                    <Icon name='pencil-square-o'
+                                        size={15}
+                                        color="black"
+                                        style={{ paddingLeft: 20 }}
+                                    />
+                                    <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Edit</Text>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+
+
+                    </View>
                 </ScrollView>
 
             </View>
-            // <View style={styles.container} >
-            // <ScrollView>
-
-
-            //     <View style={styles.discription}>
-            //         <View
-            //             style={{
-            //                 flex: 1.5,
-            //                 backgroundColor: 'green',
-            //                 justifyContent: 'center',
-            //                 alignItems: 'center'
-            //             }}>
-            //             {/* profile picture */}
-            //             <View
-            //                 style={{
-            //                     height: 50,
-            //                     width: '100%',
-            //                     flexDirection: 'row',
-            //                     alignItems: 'center'
-
-            //                 }}>
-            //                 <Icon name='user-circle'
-            //                     size={20}
-            //                     color="white"
-            //                     style={{ paddingRight: 10, paddingLeft: 20 }}
-            //                 />
-            //                 <Text>Profile Picture</Text>
-
-            //             </View>
-            //             <View style={{ height: '70%', width: '75%', backgroundColor: 'gray' }} >
-            //                 {/* swap view bellow with image */}
-            //                 <Image style={{ height: "100%", width: "100%" }} source={require('../../../img/default-user.png')}
-            //                     resizeMode='cover' />
-
-            //                 <View
-            //                     style={{
-            //                         flex: .8,
-            //                         justifyContent: 'center',
-            //                         alignItems: 'flex-end',
-            //                         paddingRight: 15
-            //                     }}>
-            //                     <View style={styles.imageEdit}>
-            //                         <Icon name='camera'
-            //                             size={15}
-            //                             color="white"
-            //                         />
-            //                         <Text>Edit</Text>
-            //                     </View>
-            //                 </View>
-            //             </View>
-            //         </View>
-            //         {/* details */}
-            //         <View
-            //             style={{
-            //                 flex: 2,
-            //                 backgroundColor: 'blue',
-            //                 alignItems: 'center'
-            //             }}>
-            //             <View
-            //                 style={{
-            //                     height: 50,
-            //                     width: '100%',
-            //                     flexDirection: 'row',
-            //                     alignItems: 'center'
-
-            //                 }}>
-            //                 <Icon name='list'
-            //                     size={16}
-            //                     color="white"
-            //                     style={{ paddingRight: 10, paddingLeft: 20 }}
-            //                 />
-            //                 <Text>Details</Text>
-
-            //             </View>
-            //             <View
-            //                 style={{
-            //                     borderWidth: 1,
-            //                     borderColor: 'white',
-            //                     borderRadius: 10,
-            //                     width: '70%',
-            //                     height: '70%',
-            //                     backgroundColor: 'red'
-            //                 }}>
-
-            //             </View>
-            //         </View>
-            //     </View>
-            //     <View style={styles.photos} >
-            //         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'blue' }}>
-            //             <View
-            //                 style={{
-            //                     height: 125,
-            //                     width: 125,
-            //                     backgroundColor: 'red',
-
-            //                     borderWidth: 7,
-            //                     borderColor: 'black'
-            //                 }} />
-            //             <View
-            //                 style={{
-            //                     height: 125,
-            //                     width: 125,
-            //                     backgroundColor: 'red',
-
-            //                     borderWidth: 7,
-            //                     borderColor: 'black'
-            //                 }} />
-            //         </View>
-            //         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'blue' }}>
-
-            //             <View
-            //                 style={{
-            //                     height: 125,
-            //                     width: 125,
-            //                     backgroundColor: 'red',
-
-            //                     borderWidth: 7,
-            //                     borderColor: 'black'
-            //                 }} />
-            //             <View
-            //                 style={{
-            //                     height: 125,
-            //                     width: 125,
-            //                     backgroundColor: 'red',
-
-            //                     borderWidth: 7,
-            //                     borderColor: 'black'
-            //                 }} />
-            //         </View>
-            //     </View>
-            //     <View style={styles.rental} />
-            //     <View style={styles.passes} />
-            //     </ScrollView>
-            // </View>
         )
 
     };

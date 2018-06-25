@@ -5,7 +5,7 @@ import Router from './src/navigation/RootNavigation'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-
+console.disableYellowBox = true
 export default class App extends React.Component {
 
   render() {

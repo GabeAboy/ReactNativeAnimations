@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, Video, TextInput, TouchableHighlight } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import TextCarousel from 'react-native-text-carousel';
-import Button from '../../components/Button';
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import LoadingGIF from '../../components/eventHandlers/LoadingGIF';
 import * as firebase from 'firebase'
 import NaviDrink from '../../components/NaviDrink'
 import firebaseConfig from '../../../keys/firebasekeys'
@@ -22,7 +18,8 @@ export default class SignUp extends Component {
         super(props)
         this.state = ({
             email: '',
-            password: ''
+            password: '',
+            componentLoad: false
         })
     }
     clicked = () => {
@@ -33,12 +30,29 @@ export default class SignUp extends Component {
                 alert('Please enter more than 6 characters')
                 return;
             }
-            firebase.auth().createUserWithEmailAndPassword(email, password).then(()=>{
-                this.props.navigation.navigate('LogIn', { navigation: this.props.navigation })
-            })
+            this.setState({ componentLoad: true })
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((result) => {
+                    const userUID = result.user.uid;
+                    if (userUID) {
+                        firebase.database().ref(`users/${userUID}`).set({
+                            zipcode: null,
+                        })
+                    }
+                }).then(() => {
+                    this.setState({ componentLoad: false })
+                    firebase.auth().signOut()
+                }).then(() => {
+                    this.props.navigation.navigate('LogIn', { navigation: this.props.navigation })
+                }).catch((error) => {
+                    this.setState({ componentLoad: false })
+                    this.props.navigation.navigate('DisplayError', { navigation: this.props.navigation })
+                })
 
         } catch (error) {
+            this.setState({ componentLoad: false })
             console.log(error.toString())
+            this.props.navigation.navigate('DisplayError', { navigation: navigation.props.navigation })
         }
     }
     logIn = (email, password) => {
@@ -56,55 +70,65 @@ export default class SignUp extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container} >
-                <View style={{ width: '100%', height: 24 }} />
-                <NaviDrink navigate={this.props.navigation} />
-                <View style={styles.title}>
-                    <Text style={styles.titleFont}>Sign Up</Text>
-                </View>
-                <View style={styles.body}>
-                    <View style={{ width: '90%' }}>
-                        <Text style={styles.textFont}>Email or username</Text>
-                        <TextInput
-                            underlineColorAndroid='transparent'
-                            style={styles.input}
-                            onChangeText={(email) => this.setState({ email })}
-                        />
-                    </View>
-                    <View style={{ width: '90%' }}>
-                        <Text style={styles.textFont}>Password</Text>
-                        <TextInput
-                            underlineColorAndroid='transparent'
-                            style={styles.input}
+                {
+                    this.state.componentLoad ?
+                        <LoadingGIF /> :
+                        <View style={{ flex: 1 }}>
+                            <View style={{ width: '100%', height: 24 }} />
+                            <NaviDrink navigate={this.props.navigation} />
+                            <View style={styles.title}>
+                                <Text style={styles.titleFont}>Sign Up</Text>
+                            </View>
+                            <View style={styles.body}>
+                                <View style={{ width: '90%' }}>
+                                    <Text style={styles.textFont}>Email or username</Text>
+                                    <TextInput
+                                        autoCapitalize='none'
+                                        autoCorrect='false'
+                                        underlineColorAndroid='transparent'
+                                        style={styles.input}
+                                        onChangeText={(email) => this.setState({ email })}
+                                    />
+                                </View>
+                                <View style={{ width: '90%' }}>
+                                    <Text style={styles.textFont}>Password</Text>
+                                    <TextInput
+                                        autoCapitalize='none'
+                                        autoCorrect='false'
+                                        underlineColorAndroid='transparent'
+                                        style={styles.input}
 
-                            onChangeText={(password) => this.setState({ password })}
-                        />
-                    </View>
-                </View>
-                <View style={styles.submit}>
-                    <TouchableHighlight style={{
-                        width: 180,
-                        height: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center', backgroundColor: 'grey', opacity: .5,
-                        borderRadius: 25, marginBottom: 15
-                    }}
-                        onPress={() => this.signUpUser(this.state.email, this.state.password)}
-                    >
-                        <Text
-                            //navigate('LiftsNearBy', { navigation: navigate })}
-                            style={styles.submitText}>Next
-                        </Text>
-                    </TouchableHighlight>
-                </View>
-                <TouchableHighlight
-                    underlayColor='#4D9AD5'
-                    onPress={() => {
-                        //Send to mountain registration form
-                        navigate('MountainRegistration', { navigation: navigate })
+                                        onChangeText={(password) => this.setState({ password })}
+                                    />
+                                </View>
+                            </View>
+                            <View style={styles.submit}>
+                                <TouchableHighlight style={{
+                                    width: 180,
+                                    height: 50,
+                                    justifyContent: 'center',
+                                    alignItems: 'center', backgroundColor: 'grey', opacity: .5,
+                                    borderRadius: 25, marginBottom: 15
+                                }}
+                                    onPress={() => this.signUpUser(this.state.email, this.state.password)}
+                                >
+                                    <Text
+                                        //navigate('LiftsNearBy', { navigation: navigate })}
+                                        style={styles.submitText}>Next
+                            </Text>
+                                </TouchableHighlight>
+                            </View>
+                            <TouchableHighlight
+                                underlayColor='#4D9AD5'
+                                onPress={() => {
+                                    //Send to mountain registration form
+                                    navigate('MountainRegistration', { navigation: navigate })
 
-                    }} style={{ backgroundColor: 'rgba(138, 187, 243, 0.1)', height: 50, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text>Mountains, click here to partner register with SkiEasy.</Text>
-                </TouchableHighlight>
+                                }} style={{ backgroundColor: 'rgba(138, 187, 243, 0.1)', height: 50, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                <Text>Mountains, click here to partner register with SkiEasy.</Text>
+                            </TouchableHighlight>
+                        </View>
+                }
 
 
             </View>

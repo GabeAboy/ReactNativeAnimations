@@ -107,6 +107,8 @@ export default class Login extends Component {
                             Email or username
                         </Text>
                         <TextInput
+                            autoCapitalize='none'
+                            autoCorrect='false'
                             keyboardType='email-address'
                             keyboardAppearance='dark'
                             underlineColorAndroid='transparent'

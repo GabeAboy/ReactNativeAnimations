@@ -25,12 +25,9 @@ export default class EditDiscription extends Component {
     }
 
     updateDatabase() {
-        console.log('clicked', this.state)
-        storage.storage("gs://my-custom-bucket");
         firebase.auth().onAuthStateChanged((profile) => {
             console.log(profile.uid)
             let mountainAdminId = profile.uid
-            console.log(this.state)
             if (profile) {
                 firebase.database().ref(`adminDiscription/${mountainAdminId}`).set({
                     businessName: this.state.businessName,
