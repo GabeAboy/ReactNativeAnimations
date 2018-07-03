@@ -4,13 +4,20 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Hamburger from 'react-native-hamburger';
 import { Drawer } from 'native-base';
 class Logo extends React.Component {
+    componentDidMount() {
+        console.log('this is sparta', this.props);
+
+    }
     render() {
-        if (this.props.comp) {
+        if (this.props.company) {
             return (
+
+
                 <Text style={{
                     paddingTop: 15,
                     paddingLeft: 5
-                }}>{this.props.comp}</Text>
+                }}>{this.props.company}</Text>
+
             )
         }
         else {
@@ -53,7 +60,26 @@ export default class NaviBar extends Component {
                                     this.props.toggleDrawer()
                                 }} />
                         </View>
-                        <Logo comp={Delete} />
+                        {
+                            this.props.company ?
+                                <View>
+                                    <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }}
+                                        source={{uri:this.props.picture}}
+                                        resizeMode='contain' />
+
+                                    <Text style={{
+                                        paddingTop: 15,
+                                        paddingLeft: 5
+                                    }}>{this.props.company}</Text>
+
+                                </View>
+                                :
+                                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75,borderRadius:20 }}
+                                    source={require('../../img/compLogo.jpg')}
+                                    resizeMode='contain' />
+
+
+                        }
                     </View>
 
                     <View style={{

@@ -19,11 +19,12 @@ class Part extends React.Component {
 
 export default class MountainStore extends Component {
     componentDidMount() {
+        console.log('HERPRO',this.props.navigation.state.params.data)
     }
     render() {
         return (
             <View style={styles.ball}>
-                <NaviBar company={this.props.navigation.state.params.company} />
+                <NaviBar company={this.props.navigation.state.params.data.businessName} picture={this.props.navigation.state.params.data.profileImage} />
 
                 <View style={{
                     flex: 3

@@ -39,17 +39,19 @@ export default class MultiSelectList extends React.PureComponent {
             </View>
         )
     };
-
+    _onPressItem(){
+        console.log('Hey button worked')
+    }
     _renderItem = ({ item }) => (
         
         <TouchableHighlight key={item.id} onPress={() =>
-            this.props.navigate.navigate('MountainStore',{company:item.title,data:item,navigation:this.props.navigate})
+            this.props.navigate.navigate('MountainStore',{data:item,navigation:this.props.navigate})
         } >
             <MountainListUI
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}
-                 //selected={!!this.state.selected.get(item.id)}
+                //selected={!!this.state.selected.get(item.id)}
                 logo={item.profileImage}
                 trailsAvailable={item.numerator}
                 trailsTotal={item.denominator}
