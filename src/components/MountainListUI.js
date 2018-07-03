@@ -13,7 +13,7 @@ export default class MountainListUI extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.props.key)
+        console.log('asdasdasdasdasd',this.props)
     }
     render() {
         const { brand, logo } = this.props;
@@ -27,7 +27,7 @@ export default class MountainListUI extends Component {
                     flex: 2, justifyContent: 'center', alignItems: 'center'
                 }}>
                     <Image
-                        source={this.props.logo}
+                        source={ {uri:this.props.logo }}
                         style={{
 
                             height: 60, width: 60, borderRadius: 30

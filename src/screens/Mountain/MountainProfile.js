@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, FlatList, TextInput, ScrollView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TextCarousel from 'react-native-text-carousel';
-import Button from '../../components/Button';
-import EditLiftTickets from './EditLiftTickets';
 import AdminLiftTicketDisplay from './AdminLiftTicketDisplay'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import Header from '../../components/Header'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { ImagePicker } from 'expo'
-import uuid from 'uuid';
 import firebaseConfig from '../../../keys/firebasekeys'
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 // On load get data from firebase for the logged in user
@@ -29,10 +25,11 @@ export default class MountainProfile extends Component {
             image: null,
             uploading: false,
             profile: null,
-            liftTickets: []
+            liftTickets: [],
+            
         })
     }
-    
+
     componentDidUpdate() {
         console.log(
             'update', this.state
@@ -78,6 +75,9 @@ export default class MountainProfile extends Component {
             if (!pickerResult.cancelled) {
                 uploadUrl = await this.uploadImageAsync(pickerResult.uri);
                 this.setState({ image: pickerResult.uri });
+                firebase.database().ref(`adminDiscription/${this.state.profile}`).update({
+                    profileImage: pickerResult.uri
+                }).catch((error) => { console.log('error ', error) })
             }
         } catch (e) {
             console.log(e);
@@ -117,13 +117,12 @@ export default class MountainProfile extends Component {
                 .then((snapshot) => {
                     console.log(snapshot)
                     const snap = snapshot.val()
-                    let result = Object.keys(snap).map(function (key) {
+                    let result = Object.keys(snap).map((key) => {
                         return snap[key];
                     });
                     this.setState({ liftTickets: result })
 
                 })
-            console.log('this', this.state)
             var storage = firebase.storage();
             var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);
             // Get the download URL
@@ -155,14 +154,12 @@ export default class MountainProfile extends Component {
                 });
         })
     }
+
+
     render() {
         const { navigate } = this.props.navigation;
         return (
-
-
-
             <View style={styles.container}>
-
                 <Header />
                 <View
                     style={{

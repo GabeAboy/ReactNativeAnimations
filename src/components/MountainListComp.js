@@ -12,11 +12,12 @@ export default class MultiSelectList extends React.PureComponent {
             
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         // Delete me
-        this.setState({ data: this.props.data })
-        
+        console.log('props',this.props)
+        this.setState({data:this.props.data})
     }
+
     renderHeader = () => {
         return (
             <View style={{
@@ -49,11 +50,11 @@ export default class MultiSelectList extends React.PureComponent {
                 id={item.id}
                 onPressItem={this._onPressItem}
                  //selected={!!this.state.selected.get(item.id)}
-                logo={item.img}
-                trailsAvailable={item.trailsAvailable}
-                trailsTotal={item.trailsTotal}
-                weatherReport={item.weatherReport}
-                brand={item.title}
+                logo={item.profileImage}
+                trailsAvailable={item.numerator}
+                trailsTotal={item.denominator}
+                weatherReport={item.snowCondition}
+                brand={item.businessName}
                 navigation={this.props.navigation}
                 
             />

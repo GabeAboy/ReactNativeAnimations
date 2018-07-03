@@ -19,11 +19,6 @@ export default class EditDiscription extends Component {
             snowCondition: ''
         };
     }
-
-    componentDidUpdate() {
-        console.log(this.state.businessName)
-    }
-
     updateDatabase() {
         firebase.auth().onAuthStateChanged((profile) => {
             console.log(profile.uid)

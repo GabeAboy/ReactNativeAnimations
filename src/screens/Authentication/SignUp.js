@@ -25,6 +25,7 @@ export default class SignUp extends Component {
     clicked = () => {
     }
     signUpUser = (email, password) => {
+        console.log('Registering accoung')
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
@@ -34,9 +35,12 @@ export default class SignUp extends Component {
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((result) => {
                     const userUID = result.user.uid;
+                    console.log('usersignup', userUID)
                     if (userUID) {
                         firebase.database().ref(`users/${userUID}`).set({
                             zipcode: null,
+                        }).catch((error) => {
+                            console.log('er', error)
                         })
                     }
                 }).then(() => {
@@ -83,8 +87,9 @@ export default class SignUp extends Component {
                                 <View style={{ width: '90%' }}>
                                     <Text style={styles.textFont}>Email or username</Text>
                                     <TextInput
+                                        keyboardType='email-address'
                                         autoCapitalize='none'
-                                        autoCorrect='false'
+                                        autoCorrect={false}
                                         underlineColorAndroid='transparent'
                                         style={styles.input}
                                         onChangeText={(email) => this.setState({ email })}
@@ -94,7 +99,7 @@ export default class SignUp extends Component {
                                     <Text style={styles.textFont}>Password</Text>
                                     <TextInput
                                         autoCapitalize='none'
-                                        autoCorrect='false'
+                                        autoCorrect={false}
                                         underlineColorAndroid='transparent'
                                         style={styles.input}
 

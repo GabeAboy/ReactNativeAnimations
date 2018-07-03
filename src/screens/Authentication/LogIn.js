@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, TouchableHighlight, Text, View, Image, Video, TextInput } from 'react-native';
+import { StyleSheet, TouchableHighlight, Text, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TextCarousel from 'react-native-text-carousel';
-import Button from '../../components/Button';
-import LoadingGIF from '../../components/eventHandlers/LoadingGIF'
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
-// Container for initial launch
-// UAC login/signUp
-//     facebook passport
-//     logo
 import * as firebase from 'firebase'
 import firebaseConfig from '../../../keys/firebasekeys'
 // Container for initial launch
@@ -25,49 +16,34 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = ({
-            email: '',
-            password: ''
+            email: 'testuser@gmail.com',
+            password: 'testuser'
         })
     }
-    componentDidMount() {
-    }
-
     logInUser = (navigate) => {
-        console.log('What the fuck pressed', navigate)
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
                 return;
             }
-            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((result) => {
-                const currentUser = result.user.uid;
-                firebase.database().ref('/permissions/' + currentUser)
-                    .once('value')
-                    .then((snapshot) => {
-                        console.log('What is this ', snapshot)
-                        if (snapshot.val()) {
-                            console.log('entering incorrectly')
-                            let isMerchant = snapshot.val().merchant;
-                            // Admin
-                            console.log('What the fuck pressed', this.props)
-                            navigate('MountainProfile', { navigation: navigate })
-                        }
-                        else {
-                            // Client
-                            console.log('false')
-                            navigate('MountainFinder', { navigation: navigate })
-                        }
-                    });
-            })
-            console.log('done')
-
+            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then((result) => {
+                    const currentUser = result.user.uid;
+                    firebase.database()
+                        .ref('/permissions/' + currentUser)
+                        .once('value')
+                        .then((snapshot) => {
+                            snapshot.val() ?
+                                navigate('MountainProfile', { navigation: navigate })
+                                : navigate('MountainFinder', { navigation: navigate })
+                        });
+                })
         } catch (error) {
             console.log(error.toString())
+            navigate('DisplayError', { navigation, navigate })
         }
     }
-    componentDidMount() {
-        console.log('LOGIN', this.props)
-    }
+
     static navigationOptions = {
         title: 'Welcome',
     };
@@ -108,7 +84,7 @@ export default class Login extends Component {
                         </Text>
                         <TextInput
                             autoCapitalize='none'
-                            autoCorrect='false'
+                            autoCorrect={false}
                             keyboardType='email-address'
                             keyboardAppearance='dark'
                             underlineColorAndroid='transparent'

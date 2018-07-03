@@ -5,9 +5,7 @@ import MenuButton from '../MenuButton'
 import * as firebase from 'firebase'
 export default class DrawerContainer extends Component {
     componentDidMount() {
-        console.log('cmoutn', this.props)
         this.getUserInfo()
-
     }
     constructor(props) {
         super(props)
@@ -19,7 +17,6 @@ export default class DrawerContainer extends Component {
         firebase.auth().onAuthStateChanged((profile) => {
             if (profile) {
                 // User is signed in.
-                console.log('user', profile)
                 this.setState = { user: profile }
             } else {
                 // No user is signed in.
@@ -35,22 +32,19 @@ export default class DrawerContainer extends Component {
                     <MenuButton icon='wrench' buttonName='Settings' />
 
                     <TouchableOpacity onPress={
-                        console.log('s',this.state)
+                        console.log()
                     }>
                         <MenuButton onPress={() => {
-                            console.log('asdasdasdasd')
                         }} icon='history' buttonName='History' />
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        console.log('hello world')
                         firebase.auth().signOut().then(() => {
                             // Sign-out successful.
-                            console.log('success')
                             this.props.navigation.navigate('LandingPage')
                         }).catch(function (error) {
                             // An error happened.
-                            console.log('error', error)
+                            console.log('error',JSON.stringify(error))
                         });
                     }}>
                         <MenuButton

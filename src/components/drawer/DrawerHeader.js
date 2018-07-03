@@ -11,9 +11,8 @@ export default class DrawerHeader extends Component {
         }
     }
     componentDidMount() {
+        // this should be transfered by parent state through props
         firebase.auth().onAuthStateChanged((profile) => {
-            console.log(profile)
-            console.log('asdasd')
             this.setState({ userName: profile.displayName })
             this.setState({ photoURL: profile.photoURL })
             console.log(this.state)
