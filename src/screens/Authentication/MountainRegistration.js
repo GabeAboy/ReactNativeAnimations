@@ -64,6 +64,14 @@ export default class MountainRegistration extends Component {
                         })
                     }
                 }).then(result => {
+                    var user = firebase.auth().currentUser;
+
+                    user.sendEmailVerification().then(function () {
+                        // Email sent.
+                        console.log('email sent')
+                    }).catch(function (error) {
+                        // An error happened.
+                    });
                     this.setState({ componentLoad: false })
                     firebase.auth().signOut()
                 }).then(() => {

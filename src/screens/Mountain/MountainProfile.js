@@ -26,7 +26,7 @@ export default class MountainProfile extends Component {
             uploading: false,
             profile: null,
             liftTickets: [],
-            
+
         })
     }
 
@@ -148,7 +148,7 @@ export default class MountainProfile extends Component {
                             // User canceled the upload
                             break;
                         case 'storage/unknown':
-                            // Unknown error occurred, inspect the server response
+                            // Unknown error occur#4286f4, inspect the server response
                             break;
                     }
                 });
@@ -180,12 +180,13 @@ export default class MountainProfile extends Component {
                     <Text>Log out</Text>
                 </View>
 
-                <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: 'white' }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#4286f4' }}>
                     <View
                         style={{
                             height: SCREEN_HEIGHT / 4.5,
                             width: SCREEN_WIDTH,
-                            flexDirection: 'row'
+                            flexDirection: 'row',
+                            backgroundColor: 'white'
                         }}>
                         <TouchableHighlight onPress={this._pickImage} style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }} >
                             <View style={{ width: '100%', height: '100%' }}>
@@ -241,7 +242,8 @@ export default class MountainProfile extends Component {
                         height: SCREEN_HEIGHT / 15,
                         width: SCREEN_WIDTH,
                         borderBottomWidth: 1,
-                        borderBottomColor: 'gray'
+                        borderBottomColor: 'gray',
+                        backgroundColor: 'white'
                     }} >
                         <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditProfile', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
                             <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
@@ -262,7 +264,8 @@ export default class MountainProfile extends Component {
                         marginTop: 10,
                         borderTopWidth: 1,
                         borderColor: 'gray',
-                        borderBottomWidth: 1
+                        borderBottomWidth: 1,
+                        backgroundColor: 'white'
                     }} >
                         <View style={{
                             flexDirection: 'row',
@@ -358,6 +361,7 @@ export default class MountainProfile extends Component {
                         borderBottomWidth: 1,
                         marginTop: 10,
                         borderColor: 'gray',
+                        backgroundColor: 'white'
                     }} >
                         <View style={{
                             flexDirection: 'row',
@@ -378,6 +382,7 @@ export default class MountainProfile extends Component {
 
                         </View>
                         <FlatList
+                            style={{ backgroundColor: '#4286f4' }}
                             data={this.state.liftTickets}// Comes from state and before that didMount
                             renderItem={({ item }) => <AdminLiftTicketDisplay
                                 key={item.key}
@@ -425,7 +430,7 @@ const styles = StyleSheet.create({
         flex: 1, backgroundColor: '#4286f4'
     },
     discription: {
-        backgroundColor: 'red', flex: 1.5,
+        backgroundColor: '#4286f4', flex: 1.5,
         flexDirection: 'row'
     },
     photos: {
@@ -433,7 +438,7 @@ const styles = StyleSheet.create({
         flex: 2
     },
     rental: {
-        backgroundColor: 'red', flex: .5
+        backgroundColor: '#4286f4', flex: .5
     },
     passes: {
         backgroundColor: 'black', flex: .5

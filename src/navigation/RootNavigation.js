@@ -11,6 +11,7 @@ import MountainStore from '../screens/User/MountainStore';
 import LogIn from '../screens/Authentication/LogIn';
 import SignUp from '../screens/Authentication/SignUp'
 import MountainRegistration from '../screens/Authentication/MountainRegistration'
+import PasswordReset from '../screens/Authentication/PasswordReset';
 
 //Mountain
 import MountainProfile from '../screens/Mountain/MountainProfile'
@@ -26,20 +27,23 @@ const Routes = StackNavigator(
         MountainProfile: { screen: MountainProfile },
         MountainFinder: { screen: MountainFinder },
         EditLiftTickets: { screen: EditLiftTickets },
-        
+
         LoadingGIF: { screen: LoadingGIF },
         //Main frames
-        
+
         MountainRegistration: { screen: MountainRegistration },
         EditProfile: { screen: EditProfile },
-        
+
         MountainStore: { screen: MountainStore },
         //Registrations
         LogIn: { screen: LogIn },
         SignUp: { screen: SignUp },
 
         //Events
-        DisplayError: { screen: DisplayError }
+        DisplayError: { screen: DisplayError },
+
+        //Authentication
+        PasswordReset: { screen: PasswordReset }
     },
     {
         headerMode: 'none',

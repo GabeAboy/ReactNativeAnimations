@@ -45,6 +45,7 @@ export default class NaviBar extends Component {
 
 const styles = {
     nav: {
+        backgroundColor: '#4286f4',
         paddingTop: 20,
         paddingLeft: 30,
         width: '100%', height: 70

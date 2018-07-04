@@ -16,8 +16,8 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = ({
-            email: 'testuser@gmail.com',
-            password: 'testuser'
+            email: 'testadmin@gmail.com',
+            password: 'testadmin'
         })
     }
     logInUser = (navigate) => {
@@ -124,6 +124,9 @@ export default class Login extends Component {
                             </Text>
                     </TouchableHighlight>
                     <Text
+                        onPress={()=>{
+                            navigate('PasswordReset', { navigation: navigate })
+                        }}
                         style={styles.textFont}>
                         Having trouble logging in? Get help here.
                     </Text>

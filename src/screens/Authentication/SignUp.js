@@ -50,7 +50,8 @@ export default class SignUp extends Component {
                     this.props.navigation.navigate('LogIn', { navigation: this.props.navigation })
                 }).catch((error) => {
                     this.setState({ componentLoad: false })
-                    this.props.navigation.navigate('DisplayError', { navigation: this.props.navigation })
+                    alert(error)
+                   // this.props.navigation.navigate('DisplayError', { navigation: this.props.navigation })
                 })
 
         } catch (error) {
