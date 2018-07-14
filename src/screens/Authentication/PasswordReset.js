@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
-import Header from '../../components/Header'
 import NaviDrink from '../../components/NaviDrink'
 import * as firebase from 'firebase'
 import firebaseConfig from '../../../keys/firebasekeys'
-
-// Container for initial launch
-// UAC login/signUp
-//     facebook passport
-//     logo
-// Set the configuration for your app
-// TODO: Replace with your project's config object
+// TODO: 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
 
@@ -31,10 +24,9 @@ export default class SignUp extends Component {
         firebase.auth().sendPasswordResetEmail(this.state.email).catch(e => { console.log('e', e) })
     }
     render() {
-        const { navigate } = this.props.navigation;
         return (
             <View style={styles.container} >
-                <NaviDrink />
+                <NaviDrink navigation={this.props.navigation} />
                 <View style={{ flex: 1, backgroundColor: 'white' }}>
                     <View style={{
                         flex: 1,

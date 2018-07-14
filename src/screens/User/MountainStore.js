@@ -18,9 +18,6 @@ class Part extends React.Component {
 }
 
 export default class MountainStore extends Component {
-    componentDidMount() {
-        console.log('HERPRO',this.props.navigation.state.params.data)
-    }
     render() {
         return (
             <View style={styles.ball}>

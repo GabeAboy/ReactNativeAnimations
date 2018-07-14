@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, FlatList, TextInput, ScrollView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import LodingGIF from '../../components/eventHandlers/LoadingGIF'
 import AdminLiftTicketDisplay from './AdminLiftTicketDisplay'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -8,12 +9,11 @@ import Header from '../../components/Header'
 import firebase from 'firebase'
 import { ImagePicker } from 'expo'
 import firebaseConfig from '../../../keys/firebasekeys'
+import { withNavigationFocus } from 'react-navigation';
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 // On load get data from firebase for the logged in user
 // Display that information
-var storage = firebase.storage();
-
-export default class MountainProfile extends Component {
+class MountainProfile extends Component {
     constructor(props) {
         super(props)
         this.state = ({
@@ -26,15 +26,30 @@ export default class MountainProfile extends Component {
             uploading: false,
             profile: null,
             liftTickets: [],
+            dataLoaded: false,
+            play: false
 
         })
     }
-
     componentDidUpdate() {
         console.log(
             'update', this.state
         )
+        //  this.getProfileInformation()
+        console.log('done')
+        firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
+            .once('value')
+            .then((snapshot) => {
+                console.log(snapshot)
+                const snap = snapshot.val()
+                let result = Object.keys(snap).map((key) => {
+                    return snap[key];
+                });
+                this.setState({ liftTickets: result })
 
+            }).catch((e)=>{
+                console.log('err',JSON.stringify(e))
+            })
     }
     componentDidMount() {
         console.log(
@@ -45,6 +60,7 @@ export default class MountainProfile extends Component {
             this.getPermissionsAsync()
         }
         this.getProfileInformation()
+
     }
     static navigationOptions = {
         title: 'MountainProfile',
@@ -99,6 +115,7 @@ export default class MountainProfile extends Component {
         return snapshot.downloadURL;
     }
     getProfileInformation = () => {
+        console.log('enter')
         firebase.auth().onAuthStateChanged((profile) => {
             let mountainAdminId = profile.uid
             this.setState({ profile: mountainAdminId });
@@ -111,7 +128,14 @@ export default class MountainProfile extends Component {
                     this.setState({ demoninator: snapshot.val().demoninator })
                     this.setState({ numerator: snapshot.val().numerator })
                     this.setState({ snowCondition: snapshot.val().snowCondition })
-                });
+                }).then(() => {
+
+                    this.setState({ dataLoaded: true })
+                }).catch((e) => {
+                    console.log(
+                        'err', e
+                    )
+                })
             firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
                 .once('value')
                 .then((snapshot) => {
@@ -159,265 +183,287 @@ export default class MountainProfile extends Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.container}>
-                <Header />
-                <View
-                    style={{
-                        height: 50,
-                        width: '100%',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        borderBottomWidth: 1,
-                        //Change background color to off black
-                        borderBottomColor: 'black'
+            <View style={{ flex: 1 }}>
+                {
+                    this.state.dataLoaded ?
+                        <View style={styles.container}>
+                            <Header />
+                            <View
+                                style={{
+                                    height: 50,
+                                    width: '100%',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    borderBottomWidth: 1,
+                                    //Change background color to off black
+                                    borderBottomColor: 'black'
 
-                    }}>
-                    <Icon
-                        name="arrow-left"
-                        size={25}
-                        color="black"
-                        style={{ paddingRight: 20, paddingLeft: 20 }} />
-                    <Text>Log out</Text>
-                </View>
+                                }}>
+                                <Icon
+                                    name="arrow-left"
+                                    size={25}
+                                    color="black"
+                                    style={{ paddingRight: 20, paddingLeft: 20 }} />
+                                <Text onPress={() => {
+                                    firebase.auth().signOut().then(() => {
+                                        // Sign-out successful.
+                                        this.props.navigation.navigate('LandingPage')
+                                    }).catch(function (error) {
+                                        // An error happened.
+                                        console.log('error', JSON.stringify(error))
+                                    });
+                                }}>Log out</Text>
+                            </View>
 
-                <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#4286f4' }}>
-                    <View
-                        style={{
-                            height: SCREEN_HEIGHT / 4.5,
-                            width: SCREEN_WIDTH,
-                            flexDirection: 'row',
-                            backgroundColor: 'white'
-                        }}>
-                        <TouchableHighlight onPress={this._pickImage} style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }} >
-                            <View style={{ width: '100%', height: '100%' }}>
-                                <Image
-                                    style={{ width: '100%', height: '100%' }}
-                                    source={this.state.image ? { uri: this.state.image } : this.state.image}
-                                    //||require('../../../img/download.png')
-                                    resizeMode='cover' />
-                                <View style={styles.imageEdit}>
-                                    <Icon name='camera'
-                                        size={15}
-                                        color="black"
-                                    />
-                                    <Text style={{ fontWeight: '500' }}>Edit</Text>
+                            <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#4286f4' }}>
+                                <View
+                                    style={{
+                                        height: SCREEN_HEIGHT / 4.5,
+                                        width: SCREEN_WIDTH,
+                                        flexDirection: 'row',
+                                        backgroundColor: 'white'
+                                    }}>
+                                    <TouchableHighlight onPress={this._pickImage} style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }} >
+                                        <View style={{ width: '100%', height: '100%' }}>
+                                            <Image
+                                                style={{ width: '100%', height: '100%' }}
+                                                source={this.state.image ? { uri: this.state.image } : this.state.image}
+                                                //||require('../../../img/download.png')
+                                                resizeMode='cover' />
+                                            <View style={styles.imageEdit}>
+                                                <Icon name='camera'
+                                                    size={15}
+                                                    color="black"
+                                                />
+                                                <Text style={{ fontWeight: '500' }}>Edit</Text>
+                                            </View>
+                                        </View>
+                                    </TouchableHighlight>
+                                    <View style={{ flex: 3, justifyContent: 'space-between', alignItems: 'flex-start' }} >
+                                        <View style={{ paddingLeft: 10, alignItems: 'center', flexDirection: 'row', flex: 1 }}>
+                                            <Icon name='id-badge'
+                                                size={15}
+                                                color="black"
+                                            />
+                                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.businessName || 'Title'}</Text>
+                                        </View>
+                                        <View style={{ paddingLeft: 10, alignItems: 'center', flexDirection: 'row', flex: 1 }}>
+                                            <Icon name='map-marker'
+                                                size={15}
+                                                color="black"
+                                            />
+                                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.address || 'Address'}</Text>
+                                        </View>
+                                        <View style={{ paddingLeft: 10, alignItems: 'center', flexDirection: 'row', flex: 1 }}>
+                                            <Icon name='snowflake-o'
+                                                size={15}
+                                                color="black"
+                                            />
+                                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.snowCondition || 'Default'}</Text>
+                                        </View>
+                                        <View style={{ paddingLeft: 10, alignItems: 'center', flex: 1, flexDirection: 'row', }}>
+                                            <Icon name='map'
+                                                size={15}
+                                                color="black"
+                                            />
+                                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.numerator} out of {this.state.demoninator} trails open</Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </TouchableHighlight>
-                        <View style={{ flex: 3, justifyContent: 'space-between', alignItems: 'flex-start' }} >
-                            <View style={{ paddingLeft: 10, alignItems: 'center', flexDirection: 'row', flex: 1 }}>
-                                <Icon name='id-badge'
-                                    size={15}
-                                    color="black"
-                                />
-                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.businessName || 'Title'}</Text>
-                            </View>
-                            <View style={{ paddingLeft: 10, alignItems: 'center', flexDirection: 'row', flex: 1 }}>
-                                <Icon name='map-marker'
-                                    size={15}
-                                    color="black"
-                                />
-                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.address || 'Address'}</Text>
-                            </View>
-                            <View style={{ paddingLeft: 10, alignItems: 'center', flexDirection: 'row', flex: 1 }}>
-                                <Icon name='snowflake-o'
-                                    size={15}
-                                    color="black"
-                                />
-                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.snowCondition || 'Default'}</Text>
-                            </View>
-                            <View style={{ paddingLeft: 10, alignItems: 'center', flex: 1, flexDirection: 'row', }}>
-                                <Icon name='map'
-                                    size={15}
-                                    color="black"
-                                />
-                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>{this.state.numerator} out of {this.state.demoninator} trails open</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        height: SCREEN_HEIGHT / 15,
-                        width: SCREEN_WIDTH,
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'gray',
-                        backgroundColor: 'white'
-                    }} >
-                        <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditProfile', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
-                            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
-                                <Icon name='pencil-square-o'
-                                    size={15}
-                                    color="black"
-                                    style={{ paddingLeft: 20 }}
-                                />
-                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Edit</Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-
-
-                    <View style={{
-                        height: SCREEN_HEIGHT / 1.68,
-                        width: SCREEN_WIDTH,
-                        marginTop: 10,
-                        borderTopWidth: 1,
-                        borderColor: 'gray',
-                        borderBottomWidth: 1,
-                        backgroundColor: 'white'
-                    }} >
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            height: SCREEN_HEIGHT / 15,
-                            width: SCREEN_WIDTH,
-                            borderBottomColor: 'gray',
-                            borderBottomWidth: 1
-                        }}>
-                            <Icon name='users'
-                                size={15}
-                                color="black"
-                                style={{ paddingLeft: 20 }}
-                            />
-                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Featured Photos</Text>
-
-                        </View>
-                        <View style={{ flex: 4, backgroundColor: 'white' }}>
-                            <Text style={{
-                                paddingTop: 10,
-                                paddingBottom: 10,
-                                paddingLeft: 10
-                            }}>Choose up to 6 photos of your business</Text>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={{
-                                    flex: 1,
                                     justifyContent: 'center',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    height: SCREEN_HEIGHT / 15,
+                                    width: SCREEN_WIDTH,
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: 'gray',
+                                    backgroundColor: 'white'
+                                }} >
+                                    <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditProfile', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
+                                        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
+                                            <Icon name='pencil-square-o'
+                                                size={15}
+                                                color="black"
+                                                style={{ paddingLeft: 20 }}
+                                            />
+                                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Edit</Text>
+                                        </View>
+                                    </TouchableHighlight>
+                                </View>
+
+
+                                <View style={{
+                                    height: SCREEN_HEIGHT / 1.68,
+                                    width: SCREEN_WIDTH,
+                                    marginTop: 10,
+                                    borderTopWidth: 1,
+                                    borderColor: 'gray',
+                                    borderBottomWidth: 1,
+                                    backgroundColor: 'white'
                                 }} >
                                     <View style={{
-                                        width: '70%',
-                                        justifyContent: 'center',
-                                        alignItems: 'center', height: '70%',
-                                        borderRadius: 10,
-                                        backgroundColor: 'orange'
-                                    }} >
-                                        <Icon name='file-image-o'
-                                            size={25}
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
+                                        height: SCREEN_HEIGHT / 15,
+                                        width: SCREEN_WIDTH,
+                                        borderBottomColor: 'gray',
+                                        borderBottomWidth: 1
+                                    }}>
+                                        <Icon name='users'
+                                            size={15}
                                             color="black"
+                                            style={{ paddingLeft: 20 }}
                                         />
-                                    </View>
-                                </View>
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
-                                        <Icon name='file-image-o'
-                                            size={25}
-                                            color="black"
-                                        />
-                                    </View>
-                                </View>
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '85%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
-                                        <Icon name='file-image-o'
-                                            size={25}
-                                            color="black"
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
-                                        <Icon name='plus-square-o'
-                                            size={25}
-                                            color="black"
-                                        />
-                                    </View>
-                                </View>
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
-                                        <Icon name='plus-square-o'
-                                            size={25}
-                                            color="black"
-                                        />
-                                    </View>
-                                </View>
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
-                                        <Icon name='file-image-o'
-                                            size={25}
-                                            color="black"
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{
-                        height: SCREEN_HEIGHT - 73,
-                        width: SCREEN_WIDTH,
-                        borderTopWidth: 1,
-                        borderBottomWidth: 1,
-                        marginTop: 10,
-                        borderColor: 'gray',
-                        backgroundColor: 'white'
-                    }} >
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            height: SCREEN_HEIGHT / 15,
-                            width: SCREEN_WIDTH,
-                            borderBottomColor: 'gray',
-                            borderBottomWidth: 1,
+                                        <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Featured Photos</Text>
 
-                        }}>
-                            <Icon name='wrench'
-                                size={15}
-                                color="black"
-                                style={{ paddingLeft: 20 }}
-                            />
-                            <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Lift Ticket Management</Text>
+                                    </View>
+                                    <View style={{ flex: 4, backgroundColor: 'white' }}>
+                                        <Text style={{
+                                            paddingTop: 10,
+                                            paddingBottom: 10,
+                                            paddingLeft: 10
+                                        }}>Choose up to 6 photos of your business</Text>
+                                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                                            <View style={{
+                                                flex: 1,
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }} >
+                                                <View style={{
+                                                    width: '70%',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center', height: '70%',
+                                                    borderRadius: 10,
+                                                    backgroundColor: 'orange'
+                                                }} >
+                                                    <Icon name='file-image-o'
+                                                        size={25}
+                                                        color="black"
+                                                    />
+                                                </View>
+                                            </View>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                    <Icon name='file-image-o'
+                                                        size={25}
+                                                        color="black"
+                                                    />
+                                                </View>
+                                            </View>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '85%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                    <Icon name='file-image-o'
+                                                        size={25}
+                                                        color="black"
+                                                    />
+                                                </View>
+                                            </View>
+                                        </View>
+                                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                    <Icon name='plus-square-o'
+                                                        size={25}
+                                                        color="black"
+                                                    />
+                                                </View>
+                                            </View>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                    <Icon name='plus-square-o'
+                                                        size={25}
+                                                        color="black"
+                                                    />
+                                                </View>
+                                            </View>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                    <Icon name='file-image-o'
+                                                        size={25}
+                                                        color="black"
+                                                    />
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{
+                                    height: SCREEN_HEIGHT - 73,
+                                    width: SCREEN_WIDTH,
+                                    borderTopWidth: 1,
+                                    borderBottomWidth: 1,
+                                    marginTop: 10,
+                                    borderColor: 'gray',
+                                    backgroundColor: 'white'
+                                }} >
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
+                                        height: SCREEN_HEIGHT / 15,
+                                        width: SCREEN_WIDTH,
+                                        borderBottomColor: 'gray',
+                                        borderBottomWidth: 1,
 
-                        </View>
-                        <FlatList
-                            style={{ backgroundColor: '#4286f4' }}
-                            data={this.state.liftTickets}// Comes from state and before that didMount
-                            renderItem={({ item }) => <AdminLiftTicketDisplay
-                                key={item.key}
-                                title={item.title}
-                                reguPrice={item.reguPrice}
-                                holiPrice={item.holiPrice}
-                                timeOne={item.timeOne}
-                                timeTwo={item.timeTwo} />}
-                        />
+                                    }}>
+                                        <Icon name='wrench'
+                                            size={15}
+                                            color="black"
+                                            style={{ paddingLeft: 20 }}
+                                        />
+                                        <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Lift Ticket Management</Text>
 
-                        <View style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            height: SCREEN_HEIGHT / 15,
-                            width: SCREEN_WIDTH,
-                            borderBottomWidth: 1,
-                            borderBottomColor: 'gray'
-                        }} >
-                            <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditLiftTickets', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
-                                <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
-                                    <Icon name='pencil-square-o'
-                                        size={15}
-                                        color="black"
-                                        style={{ paddingLeft: 20 }}
+                                    </View>
+                                    <FlatList
+                                        style={{ backgroundColor: '#4286f4' }}
+                                        data={this.state.liftTickets}// Comes from state and before that didMount
+                                        renderItem={({ item }) => <AdminLiftTicketDisplay
+                                            button={() => {
+                                                console.log('this.state', this.state)
+                                                this.setState({ play: !this.state.play })
+                                            }}
+                                            key={item.key}
+                                            title={item.title}
+                                            reguPrice={item.reguPrice}
+                                            holiPrice={item.holiPrice}
+                                            timeOne={item.timeOne}
+                                            timeTwo={item.timeTwo}
+                                            profile={this.state.profile}
+                                            navigation={this.props.navigation}
+                                        />}
                                     />
-                                    <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Edit</Text>
+
+                                    <View style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        height: SCREEN_HEIGHT / 15,
+                                        width: SCREEN_WIDTH,
+                                        borderBottomWidth: 1,
+                                        borderBottomColor: 'gray'
+                                    }} >
+                                        <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditLiftTickets', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
+                                            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
+                                                <Icon name='pencil-square-o'
+                                                    size={15}
+                                                    color="black"
+                                                    style={{ paddingLeft: 20 }}
+                                                />
+                                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Edit</Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+
+
                                 </View>
-                            </TouchableHighlight>
+                            </ScrollView>
+
                         </View>
-
-
-                    </View>
-                </ScrollView>
-
+                        :
+                        <LodingGIF />
+                }
             </View>
         )
 
@@ -459,3 +505,4 @@ const styles = StyleSheet.create({
         left: 80
     }
 });
+export default withNavigationFocus(MountainProfile)

@@ -21,7 +21,9 @@ class NaviDrink extends React.Component {
 }
 
 export default class NaviBar extends Component {
-
+componentDidMount(){
+    console.log('nah',this.props.navigation)
+}
     constructor(props) {
         super(props)
         this.state = {
@@ -35,11 +37,12 @@ export default class NaviBar extends Component {
                 <View style={{ width: '100%', height: 24 }} />
                 <View style={styles.nav}>
                     <Icon onPress={() => {
-                        this.props.navigate.goBack()
+                        console.log('true')
+                        this.props.navigation.goBack()
                     }} name="angle-left" size={35} color="white" />
                 </View>
             </View>
-        );
+        )
     }
 }
 

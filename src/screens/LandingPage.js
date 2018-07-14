@@ -16,8 +16,11 @@ export default class LandingPage extends Component {
             'Setting a timer'
         ];
     }
+    componentDidUpdate(){
+        console.log('update')
+    }
     componentDidMount() {
-        console.log('Save successful, LandingPage')
+        console.log('moiunt')
         /* **TODO**
                 1. How does spotify keep me logged in?
                 2. Is there any case that onAuthStateChanged upon login automatically log me in
