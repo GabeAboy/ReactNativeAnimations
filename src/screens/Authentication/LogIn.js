@@ -16,8 +16,8 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = ({
-            email: 'testadmin@gmail.com',
-            password: 'testadmin'
+            email: 'testuser@gmail.com',
+            password: 'testuser'
         })
     }
     logInUser = (navigate) => {

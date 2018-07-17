@@ -1,34 +1,8 @@
 import React, { Component } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Hamburger from 'react-native-hamburger';
 import { Drawer } from 'native-base';
-class Logo extends React.Component {
-    componentDidMount() {
-        console.log('this is sparta', this.props);
-
-    }
-    render() {
-        if (this.props.company) {
-            return (
-
-
-                <Text style={{
-                    paddingTop: 15,
-                    paddingLeft: 5
-                }}>{this.props.company}</Text>
-
-            )
-        }
-        else {
-            return (
-                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }}
-                    source={require('../../img/spot.png')}
-                    resizeMode='contain' />
-            )
-        }
-    }
-}
 
 export default class NaviBar extends Component {
 
@@ -38,9 +12,11 @@ export default class NaviBar extends Component {
             active: false
         }
     }
+    componentDidMount(){
+        console.log('this',this.props)
+    }
 
     render() {
-        const Delete = this.props.company;
         return (
             <View style={styles.header}>
 
@@ -64,7 +40,7 @@ export default class NaviBar extends Component {
                             this.props.company ?
                                 <View>
                                     <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }}
-                                        source={{uri:this.props.picture}}
+                                        source={{ uri: this.props.picture }}
                                         resizeMode='contain' />
 
                                     <Text style={{
@@ -74,9 +50,38 @@ export default class NaviBar extends Component {
 
                                 </View>
                                 :
-                                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75,borderRadius:20 }}
-                                    source={require('../../img/compLogo.jpg')}
-                                    resizeMode='contain' />
+                                <TouchableHighlight
+                                    onPress={
+                                        
+                                        () => {
+                                            console.log('thissdasd',this.props)
+                                            //navigate to new. this should be shared component
+                                            this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
+                                        }
+                                    }
+                                    style={{
+                                        flex: 1,
+                                    }} >
+                                    <View style={{
+                                        flex: 1,
+                                    }}>
+
+                                        <View style={{
+                                            justifyContent: 'flex-start',
+                                            alignItems: 'flex-end',
+                                            flexDirection: 'row',
+                                            height: '100%',
+                                            width: '100%',
+                                        }} >
+
+                                            <Icon style={{
+                                                marginBottom: 5,
+                                                marginLeft: 5
+                                            }} name="map-marker" size={20} color="white" />
+                                            <Text>Location</Text>
+                                        </View>
+                                    </View>
+                                </TouchableHighlight>
 
 
                         }

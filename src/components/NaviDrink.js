@@ -1,24 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-class NaviDrink extends React.Component {
-    render() {
-        if (this.props.comp) {
-            return (
-                <Text style={{
-                    paddingTop: 15,
-                    paddingLeft: 5
-                }}>{this.props.comp}</Text>
-            )
-        }
-        else {
-            return (
-                <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }} source={require('../../img/spot.png')}
-                    resizeMode='contain' />
-            )
-        }
-    }
-}
+
 
 export default class NaviBar extends Component {
 componentDidMount(){

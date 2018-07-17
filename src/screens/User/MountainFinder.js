@@ -91,7 +91,7 @@ export default class MountainFinder extends Component {
                             content={<DrawerContainer navigation={navigation} />}
                         >
                             <View style={{ flex: 1 }}>
-                                <NaviBar toggleDrawer={this.openControlPanel} navigation={this.openControlPanel} />
+                                <NaviBar toggleDrawer={this.openControlPanel} navigation={navigation} />
                                 <View style={{
                                     flex: 4,
                                     justifyContent: 'flex-start'

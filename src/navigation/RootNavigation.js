@@ -21,11 +21,13 @@ import EditLiftTickets from '../screens/Mountain/EditLiftTickets'
 //Event handlers
 import LoadingGIF from '../components/eventHandlers/LoadingGIF'
 import DisplayError from '../components/eventHandlers/DisplayError'
+import GetLocation from '../components/GetLocation'
 const Routes = StackNavigator(
     {
+        GetLocation: { screen: GetLocation },
         LandingPage: { screen: LandingPage },
-        MountainProfile: { screen: MountainProfile },
         MountainFinder: { screen: MountainFinder },
+        MountainProfile: { screen: MountainProfile },
         EditLiftTickets: { screen: EditLiftTickets },
 
         LoadingGIF: { screen: LoadingGIF },
