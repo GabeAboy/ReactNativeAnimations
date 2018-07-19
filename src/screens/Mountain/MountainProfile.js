@@ -32,24 +32,24 @@ class MountainProfile extends Component {
         })
     }
     componentDidUpdate() {
-        console.log(
-            'update', this.state
-        )
-        //  this.getProfileInformation()
-        console.log('done')
-        firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
-            .once('value')
-            .then((snapshot) => {
-                console.log(snapshot)
-                const snap = snapshot.val()
-                let result = Object.keys(snap).map((key) => {
-                    return snap[key];
-                });
-                this.setState({ liftTickets: result })
+        // console.log(
+        //     'update', this.state
+        // )
+        // //  this.getProfileInformation()
+        // console.log('done')
+        // firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
+        //     .once('value')
+        //     .then((snapshot) => {
+        //         console.log(snapshot)
+        //         const snap = snapshot.val()
+        //         let result = Object.keys(snap).map((key) => {
+        //             return snap[key];
+        //         });
+        //         this.setState({ liftTickets: result })
 
-            }).catch((e)=>{
-                console.log('err',JSON.stringify(e))
-            })
+        //     }).catch((e)=>{
+        //         console.log('err',JSON.stringify(e))
+        //     })
     }
     componentDidMount() {
         console.log(
@@ -90,10 +90,14 @@ class MountainProfile extends Component {
             this.setState({ uploading: true });
             if (!pickerResult.cancelled) {
                 uploadUrl = await this.uploadImageAsync(pickerResult.uri);
+                console.log('ASDASD', uploadUrl)
                 this.setState({ image: pickerResult.uri });
-                firebase.database().ref(`adminDiscription/${this.state.profile}`).update({
-                    profileImage: pickerResult.uri
-                }).catch((error) => { console.log('error ', error) })
+                firebase.database()
+                    .ref(`adminDiscription/${this.state.profile}`)
+                    .update({
+                        profileImage: uploadUrl
+                    })
+                    .catch((error) => { console.log('error ', error) })
             }
         } catch (e) {
             console.log(e);
@@ -103,16 +107,16 @@ class MountainProfile extends Component {
         }
     };
     uploadImageAsync = async (uri) => {
-        console.log(uri)
         const response = await fetch(uri);
         const blob = await response.blob();
         const ref = firebase
             .storage()
             .ref(`${this.state.profile}/icon`)
             .child('mountainIcon');
-
         const snapshot = await ref.put(blob);
-        return snapshot.downloadURL;
+        let downloadURL = `gs://${snapshot.metadata.bucket}/${snapshot.metadata.fullPath}`
+        //gs://skieasy-e12b4.appspot.com/WbyF9PD6MDZJeFhAIe8yvkZ2eUE3/icon/mountainIcon
+        return downloadURL;
     }
     getProfileInformation = () => {
         console.log('enter')

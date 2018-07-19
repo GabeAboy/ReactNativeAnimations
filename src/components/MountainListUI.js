@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, Dimensions, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GeoDistanceIcon from './GeoDistanceIcon';
+import firebase from 'firebase'
 const SCREEN_WIDTH = Dimensions.get('window').width;
 var icon;
 export default class MountainListUI extends Component {
@@ -9,14 +10,31 @@ export default class MountainListUI extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 2
+            count: 2,
+            image: '',
+            isCloud: false
         }
     }
     componentDidMount() {
-        console.log('asdasdasdasdasd',this.props)
+        console.log('asdasdasdasdasd', this.props)
+        var pathReference = firebase.storage().ref(`${this.props.mountainId}/icon/mountainIcon`)
+
+        pathReference.getDownloadURL().then(function (url) {
+            console.log('Got one!', url)
+            this.setState({ image: url })
+            this.setState({isCloud: true})
+            console.log('state!', this.state)
+        }
+            .bind(this))
+            .catch((e) => {
+                console.log('!!!!!!!!!!!!!!!!', e)
+                var defaultImage = require('../../img/compLogo.jpg')
+                this.setState({ image: defaultImage })
+            });
+        console.log('LOOK HERE', this.state)
     }
     render() {
-        const { brand, logo } = this.props;
+        const { brand } = this.props;
         return (
             <View style={{
                 width: '100%', height: 110,
@@ -27,9 +45,8 @@ export default class MountainListUI extends Component {
                     flex: 2, justifyContent: 'center', alignItems: 'center'
                 }}>
                     <Image
-                        source={ {uri:this.props.logo }}
+                        source={this.state.isCloud ? { uri: this.state.image } : this.state.image}
                         style={{
-
                             height: 60, width: 60, borderRadius: 30
                         }}>
 

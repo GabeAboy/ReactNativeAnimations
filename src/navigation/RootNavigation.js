@@ -24,8 +24,8 @@ import DisplayError from '../components/eventHandlers/DisplayError'
 import GetLocation from '../components/GetLocation'
 const Routes = StackNavigator(
     {
-        GetLocation: { screen: GetLocation },
         LandingPage: { screen: LandingPage },
+        GetLocation: { screen: GetLocation },
         MountainFinder: { screen: MountainFinder },
         MountainProfile: { screen: MountainProfile },
         EditLiftTickets: { screen: EditLiftTickets },

@@ -13,7 +13,6 @@ export default class NaviBar extends Component {
         }
     }
     componentDidMount(){
-        console.log('this',this.props)
     }
 
     render() {
@@ -65,7 +64,6 @@ export default class NaviBar extends Component {
                                     <View style={{
                                         flex: 1,
                                     }}>
-
                                         <View style={{
                                             justifyContent: 'flex-start',
                                             alignItems: 'flex-end',
@@ -78,7 +76,7 @@ export default class NaviBar extends Component {
                                                 marginBottom: 5,
                                                 marginLeft: 5
                                             }} name="map-marker" size={20} color="white" />
-                                            <Text>Location</Text>
+                                            <Text>{this.props.location}</Text>
                                         </View>
                                     </View>
                                 </TouchableHighlight>

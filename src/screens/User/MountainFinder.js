@@ -21,38 +21,13 @@ export default class MountainFinder extends Component {
     openControlPanel = () => {
         this._drawer.open()
     };
+    componentWillReceiveProps(){
+        console.log('RECEIVING PROPS')
+    }
     componentDidMount() {
         //UAC
         //Get user location get all admins
         // in that location then filter admindiscription then call their images
-
-        // firebase.database()
-        //     .ref('/users')
-        //     .once('value')
-        //     .then((snapshot) => {
-        //         users = snapshot.val()
-        //     })
-
-        // firebase.database()
-        //     .ref('/permissions')
-        //     .once('value')
-        //     .then((snapshot) => {
-        //         //console.log(snapshot)
-        //         const snap = snapshot.val()
-        //         for (const admin in snap) {
-        //             for (const user in users) {
-        //                 console.log('admin', admin)
-        //                 console.log('user', user)
-        //                 if (user === admin) {
-        //                     permissionAdmins.push(admin)
-
-        //                 }
-        //             }
-        //         }
-        //         console.log('working',permissionAdmins)
-
-        //     })
-
         firebase.database()
             .ref('/adminDiscription')
             .once('value')
@@ -60,13 +35,12 @@ export default class MountainFinder extends Component {
                 users = snapshot.val()
                 console.log('user', users)
                 for (const key in users) {
-                    let obj = {};
-                    obj[key] = users[key];
+                    console.log('sdf',key)
+                    users[key].mountainId = key
                     this.state.AdminLiftTickets.push(users[key])
                 }
             }).then(() => {
                 this.setState({ load: false })
-                console.log('?state', this.state.AdminLiftTickets)
             })
         // Merge the two
         // Compare location
@@ -91,7 +65,12 @@ export default class MountainFinder extends Component {
                             content={<DrawerContainer navigation={navigation} />}
                         >
                             <View style={{ flex: 1 }}>
-                                <NaviBar toggleDrawer={this.openControlPanel} navigation={navigation} />
+                                <NaviBar
+                                    toggleDrawer={this.openControlPanel}
+                                    navigation={navigation}
+                                    location={this.props.navigation.state.params.address
+                                        ? this.props.navigation.state.params.address
+                                        : 'Location'} />
                                 <View style={{
                                     flex: 4,
                                     justifyContent: 'flex-start'

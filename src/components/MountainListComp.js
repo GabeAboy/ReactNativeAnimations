@@ -51,6 +51,7 @@ export default class MultiSelectList extends React.PureComponent {
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}
+                mountainId={item.mountainId}
                 //selected={!!this.state.selected.get(item.id)}
                 logo={item.profileImage}
                 trailsAvailable={item.numerator}
