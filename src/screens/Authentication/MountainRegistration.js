@@ -45,6 +45,7 @@ export default class MountainRegistration extends Component {
         })
     }
     signUpUser = (email, password) => {
+        console.log('Entered')
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
@@ -64,6 +65,7 @@ export default class MountainRegistration extends Component {
                         })
                     }
                 }).then(result => {
+                    console.log('Sending email ')
                     var user = firebase.auth().currentUser;
 
                     user.sendEmailVerification().then(function () {
@@ -76,7 +78,7 @@ export default class MountainRegistration extends Component {
                     firebase.auth().signOut()
                 }).then(() => {
                     console.log('user made')
-                    this.props.navigation.navigate('LogIN', { navigation: this.props.navigation })
+                    this.props.navigation.navigate('LogIn', { navigation: this.props.navigation })
                 }).catch((error) => {
                     console.log('Error: ', error)
                     this.setState({ componentLoad: false })

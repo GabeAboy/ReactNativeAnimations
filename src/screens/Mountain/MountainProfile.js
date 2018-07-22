@@ -10,6 +10,7 @@ import firebase from 'firebase'
 import { ImagePicker } from 'expo'
 import firebaseConfig from '../../../keys/firebasekeys'
 import { withNavigationFocus } from 'react-navigation';
+import _ from 'lodash'
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 // On load get data from firebase for the logged in user
 // Display that information
@@ -121,17 +122,23 @@ class MountainProfile extends Component {
     getProfileInformation = () => {
         console.log('enter')
         firebase.auth().onAuthStateChanged((profile) => {
+            console.log(profile)
             let mountainAdminId = profile.uid
             this.setState({ profile: mountainAdminId });
             firebase.database().ref('/adminDiscription/' + mountainAdminId)
                 .once('value')
                 .then((snapshot) => {
                     //this.setState(snapshot)
-                    this.setState({ address: snapshot.val().address })
-                    this.setState({ businessName: snapshot.val().businessName })
-                    this.setState({ demoninator: snapshot.val().demoninator })
-                    this.setState({ numerator: snapshot.val().numerator })
-                    this.setState({ snowCondition: snapshot.val().snowCondition })
+                    console.log('sna', _.isEmpty(snapshot))
+                    if (_.isEmpty(snapshot)) {
+                        console.log(true,snapshot)
+                        this.setState({ address: snapshot.val().address })
+                        this.setState({ businessName: snapshot.val().businessName })
+                        this.setState({ demoninator: snapshot.val().demoninator })
+                        this.setState({ numerator: snapshot.val().numerator })
+                        this.setState({ snowCondition: snapshot.val().snowCondition })
+                    }
+
                 }).then(() => {
 
                     this.setState({ dataLoaded: true })
@@ -143,13 +150,14 @@ class MountainProfile extends Component {
             firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
                 .once('value')
                 .then((snapshot) => {
-                    console.log(snapshot)
-                    const snap = snapshot.val()
-                    let result = Object.keys(snap).map((key) => {
-                        return snap[key];
-                    });
-                    this.setState({ liftTickets: result })
-
+                    if (_.isEmpty(snapshot)) {
+                        console.log(snapshot)
+                        const snap = snapshot.val()
+                        let result = Object.keys(snap).map((key) => {
+                            return snap[key];
+                        });
+                        this.setState({ liftTickets: result })
+                    }
                 })
             var storage = firebase.storage();
             var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);

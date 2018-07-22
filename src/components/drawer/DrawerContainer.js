@@ -37,6 +37,12 @@ export default class DrawerContainer extends Component {
                         <MenuButton onPress={() => {
                         }} icon='history' buttonName='History' />
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        this.props.navigation.navigate('ProfileDictionary')
+                    }}>
+                        <MenuButton
+                            icon='users' buttonName='profiles' />
+                    </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
                         firebase.auth().signOut().then(() => {
@@ -44,7 +50,7 @@ export default class DrawerContainer extends Component {
                             this.props.navigation.navigate('LandingPage')
                         }).catch(function (error) {
                             // An error happened.
-                            console.log('error',JSON.stringify(error))
+                            console.log('error', JSON.stringify(error))
                         });
                     }}>
                         <MenuButton

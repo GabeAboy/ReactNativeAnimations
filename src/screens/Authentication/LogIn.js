@@ -15,10 +15,30 @@ import firebaseConfig from '../../../keys/firebasekeys'
 export default class Login extends Component {
     constructor(props) {
         super(props)
-        this.state = ({
-            email: 'testuser@gmail.com',
-            password: 'testuser'
-        })
+        const Credentials = [
+            {
+                email: 'testuser@gmail.com',
+                password: 'testuser'
+            },
+            {//admin 1
+                email: 'monica@gmail.com',
+                password: '123456'
+            },
+            {//admin  2
+                email: 'testadmin@gmail.com',
+                password: 'testadmin'
+            },
+            {//admin 3
+                email: 'sean@gmail.com',
+                password: 'sean12'
+            },
+            {
+                // 4
+                email: 'connor@gmail.com',
+                password: 'connor12'
+            },
+        ]
+        this.state = (Credentials[0])
     }
     logInUser = (navigate) => {
         try {

@@ -1,4 +1,3 @@
-//https://thumbs.gfycat.com/LameDifferentBalloonfish-size_restricted.gif
 
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';

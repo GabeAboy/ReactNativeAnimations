@@ -6,6 +6,8 @@ import LandingPage from '../screens/LandingPage';
 //User
 import MountainFinder from '../screens/User/MountainFinder';
 import MountainStore from '../screens/User/MountainStore';
+import ProfileDictionary from '../screens/User/ProfileDictionary'
+import AddProfile from '../screens/User/AddProfile'
 
 //Authentication
 import LogIn from '../screens/Authentication/LogIn';
@@ -29,7 +31,8 @@ const Routes = StackNavigator(
         MountainFinder: { screen: MountainFinder },
         MountainProfile: { screen: MountainProfile },
         EditLiftTickets: { screen: EditLiftTickets },
-
+        AddProfile: { screen: AddProfile },
+        ProfileDictionary: { screen: ProfileDictionary },
         LoadingGIF: { screen: LoadingGIF },
         //Main frames
 
