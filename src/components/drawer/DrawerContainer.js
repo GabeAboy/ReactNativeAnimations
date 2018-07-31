@@ -38,6 +38,7 @@ export default class DrawerContainer extends Component {
                         }} icon='history' buttonName='History' />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
+                        // ProfileDictionary
                         this.props.navigation.navigate('ProfileDictionary')
                     }}>
                         <MenuButton

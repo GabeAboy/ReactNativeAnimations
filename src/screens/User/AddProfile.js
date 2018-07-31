@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Platform, View, Text } from 'react-native';
 import firebase from 'firebase'
 import NaviDrink from '../../components/NaviDrink'
-import { Container, Header, Title, Content, Button, Icon, Right, Body, Left, Picker, Form, Item, Input, Label } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, Right, Body, Left, Picker, Form, Item, Input, Label, Segment } from 'native-base';
 //Container, Header, Title, Content, Button, Icon, Right, Body, Left, Picker, Form
 let ModeArray;
 const maxAge = 70
@@ -15,11 +15,25 @@ export default class AddProfile extends Component {
         super(props);
 
         this.state = {
-            firstName: "2",
-            Birthday: {},
-            size: {},
-            shoeSize: {},
-            weight: {},
+            firstName: "",
+            lastName: '',
+            Birthday: {
+                day: '',
+                month: '',
+                year: ''
+            },
+            height: {
+                size: '',
+                metric: ''
+            },
+            shoeSize: {
+                size: '',
+                metric: ''
+            },
+            weight: {
+                amount: '',
+                metric: ''
+            },
             skiLevel: '',
             dayArray: [...Array(MaxDays)],
             monthArray: [...Array(Months)],
@@ -44,29 +58,51 @@ export default class AddProfile extends Component {
 
     }
     updateDatabase() {
+        let state = this.state
         /**
          * 
          * 
          */
+        firebase.auth().onAuthStateChanged(function (profile) {
+            console.log('state', state)
+            if (profile) {
+                console.log('user', profile)
+                // User is signed in.
+                let userProfileId = profile.uid
+                firebase.database().ref(`userProfiles/${userProfileId}/${state.firstName+state.lastName}`).set({
+                    Birthday: {
+                        day: state.Birthday.day,
+                        month: state.Birthday.month,
+                        year: state.Birthday.year
+                    },
+                    Name: {
+                        first: state.firstName,
+                        last: state.lastName
+                    },
+                    shoeSize:{
+                        metric:state.shoeSize.metric,
+                        size:state.shoeSize.size
+                    },
+                    weight:{
+                        amount:state.weight.amount,
+                        metric:state.weight.metric
+                    },
+                    height:{
+                        size:state.height.size,
+                        metric:state.height.metric
+                    },
+                    skiLevel: state.skiLevel,
+                }).then(() => {
+                    console.log('success')
 
+                    this.props.navigation.goBack()
+                }).catch((error) => { console.log('error ', error) })
 
-        // firebase.auth().onAuthStateChanged((profile) => {
-        //     console.log(profile.uid)
-        //     let mountainAdminId = profile.uid
-        //     if (profile) {
-        //         firebase.database().ref(`adminDiscription/${mountainAdminId}`).set({
-        //             businessName: this.state.businessName,
-        //             address: this.state.address,
-        //             snowCondition: this.state.snowCondition,
-        //             numerator: this.state.numerator,
-        //             demoninator: this.state.demoninator
-        //         }).then(() => {
-        //             console.log('success')
-        //             this.props.navigation.navigate('MountainProfile')
-        //         }).catch((error) => { console.log('error ', error) })
-
-        //     }
-        // })
+            } else {
+                console.log('error')
+                // No user is signed in.
+            }
+        });
     }
 
     render() {
@@ -75,18 +111,19 @@ export default class AddProfile extends Component {
             return <Picker.Item key={i} value={ThisYear - i + 1} label={ThisYear - i + 1} />
         });
         return (
-            <Container style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Container style={{ justifyContent: 'center', alignItems: 'center',flex:1 }}>
                 <NaviDrink />
                 <Content>
                     <Form>
                         <Item floatingLabel>
                             <Label>First Name</Label>
-                            <Input onChangeText={(businessName) => this.setState({ businessName })} />
+                            <Input onChangeText={(firstName) => this.setState({ firstName })} />
                         </Item>
                         <Item style={{ marginTop: 15 }} floatingLabel last>
-                            <Label>Address</Label>
-                            <Input onChangeText={(address) => this.setState({ address })} />
+                            <Label>Last Name</Label>
+                            <Input onChangeText={(lastName) => this.setState({ lastName })} />
                         </Item>
+
                         <View style={{
                             width: '100%', height: 50,
                             justifyContent: 'center',
@@ -101,8 +138,17 @@ export default class AddProfile extends Component {
                                 iosHeader="Your Header"
                                 iosIcon={<Icon name="ios-arrow-down-outline" />}
                                 style={{ width: Platform.OS === "ios" ? undefined : 120 }}
-                                selectedValue={this.state.demoninator}
-                                onValueChange={(demoninator) => this.setState({ demoninator })}
+                                selectedValue={this.state.Birthday.month}
+                                onValueChange={
+                                    (month) => {
+                                        this.setState(prevState => ({
+                                            Birthday: {
+                                                ...prevState.Birthday,
+                                                month: month
+                                            }
+                                        }))
+                                    }
+                                }
                             >
 
                                 {this.renderDaysMonths(this.state.monthArray)}
@@ -114,8 +160,17 @@ export default class AddProfile extends Component {
                                 iosHeader="Your Header"
                                 iosIcon={<Icon name="ios-arrow-down-outline" />}
                                 style={{ width: Platform.OS === "ios" ? undefined : 120 }}
-                                selectedValue={this.state.numerator}
-                                onValueChange={(numerator) => this.setState({ numerator })}
+                                selectedValue={this.state.Birthday.day}
+                                onValueChange={
+                                    (day) => {
+                                        this.setState(prevState => ({
+                                            Birthday: {
+                                                ...prevState.Birthday,
+                                                day: day
+                                            }
+                                        }))
+                                    }
+                                }
                             >
                                 {this.renderDaysMonths(this.state.dayArray)}
                             </Picker>
@@ -125,8 +180,17 @@ export default class AddProfile extends Component {
                                 iosHeader="Your Header"
                                 iosIcon={<Icon name="ios-arrow-down-outline" />}
                                 style={{ width: Platform.OS === "ios" ? undefined : 120 }}
-                                selectedValue={this.state.demoninator}
-                                onValueChange={(demoninator) => this.setState({ demoninator })}
+                                selectedValue={this.state.Birthday.year}
+                                onValueChange={
+                                    (year) => {
+                                        this.setState(prevState => ({
+                                            Birthday: {
+                                                ...prevState.Birthday,
+                                                year: year
+                                            }
+                                        }))
+                                    }
+                                }
                             >
 
                                 {this.renderItems()}
@@ -145,8 +209,17 @@ export default class AddProfile extends Component {
                     }} >
 
                         <Item style={{ width: '70%' }} floatingLabel>
-                            <Label>First Name</Label>
-                            <Input onChangeText={(businessName) => this.setState({ businessName })} />
+                            <Label>Height</Label>
+                            <Input onChangeText={
+                                (size) => {
+                                    this.setState(prevState => ({
+                                        height: {
+                                            ...prevState.height,
+                                            size: size
+                                        }
+                                    }))
+                                }
+                            } />
                         </Item>
                         <Picker
                             mode="dropdown"
@@ -154,14 +227,24 @@ export default class AddProfile extends Component {
                             iosIcon={<Icon name="ios-arrow-down-outline" />}
                             style={{
                                 width: Platform.OS === "ios" ? undefined :
-                                    50
+                                    70,
+                                marginLeft: 5
                             }}
-                            selectedValue={this.state.numerator}
-                            onValueChange={(numerator) => this.setState({ numerator })}
+                            selectedValue={this.state.height.metric}
+                            onValueChange={
+                                (metric) => {
+                                    this.setState(prevState => ({
+                                        height: {
+                                            ...prevState.height,
+                                            metric: metric
+                                        }
+                                    }))
+                                }
+                            }
                         >
-                            <Picker.Item value='1' label='2' />
-                            <Picker.Item value='3' label='d' />
-                            <Picker.Item value='f' label='d' />
+                            <Picker.Item value='1' label='cm' />
+                            <Picker.Item value='3' label='m' />
+                            <Picker.Item value='f' label='ft' />
                         </Picker>
                     </View>
                     <View style={{
@@ -170,8 +253,17 @@ export default class AddProfile extends Component {
                     }} >
 
                         <Item style={{ width: '70%' }} floatingLabel>
-                            <Label>First Name</Label>
-                            <Input onChangeText={(businessName) => this.setState({ businessName })} />
+                            <Label>Shoe Size</Label>
+                            <Input onChangeText={
+                                (size) => {
+                                    this.setState(prevState => ({
+                                        shoeSize: {
+                                            ...prevState.shoeSize,
+                                            size: size
+                                        }
+                                    }))
+                                }
+                            } />
                         </Item>
                         <Picker
                             mode="dropdown"
@@ -179,14 +271,24 @@ export default class AddProfile extends Component {
                             iosIcon={<Icon name="ios-arrow-down-outline" />}
                             style={{
                                 width: Platform.OS === "ios" ? undefined :
-                                    50
+                                    70,
+                                marginLeft: 5
                             }}
-                            selectedValue={this.state.numerator}
-                            onValueChange={(numerator) => this.setState({ numerator })}
+                            selectedValue={this.state.shoeSize.metric}
+                            onValueChange={
+                                (metric) => {
+                                    this.setState(prevState => ({
+                                        shoeSize: {
+                                            ...prevState.shoeSize,
+                                            metric: metric
+                                        }
+                                    }))
+                                }
+                            }
                         >
-                            <Picker.Item value='cm' label='2' />
-                            <Picker.Item value='feet' label='d' />
-                            <Picker.Item value='f' label='d' />
+                            <Picker.Item value='US' label='US' />
+                            <Picker.Item value='EU' label='EU' />
+                            <Picker.Item value='AS' label='AS' />
                         </Picker>
                     </View>
                     <View style={{
@@ -195,8 +297,17 @@ export default class AddProfile extends Component {
                     }} >
 
                         <Item style={{ width: '70%' }} floatingLabel>
-                            <Label>First Name</Label>
-                            <Input onChangeText={(businessName) => this.setState({ businessName })} />
+                            <Label>Weight</Label>
+                            <Input onChangeText={
+                                (amount) => {
+                                    this.setState(prevState => ({
+                                        weight: {
+                                            ...prevState.weight,
+                                            amount: amount
+                                        }
+                                    }))
+                                }
+                            } />
                         </Item>
                         <Picker
                             mode="dropdown"
@@ -204,14 +315,24 @@ export default class AddProfile extends Component {
                             iosIcon={<Icon name="ios-arrow-down-outline" />}
                             style={{
                                 width: Platform.OS === "ios" ? undefined :
-                                    50
+                                    70,
+                                marginLeft: 5
                             }}
-                            selectedValue={this.state.numerator}
-                            onValueChange={(numerator) => this.setState({ numerator })}
+                            selectedValue={this.state.weight.metric}
+                            onValueChange={
+                                (metric) => {
+                                    this.setState(prevState => ({
+                                        weight: {
+                                            ...prevState.weight,
+                                            metric: metric
+                                        }
+                                    }))
+                                }
+                            }
                         >
-                            <Picker.Item value='1' label='2' />
-                            <Picker.Item value='3' label='d' />
-                            <Picker.Item value='f' label='d' />
+                            <Picker.Item value='lb' label='lb' />
+                            <Picker.Item value='kg' label='kg' />
+                            <Picker.Item value='g' label='g' />
                         </Picker>
                     </View>
 
@@ -224,12 +345,12 @@ export default class AddProfile extends Component {
                         width: Platform.OS === "ios" ? undefined :
                             '80%'
                     }}
-                    selectedValue={this.state.numerator}
-                    onValueChange={(numerator) => this.setState({ numerator })}
+                    selectedValue={this.state.skiLevel}
+                    onValueChange={(skiLevel) => this.setState({ skiLevel })}
                 >
-                    <Picker.Item value='1' label='2' />
-                    <Picker.Item value='3' label='d' />
-                    <Picker.Item value='f' label='d' />
+                    <Picker.Item value='Beginner' label='Beginner' />
+                    <Picker.Item value='Intermediate' label='Intermediate' />
+                    <Picker.Item value='Expert' label='Expert' />
                 </Picker>
                 <Button onPress={this.updateDatabase.bind(this)} block success>
                     <Text>Save Changes</Text>

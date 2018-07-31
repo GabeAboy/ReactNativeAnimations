@@ -21,7 +21,7 @@ export default class MountainFinder extends Component {
     openControlPanel = () => {
         this._drawer.open()
     };
-    componentWillReceiveProps(){
+    componentWillReceiveProps() {
         console.log('RECEIVING PROPS')
     }
     componentDidMount() {
@@ -32,11 +32,17 @@ export default class MountainFinder extends Component {
             .ref('/adminDiscription')
             .once('value')
             .then((snapshot) => {
+                console.log('look I can do it', this.state)
+
                 users = snapshot.val()
                 console.log('user', users)
                 for (const key in users) {
-                    console.log('sdf',key)
+                    console.log('sdf', key)
                     users[key].mountainId = key
+                    // State array should be updated this way see ProfileDictionary.js
+                    
+                    // var joined = this.state.UserProfiles.concat(users);
+                    // this.setState({ UserProfiles: joined })
                     this.state.AdminLiftTickets.push(users[key])
                 }
             }).then(() => {

@@ -27,12 +27,12 @@ import GetLocation from '../components/GetLocation'
 const Routes = StackNavigator(
     {
         LandingPage: { screen: LandingPage },
+        ProfileDictionary: { screen: ProfileDictionary },
+        AddProfile: { screen: AddProfile },
         GetLocation: { screen: GetLocation },
         MountainFinder: { screen: MountainFinder },
         MountainProfile: { screen: MountainProfile },
         EditLiftTickets: { screen: EditLiftTickets },
-        AddProfile: { screen: AddProfile },
-        ProfileDictionary: { screen: ProfileDictionary },
         LoadingGIF: { screen: LoadingGIF },
         //Main frames
 
