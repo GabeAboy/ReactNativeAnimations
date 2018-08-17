@@ -80,13 +80,13 @@ export default class ProfileDictionary extends Component {
                             <View style={{
                                 flex: .25,
                                 justifyContent: 'center',
-                                alignItems:'flex-end'
+                                alignItems: 'flex-end'
                             }} >
-                                <Icon 
-                                onPress={()=>{
-                                    this.props.navigation.navigate('AddProfile')
-                                }}
-                                name="user-plus" size={35} color="#9a9ea5" style={{ position: 'absolute' }} />
+                                <Icon
+                                    onPress={() => {
+                                        this.props.navigation.navigate('AddProfile', { navigation: this.props.navigation })
+                                    }}
+                                    name="user-plus" size={35} color="#9a9ea5" style={{ position: 'absolute' }} />
                             </View>
                         </View>
                 }

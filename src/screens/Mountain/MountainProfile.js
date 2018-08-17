@@ -33,6 +33,10 @@ class MountainProfile extends Component {
         })
     }
     componentDidUpdate() {
+        // TODO next step is to catch update switch
+        //with navigaiton if it came from add profile get profile info and 
+        //same for tickets
+        console.log('update',this.props.navigation)
         // console.log(
         //     'update', this.state
         // )
@@ -51,6 +55,7 @@ class MountainProfile extends Component {
         //     }).catch((e)=>{
         //         console.log('err',JSON.stringify(e))
         //     })
+        
     }
     componentDidMount() {
         console.log(
@@ -60,8 +65,29 @@ class MountainProfile extends Component {
         if (Platform.OS === 'ios') {
             this.getPermissionsAsync()
         }
-        this.getProfileInformation()
+        this.InfoProxy()
 
+    }
+
+    InfoProxy = async () => {
+        let thingProfile = await this.getCurrentLoggedinUser()
+        console.log('got it wait', thingProfile)
+        this.getProfileInformation(thingProfile)
+        this.getAdminDiscription(thingProfile)
+        this.getLiftTickets(thingProfile)
+    }
+    getCurrentLoggedinUser = async () => {
+
+        let firebasevar = new Promise((resolve, reject) => {
+            firebase.auth().onAuthStateChanged((profile) => {
+                let mountainAdminId = profile.uid
+                this.setState({ profile: mountainAdminId });
+                resolve(mountainAdminId)
+            })
+        });
+        let answer = await firebasevar;
+        console.log('I got current user ', answer)
+        return answer;
     }
     static navigationOptions = {
         title: 'MountainProfile',
@@ -119,19 +145,18 @@ class MountainProfile extends Component {
         //gs://skieasy-e12b4.appspot.com/WbyF9PD6MDZJeFhAIe8yvkZ2eUE3/icon/mountainIcon
         return downloadURL;
     }
-    getProfileInformation = () => {
-        console.log('enter')
-        firebase.auth().onAuthStateChanged((profile) => {
-            console.log(profile)
-            let mountainAdminId = profile.uid
-            this.setState({ profile: mountainAdminId });
+
+
+    getAdminDiscription = async (mountainAdminId) => {
+        console.log('Mountein exist', mountainAdminId)
+        let adminDiscription = new Promise((resolve, reject) => {
             firebase.database().ref('/adminDiscription/' + mountainAdminId)
                 .once('value')
                 .then((snapshot) => {
                     //this.setState(snapshot)
-                    console.log('sna', _.isEmpty(snapshot))
-                    if (_.isEmpty(snapshot)) {
-                        console.log(true,snapshot)
+                    console.log('sna', snapshot)
+                    if (!_.isEmpty(snapshot)) {
+                        console.log(true, snapshot)
                         this.setState({ address: snapshot.val().address })
                         this.setState({ businessName: snapshot.val().businessName })
                         this.setState({ demoninator: snapshot.val().demoninator })
@@ -142,62 +167,100 @@ class MountainProfile extends Component {
                 }).then(() => {
 
                     this.setState({ dataLoaded: true })
+                    resolve()
                 }).catch((e) => {
                     console.log(
                         'err', e
                     )
+                    reject()
                 })
+        });
+        let answer = await adminDiscription;
+        console.log('I got current user ', answer)
+        return answer;
+    }
+    getLiftTickets = async (mountainAdminId) => {
+        //this functions loads forever 
+        let liftTickets = new Promise((resolve, reject) => {
             firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
                 .once('value')
                 .then((snapshot) => {
-                    if (_.isEmpty(snapshot)) {
-                        console.log(snapshot)
+                    if (!_.isEmpty(snapshot)) {
+                        console.log('hehye,\n\n\n\n', snapshot)
                         const snap = snapshot.val()
                         let result = Object.keys(snap).map((key) => {
                             return snap[key];
                         });
                         this.setState({ liftTickets: result })
+                        resolve()
                     }
+                }).catch((e) => {
+                    reject(e)
                 })
-            var storage = firebase.storage();
-            var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);
-            // Get the download URL
-            pathReference.getDownloadURL()
-                .then((url) => {
-                    this.setState({ image: url })
-                }).catch((error) => {
-                    console.log('type of ', typeof error.code)
-                    // A full list of error codes is available at
-                    // https://firebase.google.com/docs/storage/web/handle-errors
-                    switch (error.code) {
+        });
+        let answer = await liftTickets;
+        console.log('I got current user ', answer)
+        // return answer;
+    }
+    getProfileInformation = async (mountainAdminmountainAdminIdIdet) => {
+        console.log('entejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj\n\nr', neet)
 
-                        case '404':
-                            // Image not found and setstate to error
-                            var defaultImage = require('../../../img/download.png')
-                            this.setState({ image: defaultImage })
-                            // File doesn't exist
-                            break;
-                        case 'storage/unauthorized':
-                            // User doesn't have permission to access the object
-                            break;
-                        case 'storage/canceled':
-                            // User canceled the upload
-                            break;
-                        case 'storage/unknown':
-                            // Unknown error occur#4286f4, inspect the server response
-                            break;
-                    }
-                });
-        })
+        this.setState({ profile: mountainAdminId });
+
+        firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
+            .once('value')
+            .then((snapshot) => {
+                if (_.isEmpty(snapshot)) {
+                    console.log(snapshot)
+                    const snap = snapshot.val()
+                    let result = Object.keys(snap).map((key) => {
+                        return snap[key];
+                    });
+                    this.setState({ liftTickets: result })
+                }
+            })
+        var storage = firebase.storage();
+        var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);
+        // Get the download URL
+        pathReference.getDownloadURL()
+            .then((url) => {
+                this.setState({ image: url })
+            }).catch((error) => {
+                console.log('type of ', typeof error.code)
+                // A full list of error codes is available at
+                // https://firebase.google.com/docs/storage/web/handle-errors
+                switch (error.code) {
+
+                    case '404':
+                        // Image not found and setstate to error
+                        var defaultImage = require('../../../img/download.png')
+                        this.setState({ image: defaultImage })
+                        // File doesn't exist
+                        break;
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
+                    case 'storage/unknown':
+                        // Unknown error occur#4286f4, inspect the server response
+                        break;
+                }
+            });
+
     }
 
 
     render() {
+        console.log("Focused here? ", this.props.isFocused)
         const { navigate } = this.props.navigation;
         return (
             <View style={{ flex: 1 }}>
                 {
+
                     this.state.dataLoaded ?
+
                         <View style={styles.container}>
                             <Header />
                             <View
