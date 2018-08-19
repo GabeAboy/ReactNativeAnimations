@@ -1,4 +1,4 @@
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 //User Story screens
 import LandingPage from '../screens/LandingPage';
@@ -24,7 +24,7 @@ import EditLiftTickets from '../screens/Mountain/EditLiftTickets'
 import LoadingGIF from '../components/eventHandlers/LoadingGIF'
 import DisplayError from '../components/eventHandlers/DisplayError'
 import GetLocation from '../components/GetLocation'
-const Routes = StackNavigator(
+const Routes = createStackNavigator(
     {
         LandingPage: { screen: LandingPage },
         ProfileDictionary: { screen: ProfileDictionary },
