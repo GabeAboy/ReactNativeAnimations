@@ -10,7 +10,6 @@ export default class FriendItem extends React.Component {
 
     }
     componentDidMount() {
-        console.log('one', this.props)
     }
     render() {
         return (
@@ -23,7 +22,12 @@ export default class FriendItem extends React.Component {
                 backgroundColor: 'white'
             }}
                 onPress={() => {
-                    this.props.navigation.navigate('EditLiftTickets', { properties: this.props, isEdit: true })
+                    this.props.navigation.navigate('EditLiftTickets', {
+                        properties: this.props,
+                        pathReference:this.props.pathReference,
+                        isEdit: true,
+                        button: this.props.button
+                    })
                     console.log('asdasdasd!!!!!', this.props)
                 }}
             >
@@ -47,13 +51,14 @@ export default class FriendItem extends React.Component {
                         }} >
                             <TouchableHighlight
                                 onPress={() => {
-                                    this.props.button()
+                                    console.log('wrong state', this.props)
                                     firebase.database()
-                                        .ref('/liftTicketDiscription/' + this.props.profile)
-                                        .child(this.props.title)
-                                        .remove()
-
+                                    .ref('/liftTicketDiscription/' + this.props.profile)
+                                    .child(this.props.pathReference)
+                                    .remove()
+                                    
                                     console.log(`Item ${this.props.title} deleted`)
+                                    this.props.button()
                                 }}
                                 style={{
                                     height: 20, width: 20,

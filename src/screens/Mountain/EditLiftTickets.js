@@ -20,28 +20,20 @@ export default class EditLiftTickets extends Component {
             dataLoaded: true
         });
 
+        this.updateDatabase.bind(this)
     }
     componentDidMount() {
         //this.getData()
-        console.log('good things', this.state)
-
+        console.log('good things', this.props.navigation.state.params.properties)
+        if (this.props.navigation.state.params.isEdit) {
+            this.setState({ title: this.props.navigation.state.params.properties.title })
+            this.setState({ timeOne: this.props.navigation.state.params.properties.timeOne })
+            this.setState({ timeTwo: this.props.navigation.state.params.properties.timeTwo })
+            this.setState({ reguPrice: this.props.navigation.state.params.properties.reguPrice })
+        }
     }
 
-    //TODO: Componentdidmount to fill in the properties from database if they exist
 
-    // getData() {
-    //     console.log('FUCKED UP', this.props.navigation.state.params.properties)
-    //     if (this.props.navigation.state.params.properties.isEdit) {
-    //         this.setState({ title: this.props.navigation.state.params.properties.title })
-
-    //         this.setState({ timeOne: this.props.navigation.state.params.properties.timeOne })
-    //         this.setState({ timeTwo: this.props.navigation.state.params.properties.timeTwo })
-    //         this.setState({ reguPrice: this.props.navigation.state.params.properties.reguPrice })
-    //         this.setState({ holliPrice: this.props.navigation.state.params.properties.holliPrice })
-    //         this.setState({ dataLoaded: true })
-    //     }
-
-    // }
     updateDatabase() {
         firebase.auth().onAuthStateChanged((profile) => {
             let mountainAdminId = profile.uid
@@ -55,6 +47,7 @@ export default class EditLiftTickets extends Component {
                     holliPrice: this.state.holliPrice
                 }).then(() => {
                     console.log('Successfuly updated LiftTicket database', this.props)
+                    this.props.navigation.state.params.button()
                     this.props.navigation.navigate('MountainProfile')
                 }).catch((error) => {
                     console.log('error ', error)
@@ -62,6 +55,33 @@ export default class EditLiftTickets extends Component {
 
             }
         })
+    }
+    routingFunction = () => {
+        console.log('FINDER\n\n\nNow..', this.props.navigation.state.params.isEdit)
+        this.props.navigation.state.params.isEdit ? this.EditLiftTickets() : this.updateDatabase()
+    }
+    EditLiftTickets = () => {
+        console.log('entered the funciton\n\n\n', this.props.navigation.state.params.properties.pathReference)
+        //props already has profile id
+        firebase.auth().onAuthStateChanged((profile) => {
+            let mountainAdminId = profile.uid
+            firebase.database()
+                .ref(`liftTicketDiscription/${mountainAdminId}/${this.props.navigation.state.params.properties.pathReference}`)
+                .update({
+                    title: this.state.title,
+                    timeOne: this.state.timeOne,
+                    timeTwo: this.state.timeTwo,
+                    reguPrice: this.state.reguPrice,
+                })
+                .then((e) => {
+                    console.log('fun', this.props.navigation.state.params)
+                    this.props.navigation.state.params.button()
+                    this.props.navigation.navigate('MountainProfile')
+                })
+                .catch((error) => { console.log('error ', error) })
+
+        })
+
     }
 
     render() {
@@ -95,7 +115,7 @@ export default class EditLiftTickets extends Component {
                                     <Input onChangeText={(holliPrice) => this.setState({ holliPrice })} />
                                 </Item>
                                 {/* bundle and send to firebase  */}
-                                <Button onPress={this.updateDatabase.bind(this)} block success>
+                                <Button onPress={this.routingFunction.bind(this)} block success>
                                     <Text>Save Changes</Text>
                                 </Button>
                             </Form>

@@ -20,6 +20,11 @@ export default class EditDiscription extends Component {
         };
     }
     updateDatabase() {
+
+        if(this.props.isEdit){
+            console.log('true')
+        }
+        
         firebase.auth().onAuthStateChanged((profile) => {
             console.log(profile.uid)
             let mountainAdminId = profile.uid
@@ -32,7 +37,7 @@ export default class EditDiscription extends Component {
                     demoninator: this.state.demoninator
                 }).then(() => {
                     console.log('success')
-                    this.props.navigation.navigate('MountainProfile')
+                    this.props.navigation.navigate('MountainProfile', { EditDiscription: true })
                 }).catch((error) => { console.log('error ', error) })
 
             }

@@ -27,16 +27,29 @@ class MountainProfile extends Component {
             uploading: false,
             profile: null,
             liftTickets: [],
-            dataLoaded: false,
+            dataLoaded: true,
             play: false
 
         })
     }
+
     componentDidUpdate() {
         // TODO next step is to catch update switch
         //with navigaiton if it came from add profile get profile info and 
         //same for tickets
-        console.log('update',this.props.navigation)
+        console.log('entered the update')
+        if (this.state.EditLiftTickets) {
+            console.log('Entered the update tickets ')
+            this.getLiftTickets(this.state.profile)
+            this.setState({ EditLiftTickets: false })
+        }
+        console.log('nav', this.props.navigation.state.params.EditDiscription)
+        if (this.props.navigation.state.params.EditDiscription) {
+            console.log('trussse')
+            this.props.navigation.state.params.EditDiscription = false
+            this.getAdminDiscription(this.state.profile)
+        }
+
         // console.log(
         //     'update', this.state
         // )
@@ -55,11 +68,12 @@ class MountainProfile extends Component {
         //     }).catch((e)=>{
         //         console.log('err',JSON.stringify(e))
         //     })
-        
+
+
     }
     componentDidMount() {
         console.log(
-            'mount', this.state
+            'mount', this.props.navigation
         )
         console.log('Mountain Profile')
         if (Platform.OS === 'ios') {
@@ -71,10 +85,12 @@ class MountainProfile extends Component {
 
     InfoProxy = async () => {
         let thingProfile = await this.getCurrentLoggedinUser()
-        console.log('got it wait', thingProfile)
-        this.getProfileInformation(thingProfile)
+
+        //this.getProfileInformation(thingProfile)
         this.getAdminDiscription(thingProfile)
         this.getLiftTickets(thingProfile)
+        this.getProfileImage(thingProfile)
+        this.setState({ dataLoaded: true })
     }
     getCurrentLoggedinUser = async () => {
 
@@ -86,7 +102,6 @@ class MountainProfile extends Component {
             })
         });
         let answer = await firebasevar;
-        console.log('I got current user ', answer)
         return answer;
     }
     static navigationOptions = {
@@ -148,13 +163,11 @@ class MountainProfile extends Component {
 
 
     getAdminDiscription = async (mountainAdminId) => {
-        console.log('Mountein exist', mountainAdminId)
         let adminDiscription = new Promise((resolve, reject) => {
             firebase.database().ref('/adminDiscription/' + mountainAdminId)
                 .once('value')
                 .then((snapshot) => {
                     //this.setState(snapshot)
-                    console.log('sna', snapshot)
                     if (!_.isEmpty(snapshot)) {
                         console.log(true, snapshot)
                         this.setState({ address: snapshot.val().address })
@@ -176,22 +189,23 @@ class MountainProfile extends Component {
                 })
         });
         let answer = await adminDiscription;
-        console.log('I got current user ', answer)
         return answer;
     }
     getLiftTickets = async (mountainAdminId) => {
-        //this functions loads forever 
         let liftTickets = new Promise((resolve, reject) => {
             firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
                 .once('value')
                 .then((snapshot) => {
-                    if (!_.isEmpty(snapshot)) {
-                        console.log('hehye,\n\n\n\n', snapshot)
+                    if (!_.isEmpty(snapshot.val())) {
                         const snap = snapshot.val()
                         let result = Object.keys(snap).map((key) => {
+                            snap[key].pathReference = key
                             return snap[key];
                         });
                         this.setState({ liftTickets: result })
+                        resolve(result)
+                    } else {
+                        this.setState({ liftTickets: [] })
                         resolve()
                     }
                 }).catch((e) => {
@@ -199,56 +213,48 @@ class MountainProfile extends Component {
                 })
         });
         let answer = await liftTickets;
-        console.log('I got current user ', answer)
         // return answer;
     }
-    getProfileInformation = async (mountainAdminmountainAdminIdIdet) => {
-        console.log('entejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj\n\nr', neet)
-
-        this.setState({ profile: mountainAdminId });
-
-        firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
-            .once('value')
-            .then((snapshot) => {
-                if (_.isEmpty(snapshot)) {
-                    console.log(snapshot)
-                    const snap = snapshot.val()
-                    let result = Object.keys(snap).map((key) => {
-                        return snap[key];
-                    });
-                    this.setState({ liftTickets: result })
-                }
-            })
+    getProfileImage = async (mountainAdminId) => {
         var storage = firebase.storage();
-        var pathReference = storage.ref(`${this.state.profile}/icon/mountainIcon`);
+        var pathReference = storage.ref(`${mountainAdminId}/icon/mountainIcon`);
         // Get the download URL
-        pathReference.getDownloadURL()
-            .then((url) => {
-                this.setState({ image: url })
-            }).catch((error) => {
-                console.log('type of ', typeof error.code)
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
-                switch (error.code) {
 
-                    case '404':
-                        // Image not found and setstate to error
-                        var defaultImage = require('../../../img/download.png')
-                        this.setState({ image: defaultImage })
-                        // File doesn't exist
-                        break;
-                    case 'storage/unauthorized':
-                        // User doesn't have permission to access the object
-                        break;
-                    case 'storage/canceled':
-                        // User canceled the upload
-                        break;
-                    case 'storage/unknown':
-                        // Unknown error occur#4286f4, inspect the server response
-                        break;
-                }
-            });
+        let profileImage = new Promise((resolve, reject) => {
+            pathReference.getDownloadURL()
+                .then((url) => {
+                    this.setState({ image: url })
+                    resolve(url)
+                }).catch((error) => {
+                    console.log('type of ', typeof error.code)
+                    // A full list of error codes is available at
+                    // https://firebase.google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
 
+                        case '404':
+                            // Image not found and setstate to error
+                            var defaultImage = require('../../../img/download.png')
+                            this.setState({ image: defaultImage })
+                            resolve()
+                            // File doesn't exist
+                            break;
+                        case 'storage/unauthorized':
+                            reject()
+                            // User doesn't have permission to access the object
+                            break;
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            reject()
+                            break;
+                        case 'storage/unknown':
+                            // Unknown error occur#4286f4, inspect the server response
+                            reject()
+                            break;
+                    }
+                });
+        });
+        let answer = await profileImage;
+        // return answer;
     }
 
 
@@ -496,8 +502,7 @@ class MountainProfile extends Component {
                                         data={this.state.liftTickets}// Comes from state and before that didMount
                                         renderItem={({ item }) => <AdminLiftTicketDisplay
                                             button={() => {
-                                                console.log('this.state', this.state)
-                                                this.setState({ play: !this.state.play })
+                                                this.setState({ EditLiftTickets: true })
                                             }}
                                             key={item.key}
                                             title={item.title}
@@ -505,6 +510,7 @@ class MountainProfile extends Component {
                                             holiPrice={item.holiPrice}
                                             timeOne={item.timeOne}
                                             timeTwo={item.timeTwo}
+                                            pathReference={item.pathReference}
                                             profile={this.state.profile}
                                             navigation={this.props.navigation}
                                         />}
@@ -519,7 +525,16 @@ class MountainProfile extends Component {
                                         borderBottomWidth: 1,
                                         borderBottomColor: 'gray'
                                     }} >
-                                        <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditLiftTickets', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
+                                        <TouchableHighlight onPress={() => {
+                                            this.props.navigation.navigate('EditLiftTickets', {
+                                                navigation: this.props.navigation,
+                                                button: () => {
+                                                    this.setState({ EditLiftTickets: true })
+                                                }
+
+
+                                            })
+                                        }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
                                             <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
                                                 <Icon name='pencil-square-o'
                                                     size={15}
