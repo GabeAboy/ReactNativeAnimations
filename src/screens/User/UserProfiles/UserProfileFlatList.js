@@ -14,7 +14,6 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentDidMount() {
         // Delete me
-        console.log('props', this.props)
         this.setState({ data: this.props.data })
     }
 
@@ -37,22 +36,23 @@ export default class MultiSelectList extends React.PureComponent {
         console.log('Hey button worked')
     }
     _renderItem = ({ item }) => (
-
-        <TouchableHighlight key={item.id} onPress={() =>
-            console.log('clicked',item)
+        
+        <TouchableHighlight
+        style={{backgroundColor:'white'}}
+        key={item.id} onPress={() =>
+            console.log('clicked')
         } >
             <UserProfileListUI
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}
 
-                weight={item[Object.keys(item)].weight.amount}
-                weightMetric={item[Object.keys(item)].weight.metric}
-                firstName={item[Object.keys(item)].Name.first}
-                lastName={item[Object.keys(item)].Name.last}
-                shoeSize={item[Object.keys(item)].shoeSize.size}
-                shoeMetric={item[Object.keys(item)].shoeSize.metric}
-
+                weight={item.weight.amount}
+                weightMetric={item.weight.metric}
+                firstName={item.Name.first}
+                lastName={item.Name.last}
+                shoeSize={item.shoeSize.size}
+                shoeMetric={item.shoeSize.metric}
                 //selected={!!this.state.selected.get(item.id)}
 
                 navigation={this.props.navigation}
@@ -64,9 +64,11 @@ export default class MultiSelectList extends React.PureComponent {
 
     render() {
 
+
         return (
 
             <FlatList
+            style = {{backgroundColor:'#4286f4'}}
                 key={this.key}
                 ListHeaderComponent={this.renderHeader}
                 data={this.state.data}

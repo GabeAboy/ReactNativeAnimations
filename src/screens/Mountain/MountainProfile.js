@@ -49,27 +49,6 @@ class MountainProfile extends Component {
             this.props.navigation.state.params.EditDiscription = false
             this.getAdminDiscription(this.state.profile)
         }
-
-        // console.log(
-        //     'update', this.state
-        // )
-        // //  this.getProfileInformation()
-        // console.log('done')
-        // firebase.database().ref('/liftTicketDiscription/' + this.state.profile)
-        //     .once('value')
-        //     .then((snapshot) => {
-        //         console.log(snapshot)
-        //         const snap = snapshot.val()
-        //         let result = Object.keys(snap).map((key) => {
-        //             return snap[key];
-        //         });
-        //         this.setState({ liftTickets: result })
-
-        //     }).catch((e)=>{
-        //         console.log('err',JSON.stringify(e))
-        //     })
-
-
     }
     componentDidMount() {
         console.log(

@@ -38,7 +38,7 @@ export default class Login extends Component {
                 password: 'connor12'
             },
         ]
-        this.state = (Credentials[2])
+        this.state = (Credentials[0])
     }
     logInUser = (navigate) => {
         try {

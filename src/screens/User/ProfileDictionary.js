@@ -36,8 +36,7 @@ export default class ProfileDictionary extends Component {
                 for (const key in users) {
                     users[key].mountainId = key
                     // The correct way to change array state
-
-                    var joined = this.state.UserProfiles.concat(users);
+                    var joined = this.state.UserProfiles.concat(users[key]);
                     this.setState({ UserProfiles: joined })
                 }
             }).then(() => {

@@ -16,22 +16,17 @@ export default class MountainListUI extends Component {
         }
     }
     componentDidMount() {
-        console.log('asdasdasdasdasd', this.props)
         var pathReference = firebase.storage().ref(`${this.props.mountainId}/icon/mountainIcon`)
 
         pathReference.getDownloadURL().then(function (url) {
-            console.log('Got one!', url)
             this.setState({ image: url })
             this.setState({isCloud: true})
-            console.log('state!', this.state)
         }
             .bind(this))
             .catch((e) => {
-                console.log('!!!!!!!!!!!!!!!!', e)
                 var defaultImage = require('../../img/compLogo.jpg')
                 this.setState({ image: defaultImage })
             });
-        console.log('LOOK HERE', this.state)
     }
     render() {
         const { brand } = this.props;

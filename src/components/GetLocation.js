@@ -27,7 +27,6 @@ export default class NaviBar extends Component {
         let location = await Location.getCurrentPositionAsync({});
         let cords = location.coords
         let address = await Location.reverseGeocodeAsync(cords);
-        console.log('adn add', address[0].postalCode)
         this.setState({ address });
 
         if (address) {
@@ -43,12 +42,10 @@ export default class NaviBar extends Component {
 
         let location = await Location.geocodeAsync(this.state.input);
         let cords = location.coords
-        console.log('c', location, cords)
         let address = await Location
             .reverseGeocodeAsync(location[0]).catch((e) => {
                 console.log(e)
             });
-        console.log(address)
         this.setState({ address });
         if (address) {
             this.props.navigation.navigate('MountainFinder',
