@@ -17,36 +17,28 @@ export default class MultiSelectList extends React.PureComponent {
         this.setState({ data: this.props.data })
     }
 
-    renderHeader = () => {
-        return (
-            <View style={{
-                height: 110, backgroundColor: '#4286f4', alignItems: 'center'
-            }}>
-                <View style={{ width: '90%', backgroundColor: '#4286f4' }}>
-                    <SearchBar
-                        onChangeText={(text) => this.onChange(text)}
-                        placeholder="Type Here..."
-                    />
-                </View>
-            
-            </View>
-        )
-    };
+    // renderHeader = () => {
+    //     return (
+    //         <View style={{
+    //             height: 110, backgroundColor: '#4286f4', alignItems: 'center'
+    //         }}>
+
+
+    //         </View>
+    //     )
+    // };
     _onPressItem() {
         console.log('Hey button worked')
     }
     _renderItem = ({ item }) => (
-        
-        <TouchableHighlight
-        style={{backgroundColor:'white'}}
-        key={item.id} onPress={() =>
-            console.log('clicked')
-        } >
+
+        <View
+            style={{ backgroundColor: 'white' }}
+            key={item.id} >
             <UserProfileListUI
                 key={item.id}
                 id={item.id}
                 onPressItem={this._onPressItem}
-
                 weight={item.weight.amount}
                 weightMetric={item.weight.metric}
                 firstName={item.Name.first}
@@ -58,7 +50,7 @@ export default class MultiSelectList extends React.PureComponent {
                 navigation={this.props.navigation}
 
             />
-        </TouchableHighlight>
+        </View>
     );
 
 
@@ -68,9 +60,9 @@ export default class MultiSelectList extends React.PureComponent {
         return (
 
             <FlatList
-            style = {{backgroundColor:'#4286f4'}}
+                style={{ flex: 1 }}
                 key={this.key}
-                ListHeaderComponent={this.renderHeader}
+                // ListHeaderComponent={this.renderHeader}
                 data={this.state.data}
                 extraData={this.state}
                 keyExtractor={(item, index) => index}

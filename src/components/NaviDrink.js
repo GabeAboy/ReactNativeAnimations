@@ -25,7 +25,7 @@ export default class NaviBar extends Component {
                     }} name="angle-left" size={35} color="white" />
                     {
                         this.props.profile ?
-                            <Text style = {{marginLeft:5,fontSize:20}}> Profiles </Text>
+                            <Text style={{ marginLeft: 5, fontSize: 20, color: 'white', fontWeight: '100', letterSpacing: .5 }}> Profiles </Text>
                             :
                             null
                     }
@@ -41,7 +41,7 @@ const styles = {
         paddingTop: 20,
         paddingLeft: 30,
         width: '100%', height: 65,
-        flexDirection:'row',
-        alignItems:'center'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 }

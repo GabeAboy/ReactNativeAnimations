@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image,TouchableHighlight } from 'react-native';
 import GeoDistanceIcon from '../../../components/GeoDistanceIcon'
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import firebase from 'firebase'
 export default class UserProfileListUI extends Component {
     constructor(props) {
         super(props)
@@ -15,12 +15,12 @@ export default class UserProfileListUI extends Component {
             <View style={{
                 width: '100%', height: 110,
                 flexDirection: 'row',
-                justifyContent: 'center'
+                justifyContent: 'center',
             }}>
                 <View style={{
                     flex: 2, justifyContent: 'center', alignItems: 'center'
                 }}>
-                    <Image style={{ height: "100%", borderRadius: 40, width: "100%" }}
+                    <Image style={{ height: "70%", borderRadius: 40, width: "70%" }}
                         source={this.state.photoURL ? source = { uri: this.state.photoURL } : require('../../../../img/default-user.png')}
                         resizeMode='contain' />
 
@@ -79,18 +79,27 @@ export default class UserProfileListUI extends Component {
                     </View>
 
                 </View>
-                <View style={{
-                    flex: 1.1,
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    paddingTop: 10,
-                    borderBottomWidth: 1, borderColor: '#CED0CE'
-
-                }}>
+                <TouchableHighlight 
+                 onPress={() => {
+                    console.log('wrong state', this.props)
+                    firebase.database()
+                    .ref('/liftTicketDiscription/' + this.props.profile)
+                    .child(this.props.pathReference)
+                    .remove()
                     
-                </View>
+                    console.log(`Item ${this.props.title} deleted`)
+                    this.props.button()
+                }}
+                style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderBottomWidth: 1, borderColor: '#CED0CE',
+                }}>
+                    <Icon name="times" size={30} color="red" />
+                </TouchableHighlight>
                 <View style={{
-                    flex: 1.1,
+                    flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderBottomColor: "#CED0CE",

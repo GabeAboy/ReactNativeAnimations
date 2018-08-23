@@ -21,17 +21,17 @@ export default class ProfileDictionary extends Component {
         ];
     }
     componentDidMount() {
+        this.GetUserProfiles('TGHaNJrSMNZJ4z4lmAfNFuYZZC82')
         firebase.auth().onAuthStateChanged((profile) => {
-            this.GetUserProfiles(profile.uid)
         })
     }
     GetUserProfiles(userProfileId) {
-
 
         firebase.database()
             .ref(`/userProfiles/${userProfileId}`)
             .once('value')
             .then((snapshot) => {
+                console.log('entered the call')
                 users = snapshot.val()
                 for (const key in users) {
                     users[key].mountainId = key
@@ -40,7 +40,10 @@ export default class ProfileDictionary extends Component {
                     this.setState({ UserProfiles: joined })
                 }
             }).then(() => {
+                console.log('what the fuck?', this.state)
                 this.setState({ loading: false })
+            }).catch((e) => {
+                console.log('e', e)
             })
 
 
@@ -49,11 +52,9 @@ export default class ProfileDictionary extends Component {
         title: 'Welcome',
     };
 
-
     render() {
         const { navigate } = this.props.navigation;
         return (
-
             <View style={{ flex: 1 }}>
                 {
                     this.state.loading ?
@@ -62,33 +63,28 @@ export default class ProfileDictionary extends Component {
                         <View style={styles.container} >
                             <NaviDrink navigation={this.props.navigation} profile={true} />
 
-                            {/* <TouchableHighlight style={{
-                                height: 125,
-                                width: '100%',
-                                marginBottom: 5,
-                                borderWidth: 1,
-                                borderColor: 'gray',
-                                backgroundColor: 'white',
-                            }}
-                                onPress={() => {
-                                    console.log('ttt', this.state)
-                                }}
-                            > */}
                             <UserProfileFlatList data={this.state.UserProfiles} navigate={this.props.navigation} title='name' />
                             {/* </TouchableHighlight> */}
-                            <View style={{
-                                flex: .25,
-                                justifyContent: 'center',
-                                alignItems: 'flex-end'
-                            }} >
-                                <Icon
-                                    onPress={() => {
-                                        this.props.navigation.navigate('AddProfile', { navigation: this.props.navigation })
-                                    }}
-                                    name="user-plus" size={35} color="#9a9ea5" style={{ position: 'absolute' }} />
-                            </View>
+
                         </View>
                 }
+                <View style={{
+                    flex: .25,
+                    justifyContent: 'center',
+                    alignItems: 'flex-end',
+                    position: 'absolute',
+                    top: '85%',
+                    left: '60%',
+                    width: 100,
+                    height: 100,
+
+                }} >
+                    <Icon
+                        onPress={() => {
+                            this.props.navigation.navigate('AddProfile', { navigation: this.props.navigation })
+                        }}
+                        name="user-plus" size={35} color="#9a9ea5" style={{ position: 'absolute' }} />
+                </View>
             </View>
 
         )
@@ -102,6 +98,5 @@ const styles = StyleSheet.create({
         flex: 5,
         flexDirection: 'column',
         justifyContent: 'space-between',
-        backgroundColor: '#4286f4'
     },
 });

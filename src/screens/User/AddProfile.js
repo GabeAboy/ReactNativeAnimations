@@ -54,19 +54,17 @@ export default class AddProfile extends Component {
         });
     }
     componentDidMount() {
-        console.log(ThisYear)
 
     }
     updateDatabase() {
         let state = this.state
+        let props = this.props
         /**
          * 
          * 
          */
         firebase.auth().onAuthStateChanged(function (profile) {
-            console.log('state', state)
             if (profile) {
-                console.log('user', profile)
                 // User is signed in.
                 let userProfileId = profile.uid
                 firebase.database().ref(`userProfiles/${userProfileId}/${state.firstName+state.lastName}`).set({
@@ -95,7 +93,7 @@ export default class AddProfile extends Component {
                 }).then(() => {
                     console.log('success')
 
-                    this.props.navigation.goBack()
+                    props.navigation.goBack()
                 }).catch((error) => { console.log('error ', error) })
 
             } else {
