@@ -19,16 +19,21 @@ import PasswordReset from '../screens/Authentication/PasswordReset';
 import MountainProfile from '../screens/Mountain/MountainProfile'
 import EditProfile from '../screens/Mountain/EditDiscription'
 import EditLiftTickets from '../screens/Mountain/EditLiftTickets'
+import EditRentalEquipment from '../screens/Mountain/EditRentalEquipment'
 
 //Event handlers
 import LoadingGIF from '../components/eventHandlers/LoadingGIF'
 import DisplayError from '../components/eventHandlers/DisplayError'
 import GetLocation from '../components/GetLocation'
+import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipmentDisplay'
+
 const Routes = createStackNavigator(
     {
+        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay},
         LandingPage: { screen: LandingPage },
-        ProfileDictionary: { screen: ProfileDictionary },
+        EditRentalEquipment: { screen: EditRentalEquipment },
         AddProfile: { screen: AddProfile },
+        ProfileDictionary: { screen: ProfileDictionary },
         GetLocation: { screen: GetLocation },
         MountainFinder: { screen: MountainFinder },
         MountainProfile: { screen: MountainProfile },

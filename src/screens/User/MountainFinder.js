@@ -32,12 +32,8 @@ export default class MountainFinder extends Component {
             .ref('/adminDiscription')
             .once('value')
             .then((snapshot) => {
-                console.log('look I can do it', this.state)
-
                 users = snapshot.val()
-                console.log('user', users)
                 for (const key in users) {
-                    console.log('sdf', key)
                     users[key].mountainId = key
                     // State array should be updated this way see ProfileDictionary.js
                     
@@ -48,9 +44,7 @@ export default class MountainFinder extends Component {
             }).then(() => {
                 this.setState({ load: false })
             })
-        // Merge the two
-        // Compare location
-        // Call for images display
+
     }
 
     render() {

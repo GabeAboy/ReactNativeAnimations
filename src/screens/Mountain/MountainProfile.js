@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, Text, View, Image, Video, TouchableHighlight, F
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LodingGIF from '../../components/eventHandlers/LoadingGIF'
 import AdminLiftTicketDisplay from './AdminLiftTicketDisplay'
+import RentalEquipmentDisplay from './FlatList_UI/RentalEquipmentDisplay'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import Header from '../../components/Header'
@@ -43,6 +44,10 @@ class MountainProfile extends Component {
             this.getLiftTickets(this.state.profile)
             this.setState({ EditLiftTickets: false })
         }
+        if(this.state.EditRentalEquipment){
+            this.getRentalEquipment(this.state.profile)
+            this.setState({EditRentalEquipment:false})
+        }
         console.log('nav', this.props.navigation.state.params.EditDiscription)
         if (this.props.navigation.state.params.EditDiscription) {
             console.log('trussse')
@@ -69,6 +74,7 @@ class MountainProfile extends Component {
         this.getAdminDiscription(thingProfile)
         this.getLiftTickets(thingProfile)
         this.getProfileImage(thingProfile)
+        this.getRentalEquipment(thingProfile)
         this.setState({ dataLoaded: true })
     }
     getCurrentLoggedinUser = async () => {
@@ -192,6 +198,32 @@ class MountainProfile extends Component {
                 })
         });
         let answer = await liftTickets;
+        // return answer;
+    }
+
+    getRentalEquipment = async (mountainAdminId) => {
+        let liftTickets = new Promise((resolve, reject) => {
+            firebase.database().ref('/rentalEquipment/' + this.state.profile)
+                .once('value')
+                .then((snapshot) => {
+                    if (!_.isEmpty(snapshot.val())) {
+                        const snap = snapshot.val()
+                        let result = Object.keys(snap).map((key) => {
+                            snap[key].pathReference = key
+                            return snap[key];
+                        });
+                        console.log("\n\nRental ",result)
+                        this.setState({ rentalEqupment: result })
+                        resolve(result)
+                    } else {
+                        this.setState({ rentalEqupment: [] })
+                        resolve()
+                    }
+                }).catch((e) => {
+                    reject(e)
+                })
+        });
+        let answer = await rentalEqupment;
         // return answer;
     }
     getProfileImage = async (mountainAdminId) => {
@@ -509,6 +541,85 @@ class MountainProfile extends Component {
                                                 navigation: this.props.navigation,
                                                 button: () => {
                                                     this.setState({ EditLiftTickets: true })
+                                                }
+
+
+                                            })
+                                        }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
+                                            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
+                                                <Icon name='pencil-square-o'
+                                                    size={15}
+                                                    color="black"
+                                                    style={{ paddingLeft: 20 }}
+                                                />
+                                                <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Edit</Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+
+
+                                </View>
+
+                                <View style={{
+                                    height: SCREEN_HEIGHT - 73,
+                                    width: SCREEN_WIDTH,
+                                    borderTopWidth: 1,
+                                    borderBottomWidth: 1,
+                                    marginTop: 10,
+                                    borderColor: 'gray',
+                                    backgroundColor: 'white'
+                                }} >
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
+                                        height: SCREEN_HEIGHT / 15,
+                                        width: SCREEN_WIDTH,
+                                        borderBottomColor: 'gray',
+                                        borderBottomWidth: 1,
+
+                                    }}>
+                                        <Icon name='wrench'
+                                            size={15}
+                                            color="black"
+                                            style={{ paddingLeft: 20 }}
+                                        />
+                                        <Text style={{ paddingLeft: 15, fontWeight: '500' }}>Rental Equipment Management</Text>
+
+                                    </View>
+                                    <FlatList
+                                        style={{ backgroundColor: '#4286f4' }}
+                                        data={this.state.liftTickets}// Comes from state and before that didMount
+                                        renderItem={({ item }) => <RentalEquipmentDisplay
+                                            button={() => {
+                                                this.setState({ EditRental: true })
+                                            }}
+                                            key={item.key}
+                                            title={item.title}
+                                            brand={item.brand}
+                                            price={item.price}
+                                            size={item.size}
+                                            type={item.type}
+                                            stars={item.stars}
+                                            profile={this.state.profile}
+                                            navigation={this.props.navigation}
+                                        />}
+                                    />
+
+                                    <View style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        height: SCREEN_HEIGHT / 15,
+                                        width: SCREEN_WIDTH,
+                                        borderBottomWidth: 1,
+                                        borderBottomColor: 'gray'
+                                    }} >
+                                        <TouchableHighlight onPress={() => {
+                                            this.props.navigation.navigate('EditRentalEquipment', {
+                                                navigation: this.props.navigation,
+                                                button: () => {
+                                                    this.setState({ EditRentalEquipment: true })
                                                 }
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image,TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 import GeoDistanceIcon from '../../../components/GeoDistanceIcon'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase'
@@ -9,6 +9,10 @@ export default class UserProfileListUI extends Component {
         this.state = {
             photoURL: false
         }
+
+    }
+    componentDidMount() {
+        console.log("Here is where I get all ", this.props)
     }
     render() {
         return (
@@ -45,7 +49,7 @@ export default class UserProfileListUI extends Component {
                                 fontSize: 25
                             }
                         }>
-                            {'xx'}
+                            {this.props.firstName + " " + this.props.lastName}
                         </Text>
                     </View>
 
@@ -61,9 +65,9 @@ export default class UserProfileListUI extends Component {
                         <View style={{
                             flex: 1
                         }}>
-                            <Text style={styles.titleText}>Open Trails</Text>
+                            <Text style={styles.titleText}>Weight</Text>
                             <Text style={styles.subText}>
-                                xxxx/xxxx
+                                {this.props.weight + this.props.weightMetric}
                             </Text>
                         </View>
 
@@ -72,42 +76,57 @@ export default class UserProfileListUI extends Component {
                             alignItems: 'center'
 
                         }}>
-                            <Text style={styles.titleText}>Snow</Text>
-                            <Text style={styles.subText}>xxxx</Text>
+                            <Text style={styles.titleText}>Shoe Size</Text>
+                            <Text style={styles.subText}>{this.props.shoeSize + this.props.shoeMetric}</Text>
                         </View>
 
                     </View>
 
                 </View>
-                <TouchableHighlight 
-                 onPress={() => {
-                    console.log('wrong state', this.props)
-                    firebase.database()
-                    .ref('/liftTicketDiscription/' + this.props.profile)
-                    .child(this.props.pathReference)
-                    .remove()
-                    
-                    console.log(`Item ${this.props.title} deleted`)
-                    this.props.button()
-                }}
-                style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderBottomWidth: 1, borderColor: '#CED0CE',
-                }}>
+                <TouchableHighlight
+                    onPress={() => {
+                        console.log('wrong state', this.props)
+                        var mountainId = this.props.firstName+this.props.lastName
+                        firebase.auth().onAuthStateChanged((profile) => {
+                            if (profile) {
+                                // User is signed in.
+                                console.log('entered',mountainId,profile.uid)
+                                firebase.database()
+                                    .ref(`/userProfiles/${profile.uid}`)
+                                    .child(mountainId)
+                                    .remove()
+                                console.log(`Item ${this.props.firstName} deleted`)
+                                this.props.onPressItem()
+
+
+                            } else {
+                                // No user is signed in.
+                            }
+                        });
+
+                    }}
+                    style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderBottomWidth: 1, borderColor: '#CED0CE',
+                    }}>
                     <Icon name="times" size={30} color="red" />
                 </TouchableHighlight>
-                <View style={{
+                <TouchableHighlight style={{
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderBottomColor: "#CED0CE",
                     borderBottomWidth: 1
-                }}>
+                }}
+                onPress={()=>{
+                    console.log("LETS EDIT")
+                }}
+                >
                     <Icon name="pencil-square-o" size={30} color="#CED0CE" />
 
-                </View>
+                </TouchableHighlight>
             </View>
             // <View style={{ flex: 1.4, flexDirection: 'row',backgroundColor:'white' }}>
             //     <View style={{ flex: 1 }} >

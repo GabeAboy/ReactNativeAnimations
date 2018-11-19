@@ -11,10 +11,11 @@ export default class MultiSelectList extends React.PureComponent {
         this.state = {
             
         }
+        console.ignoredYellowBox = [
+            'Setting a timer'
+            ];
     }
     componentDidMount() {
-        // Delete me
-        console.log('props',this.props)
         this.setState({data:this.props.data})
     }
 
@@ -74,7 +75,7 @@ export default class MultiSelectList extends React.PureComponent {
                 ListHeaderComponent={this.renderHeader}
                 data={this.state.data}
                 extraData={this.state}
-                keyExtractor={(item, index) => index}
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={this._renderItem}
 
             />

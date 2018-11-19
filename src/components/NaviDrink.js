@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class NaviBar extends Component {
     componentDidMount() {
-        console.log('nah', this.props.navigation)
     }
     constructor(props) {
         super(props)

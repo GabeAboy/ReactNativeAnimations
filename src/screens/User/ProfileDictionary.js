@@ -6,46 +6,81 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NaviDrink from '../../components/NaviDrink'
 import UserProfileFlatList from './UserProfiles/UserProfileFlatList'
 import LoadingGIF from '../../components/eventHandlers/LoadingGIF'
+import { withNavigationFocus } from 'react-navigation';
 
-export default class ProfileDictionary extends Component {
+class ProfileDictionary extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: 'hello',
             UserProfiles: [],
             loading: true,
+            newUser: false
         }
         this.GetUserProfiles.bind(this)
         console.ignoredYellowBox = [
             'Setting a timer'
         ];
     }
+    componentDidUpdate() {
+        console.log('Did update!', this.state.newUser)
+        if (this.state.newUser) {
+            this.GetUserProfiles(this.state.userProfileId)
+            this.setState({ newUser: false })
+            console.log('end', this.state)
+        }
+    }
     componentDidMount() {
-        this.GetUserProfiles('TGHaNJrSMNZJ4z4lmAfNFuYZZC82')
+
         firebase.auth().onAuthStateChanged((profile) => {
+            this.setState({userProfileId:profile.uid})
+            this.GetUserProfiles(profile.uid)
         })
     }
-    GetUserProfiles(userProfileId) {
+    button = () =>{
+        this.setState({newUser:true})
+    }
+    
+    GetUserProfiles = async (userProfileId) => {
+        let DoesUserHaveData = new Promise((resolve, reject) => {
+            firebase.database()
+                .ref(`/userProfiles`)
+                .child(userProfileId)
+                .once('value')
+                .then((snapshot) => {
+                    if (!_.isEmpty(snapshot.val())) {
 
-        firebase.database()
-            .ref(`/userProfiles/${userProfileId}`)
-            .once('value')
-            .then((snapshot) => {
-                console.log('entered the call')
-                users = snapshot.val()
-                for (const key in users) {
-                    users[key].mountainId = key
-                    // The correct way to change array state
-                    var joined = this.state.UserProfiles.concat(users[key]);
-                    this.setState({ UserProfiles: joined })
-                }
-            }).then(() => {
-                console.log('what the fuck?', this.state)
-                this.setState({ loading: false })
-            }).catch((e) => {
-                console.log('e', e)
-            })
+                        console.log(snapshot)
+                        const snap = snapshot.val()
 
+                        let result = Object.keys(snap).map((key) => {
+                            snap[key].pathReference = key
+                            return snap[key];
+                        });
+                        this.setState({ UserProfiles: result })
+                        resolve(result)
+                        // for (const key in users) {
+                        //     users[key].mountainId = key
+                        //     // The correct way to change array state
+                        //     var joined = this.state.UserProfiles.concat(users[key]);
+                        //     this.setState({ UserProfiles: joined })
+                        //}
+                    }
+                    else{
+                        this.setState({ UserProfiles: [] })
+                        resolve()
+                    }
+                }).then(() => {
+                    resolve()
+                }).catch((e) => {
+                    reject(e)
+                    console.log('e', e)
+                })
+        })
+
+        let answer = await DoesUserHaveData
+        this.setState({ loading: false })
+        console.log("here is answer ", answer)
 
     }
     static navigationOptions = {
@@ -63,7 +98,7 @@ export default class ProfileDictionary extends Component {
                         <View style={styles.container} >
                             <NaviDrink navigation={this.props.navigation} profile={true} />
 
-                            <UserProfileFlatList data={this.state.UserProfiles} navigate={this.props.navigation} title='name' />
+                            <UserProfileFlatList data={this.state.UserProfiles} updateFunction={this.button} profileId={this.props.userProfileId} navigate={this.props.navigation} title='name' />
                             {/* </TouchableHighlight> */}
 
                         </View>
@@ -81,7 +116,12 @@ export default class ProfileDictionary extends Component {
                 }} >
                     <Icon
                         onPress={() => {
-                            this.props.navigation.navigate('AddProfile', { navigation: this.props.navigation })
+                            this.props.navigation.navigate('AddProfile', {
+                                navigation: this.props.navigation,
+                                button: () => {
+                                    this.setState({ newUser: true })
+                                }
+                            })
                         }}
                         name="user-plus" size={35} color="#9a9ea5" style={{ position: 'absolute' }} />
                 </View>
@@ -91,6 +131,7 @@ export default class ProfileDictionary extends Component {
     }
 };
 
+export default withNavigationFocus(ProfileDictionary)
 
 const styles = StyleSheet.create({
 

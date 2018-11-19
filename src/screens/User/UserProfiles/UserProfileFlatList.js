@@ -15,6 +15,7 @@ export default class MultiSelectList extends React.PureComponent {
     componentDidMount() {
         // Delete me
         this.setState({ data: this.props.data })
+        console.log('Show errors', this.state,this.props)
     }
 
     // renderHeader = () => {
@@ -28,23 +29,31 @@ export default class MultiSelectList extends React.PureComponent {
     //     )
     // };
     _onPressItem() {
-        console.log('Hey button worked')
+        console.log('pressed')
+        this.props.updateFunction()
     }
+    onPressItem = this._onPressItem.bind(this)
     _renderItem = ({ item }) => (
-
+        
         <View
-            style={{ backgroundColor: 'white' }}
+        
+        style={{ backgroundColor: 'white' }}
             key={item.id} >
             <UserProfileListUI
                 key={item.id}
                 id={item.id}
-                onPressItem={this._onPressItem}
-                weight={item.weight.amount}
-                weightMetric={item.weight.metric}
-                firstName={item.Name.first}
-                lastName={item.Name.last}
-                shoeSize={item.shoeSize.size}
-                shoeMetric={item.shoeSize.metric}
+                onPressItem={this.onPressItem}
+                updateFunction={item.updateFunction}
+                weight={item.weight.amount?item.weight.amount:0}
+                weightMetric={item.weight.metric?item.weight.metric:0}
+                firstName={item.Name.first?item.Name.first:'default'}
+                lastName={item.Name.last?item.Name.last:'default'}
+                shoeSize={item.shoeSize.size?item.shoeSize.size:0}
+                shoeMetric={item.shoeSize.metric?item.shoeSize.metric:0}
+                mountainId={item.mountainId}
+                userProfileId={this.props.userProfileId}
+                Birthday={item.Birthday}
+               
                 //selected={!!this.state.selected.get(item.id)}
 
                 navigation={this.props.navigation}
@@ -63,9 +72,10 @@ export default class MultiSelectList extends React.PureComponent {
                 style={{ flex: 1 }}
                 key={this.key}
                 // ListHeaderComponent={this.renderHeader}
-                data={this.state.data}
+                data={this.props.data}
+                updateFunction={this.props.updateFunction}
                 extraData={this.state}
-                keyExtractor={(item, index) => index}
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={this._renderItem}
 
             />

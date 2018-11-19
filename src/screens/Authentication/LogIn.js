@@ -38,7 +38,7 @@ export default class Login extends Component {
                 password: 'connor12'
             },
         ]
-        this.state = (Credentials[0])
+        this.state = (Credentials[2])
     }
     logInUser = (navigate) => {
         try {
@@ -48,13 +48,12 @@ export default class Login extends Component {
             }
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then((result) => {
-                    console.log('res',result)
                     const currentUser = result.user.uid;
+                    console.log("Logged in user ",currentUser)
                     firebase.database()
                         .ref('/permissions/' + currentUser)
                         .once('value')
                         .then((snapshot) => {
-                            console.log('Logged in',snapshot)
                             snapshot.val() ?
                                 navigate('MountainProfile', { navigation: navigate })
                                 : navigate('MountainFinder', { navigation: navigate })
