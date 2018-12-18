@@ -22,16 +22,16 @@ import { Container, Header, Tab, Tabs, ScrollableTab } from 'native-base';
 import Tab1 from './Tabs/tabOne';
 import Tab2 from './Tabs/tabTwo';
 import Tab3 from './Tabs/tabThree';
-
+import NaviBar from '../../components/NaviBar';
 
 export default class MountainStore extends Component {
   render() {
     return (
-      <View style={styles.ball}>
         <Container>
-          <Header hasTabs />
-          <Tabs renderTabBar={() => <ScrollableTab />}>
-            <Tab heading="Tab1">
+          <NaviBar/>
+          {/* <Header searchBar={true} hasTabs /> */}
+          <Tabs renderTabBar={() => <ScrollableTab style = {{backgroundColor:'blue'}} />}>
+            <Tab activeTabStyle={{backgroundColor: 'black'}} heading="Tab1">
               <Tab1 />
             </Tab>
             <Tab heading="Tab2">
@@ -42,12 +42,12 @@ export default class MountainStore extends Component {
             </Tab>
           </Tabs>
         </Container>
-      </View>
     );
   }
 }
 const styles = {
   ball: {
+    
     flex: 1, justifyContent: 'space-around'
   }
 }

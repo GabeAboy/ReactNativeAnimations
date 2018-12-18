@@ -29,6 +29,7 @@ import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipm
 
 const Routes = createStackNavigator(
     {
+        MountainStore: { screen: MountainStore },
         LandingPage: { screen: LandingPage },
         RentalEquipmentDisplay: { screen: RentalEquipmentDisplay},
         EditRentalEquipment: { screen: EditRentalEquipment },
@@ -44,7 +45,6 @@ const Routes = createStackNavigator(
         MountainRegistration: { screen: MountainRegistration },
         EditProfile: { screen: EditProfile },
 
-        MountainStore: { screen: MountainStore },
         //Registrations
         LogIn: { screen: LogIn },
         SignUp: { screen: SignUp },
