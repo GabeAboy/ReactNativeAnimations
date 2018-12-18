@@ -40,13 +40,13 @@ class MountainProfile extends Component {
         //same for tickets
         console.log('entered the update')
         if (this.state.EditLiftTickets) {
-            console.log('Entered the update tickets ')
             this.getLiftTickets(this.state.profile)
             this.setState({ EditLiftTickets: false })
         }
-        if(this.state.EditRentalEquipment){
+        if (this.state.EditRentalEquipment) {
+            console.log('UPDATE')
             this.getRentalEquipment(this.state.profile)
-            this.setState({EditRentalEquipment:false})
+            this.setState({ EditRentalEquipment: false })
         }
         console.log('nav', this.props.navigation.state.params.EditDiscription)
         if (this.props.navigation.state.params.EditDiscription) {
@@ -212,11 +212,11 @@ class MountainProfile extends Component {
                             snap[key].pathReference = key
                             return snap[key];
                         });
-                        console.log("\n\nRental ",result)
-                        this.setState({ rentalEqupment: result })
+                        console.log("\n\nRental ", result)
+                        this.setState({ rentalEquipment: result })
                         resolve(result)
                     } else {
-                        this.setState({ rentalEqupment: [] })
+                        this.setState({ rentalEquipment: [] })
                         resolve()
                     }
                 }).catch((e) => {
@@ -589,21 +589,25 @@ class MountainProfile extends Component {
                                     </View>
                                     <FlatList
                                         style={{ backgroundColor: '#4286f4' }}
-                                        data={this.state.liftTickets}// Comes from state and before that didMount
-                                        renderItem={({ item }) => <RentalEquipmentDisplay
-                                            button={() => {
-                                                this.setState({ EditRental: true })
-                                            }}
-                                            key={item.key}
-                                            title={item.title}
-                                            brand={item.brand}
-                                            price={item.price}
-                                            size={item.size}
-                                            type={item.type}
-                                            stars={item.stars}
-                                            profile={this.state.profile}
-                                            navigation={this.props.navigation}
-                                        />}
+                                        data={this.state.rentalEquipment}// Comes from state and before that didMount
+                                        renderItem={({ item }) =>
+                                            <RentalEquipmentDisplay
+                                                button={() => {
+                                                    this.setState({ EditRentalEquipment: true })
+                                                }}
+                                                key={item.key}
+                                                title={item.title}
+                                                brand={item.brand}
+                                                price={item.price}
+                                                size={item.size}
+                                                type={item.type}
+                                                starCount={item.starCount}
+                                                category={item.category}
+                                                profile={this.state.profile}
+                                                navigation={this.props.navigation}
+                                            />}
+                                    // contentContainerStyle={{ flexGrow: 1 }}
+
                                     />
 
                                     <View style={{
@@ -619,6 +623,7 @@ class MountainProfile extends Component {
                                             this.props.navigation.navigate('EditRentalEquipment', {
                                                 navigation: this.props.navigation,
                                                 button: () => {
+                                                    console.log("here we got it")
                                                     this.setState({ EditRentalEquipment: true })
                                                 }
 

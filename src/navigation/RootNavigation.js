@@ -29,8 +29,8 @@ import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipm
 
 const Routes = createStackNavigator(
     {
-        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay},
         LandingPage: { screen: LandingPage },
+        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay},
         EditRentalEquipment: { screen: EditRentalEquipment },
         AddProfile: { screen: AddProfile },
         ProfileDictionary: { screen: ProfileDictionary },

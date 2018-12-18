@@ -23,6 +23,7 @@ export default class EditRentalEquipment extends Component {
             size: "",
             type: "",
             starCount: 3.5,
+            category: "",
             dataLoaded: true
         });
 
@@ -82,6 +83,7 @@ export default class EditRentalEquipment extends Component {
                     brand: this.state.brand,
                     price: this.state.price,
                     currency: this.state.currency,
+                    category: this.state.category,
                     sex: this.state.sex,
                     size: this.state.size,
                     type: this.state.type,
@@ -207,23 +209,18 @@ export default class EditRentalEquipment extends Component {
                                                     100,
                                                 marginLeft: 5
                                             }}
-                                            selectedValue='1'
+                                            selectedValue={this.state.category}
                                             onValueChange={
-                                                (metric) => {
-                                                    this.setState(prevState => ({
-                                                        height: {
-                                                            ...prevState.height,
-                                                            metric: metric
-                                                        }
-                                                    }))
+                                                (category) => {
+                                                    this.setState({ category: category })
                                                 }
                                             }
                                         >
-                                            <Picker.Item value='1' label='Ski' />
-                                            <Picker.Item value='3' label='Snowboard' />
-                                            <Picker.Item value='f' label='Boots' />
-                                            <Picker.Item value='f' label='Poles' />
-                                            <Picker.Item value='f' label='Helmet' />
+                                            <Picker.Item value='Ski' label='Ski' />
+                                            <Picker.Item value='Snowboard' label='Snowboard' />
+                                            <Picker.Item value='Boot' label='Boots' />
+                                            <Picker.Item value='Pole' label='Poles' />
+                                            <Picker.Item value='Helmet' label='Helmet' />
 
                                         </Picker>
                                     </View>
