@@ -22,13 +22,17 @@ export default class FriendItem extends React.Component {
                 backgroundColor: 'white'
             }}
                 onPress={() => {
-                    this.props.navigation.navigate('EditLiftTickets', {
-                        properties: this.props,
-                        pathReference:this.props.pathReference,
-                        isEdit: true,
-                        button: this.props.button
-                    })
-                    console.log('asdasdasd!!!!!', this.props)
+                    if (this.props.commerse) {
+                        console.log('add ticket to cart')
+                    }
+                    else {
+                        this.props.navigation.navigate('EditLiftTickets', {
+                            properties: this.props,
+                            pathReference: this.props.pathReference,
+                            isEdit: true,
+                            button: this.props.button
+                        })
+                    }
                 }}
             >
                 <View style={{ flex: 1 }}>
@@ -49,27 +53,33 @@ export default class FriendItem extends React.Component {
                             alignItems: 'flex-end',
                             justifyContent: 'center',
                         }} >
-                            <TouchableHighlight
-                                onPress={() => {
-                                    console.log('wrong state', this.props)
-                                    firebase.database()
-                                    .ref('/liftTicketDiscription/' + this.props.profile)
-                                    .child(this.props.pathReference)
-                                    .remove()
-                                    
-                                    console.log(`Item ${this.props.title} deleted`)
-                                    this.props.button()
-                                }}
-                                style={{
-                                    height: 20, width: 20,
-                                    backgroundColor: 'red',
-                                    borderRadius: 5,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
+                            {
+                                !this.props.commerse ?
 
-                                }}>
-                                <Icon name="times" size={15} color="#CED0CE" />
-                            </TouchableHighlight>
+                                    <TouchableHighlight
+                                        onPress={() => {
+                                            console.log('wrong state', this.props)
+                                            firebase.database()
+                                                .ref('/liftTicketDiscription/' + this.props.profile)
+                                                .child(this.props.pathReference)
+                                                .remove()
+
+                                            console.log(`Item ${this.props.title} deleted`)
+                                            this.props.button()
+                                        }}
+                                        style={{
+                                            height: 20, width: 20,
+                                            backgroundColor: 'red',
+                                            borderRadius: 5,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+
+                                        }}>
+                                        <Icon name="times" size={15} color="#CED0CE" />
+                                    </TouchableHighlight>
+                                    :
+                                    null
+                            }
                         </View>
 
                     </View>

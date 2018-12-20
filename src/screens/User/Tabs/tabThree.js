@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet, Text, View, Image, Video } from 'react-native';
 import TextCarousel from 'react-native-text-carousel';
 import * as firebase from 'firebase'
+import RentalFlatList from '../FlatList/RentalFlatList'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-export default class tabThree extends Component {
+export default class tabTwo extends Component {
     constructor() {
         super();
         console.ignoredYellowBox = [
@@ -14,10 +15,10 @@ export default class tabThree extends Component {
         ];
     }
     componentDidUpdate() {
-        console.log('update')
+        console.log('update',this.props)
     }
     componentDidMount() {
-        console.log('moiunt')
+        console.log('moiunt',this.props)
     }
     static navigationOptions = {
         title: 'Welcome',
@@ -25,8 +26,9 @@ export default class tabThree extends Component {
     render() {
         return (
             <View style={styles.container} >
-
+                <RentalFlatList data={this.props.data}  title='name' />
             </View>
+            // updateFunction={this.button} profileId={this.props.userProfileId} navigate={this.props.navigation}
         )
     }
 };
@@ -35,6 +37,6 @@ export default class tabThree extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'blue'
+        backgroundColor: 'red'
     }
 });

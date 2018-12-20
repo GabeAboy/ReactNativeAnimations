@@ -40,6 +40,7 @@ export default class RentalEquipmentDisplay extends React.Component {
     render() {
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
+            
                 <TouchableHighlight style={{
                     height: 125,
                     width: '100%',
@@ -49,12 +50,18 @@ export default class RentalEquipmentDisplay extends React.Component {
                     backgroundColor: 'white',
                 }}
                     onPress={() => {
-                        this.props.navigation.navigate('EditRentalEquipment', {
-                            properties: this.props,
-                            pathReference: this.props.pathReference,
-                            isEdit: true,
-                            button: this.props.button
-                        })
+                        if(this.props.commerse){
+                            //add to cart 
+                            console.log('add to cart')
+                        }
+                        else{
+                            this.props.navigation.navigate('EditRentalEquipment', {
+                                properties: this.props,
+                                pathReference: this.props.pathReference,
+                                isEdit: true,
+                                button: this.props.button
+                            })
+                        }
                     }}
                 >
                     <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -73,34 +80,40 @@ export default class RentalEquipmentDisplay extends React.Component {
                             />
                         </View>
                         <View style={{ flex: 4 }}>
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'space-between', justifyContent: 'space-between' }} >
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} >
                                 <Text style={style.title}>{'IBEX 9000'}</Text>
-                                <TouchableHighlight
-                                    onPress={() => {
-                                        var rentalProduct = this.props.title
-                                        firebase.auth().onAuthStateChanged((profile) => {
-                                            if (profile) {
-                                                // User is signed in.
-                                                firebase.database()
-                                                    .ref(`/rentalEquipment/${profile.uid}`)
-                                                    .child(rentalProduct)
-                                                    .remove()
-                                                console.log(`Item ${this.props.title} deleted`)
-                                                this.props.button()// for reload
-                                            } else {
-                                                // No user is signed in.
-                                            }
-                                        });
+                                {
+                                    !this.props.commerse ?
+                                        <TouchableHighlight
+                                            onPress={() => {
+                                                var rentalProduct = this.props.title
+                                                firebase.auth().onAuthStateChanged((profile) => {
+                                                    if (profile) {
+                                                        // User is signed in.
+                                                        firebase.database()
+                                                            .ref(`/rentalEquipment/${profile.uid}`)
+                                                            .child(rentalProduct)
+                                                            .remove()
+                                                        console.log(`Item ${this.props.title} deleted`)
+                                                        this.props.button()// for reload
+                                                    } else {
+                                                        // No user is signed in.
+                                                    }
+                                                });
 
-                                    }}
-                                    style={{
-                                        paddingRight: 5,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        borderColor: '#CED0CE',
-                                    }}>
-                                    <Icon name="times" size={30} color="red" />
-                                </TouchableHighlight>
+                                            }}
+                                            style={{
+                                                paddingRight: 5,
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                borderColor: '#CED0CE',
+                                            }}>
+                                            <Icon name="times" size={30} color="red" />
+                                        </TouchableHighlight>
+                                        :
+                                        null
+                                }
+
                             </View>
                             <View style={{ flex: 1 }} >
                                 <Text style={style.title}>{'Burton'}</Text>
@@ -116,9 +129,9 @@ export default class RentalEquipmentDisplay extends React.Component {
                                 </View>
                                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }} >
                                     <View style={{ width: '80%', height: '100%', backgroundColor: '#6496e5' }}>
-                                        <View style={{ flexDirection: 'row',alignItems:'center' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                                            <Text style={{ fontSize: 30 }}>$</Text><Text style = {{fontSize:15}}>{'30'} {'USD'}</Text>
+                                            <Text style={{ fontSize: 30 }}>$</Text><Text style={{ fontSize: 15 }}>{'30'} {'USD'}</Text>
                                         </View>
                                         <View>
 

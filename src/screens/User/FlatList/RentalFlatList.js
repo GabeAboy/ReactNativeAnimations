@@ -4,7 +4,7 @@ import { SearchBar } from 'react-native-elements'
 import RentalListUI from '../../Mountain/FlatList_UI/RentalEquipmentDisplay';
 
 
-export default class MultiSelectList extends React.PureComponent {
+export default class RentalFLatList extends React.PureComponent {
 
     constructor(props) {
         super(props);
@@ -47,6 +47,7 @@ export default class MultiSelectList extends React.PureComponent {
                         category={item.category}
                         profile={this.state.profile}
                         navigation={this.props.navigation}
+                        commerse={true}
                     />}
             // contentContainerStyle={{ flexGrow: 1 }}
 

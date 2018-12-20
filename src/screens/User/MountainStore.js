@@ -9,21 +9,21 @@ import firebase from 'firebase'
 
 import RentalEquipmentDisplay from '../Mountain/FlatList_UI/RentalEquipmentDisplay'
 export default class MountainStore extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state={
-      LiftTickets:[]
+    this.state = {
+      LiftTickets: [],
+      Rental:[]
     }
   }
   componentDidMount() {
-    console.log('hello', this.props.navigation.state.params.data.mountainId)
     this.getTicketData()
+    this.getRentalData()
   }
 
   getTicketData = async () => {
     let TicketData = new Promise((resolve, reject) => {
       //Mountain ID passed down as props
-      console.log('log ', this.props.navigation.state.params.data.mountainId)
       firebase.database().ref('/liftTicketDiscription/')
         .child(this.props.navigation.state.params.data.mountainId)
         .once('value')
@@ -38,7 +38,7 @@ export default class MountainStore extends Component {
               return snap[key];
             });
             this.setState({ LiftTickets: result })
-            console.log("\n\n\ndsaaddsa",result)
+            console.log("\n\n\n Tickets ", result)
             resolve(result)
             // for (const key in users) {
             //     users[key].mountainId = key
@@ -74,16 +74,24 @@ export default class MountainStore extends Component {
         .child(this.props.navigation.state.params.data.mountainId)
         .once('value')
         .then((snapshot) => {
-          //this.setState(snapshot)
-          if (!_.isEmpty(snapshot)) {
-            console.log(true, snapshot)
-            //     this.setState({ address: snapshot.val().address })
-            //     this.setState({ businessName: snapshot.val().businessName })
-            //     this.setState({ demoninator: snapshot.val().demoninator })
-            //     this.setState({ numerator: snapshot.val().numerator })
-            //     this.setState({ snowCondition: snapshot.val().snowCondition })
-          }
+          if (!_.isEmpty(snapshot.val())) {
 
+            console.log('Rental',snapshot)
+            const snap = snapshot.val()
+
+            let result = Object.keys(snap).map((key) => {
+              snap[key].pathReference = key
+              return snap[key];
+            });
+            this.setState({ Rental: result })
+            console.log("\n\n\ndsaaddsa", result)
+            resolve(result)
+            
+          }
+          else {
+            this.setState({ Rental: [] })
+            resolve()
+          }
         }).then(() => {
 
           this.setState({ dataLoaded: true })
@@ -108,10 +116,10 @@ export default class MountainStore extends Component {
             <Tab1 />
           </Tab>
           <Tab tabStyle={{ flex: 1 }} activeTabStyle={{ flex: 1 }} heading="Tickets">
-            <Tab2 data={this.state.LiftTickets}/>
+            <Tab2 data={this.state.LiftTickets} />
           </Tab>
           <Tab tabStyle={{ flex: 1 }} activeTabStyle={{ flex: 1 }} heading="Rentals">
-            <Tab3 />
+            <Tab3 data={this.state.Rental}/>
           </Tab>
         </Tabs>
       </Container>
