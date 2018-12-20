@@ -12,7 +12,9 @@ export default class NaviBar extends Component {
             active: false
         }
     }
-    componentDidMount(){
+    //TODO Checkout should not display a circle until an item has been added
+    //Should disapear when there aren't any items in the shopping cart
+    componentDidMount() {
     }
 
     render() {
@@ -21,12 +23,11 @@ export default class NaviBar extends Component {
 
                 <View style={{
                     flex: 3,
-                    flexDirection: 'row'
+                    flexDirection: 'row', alignItems: 'center',
                 }}>
-                    <View style={styles.burgerKing}>
-                        <View style={{
-                            paddingTop: 8, paddingLeft: 20
-                        }}>
+                    <View style={{ height: '100%', width: 100, paddingLeft:10, flexDirection: 'row', justifyContent: 'center', }}>
+                        <View style={styles.burgerKing}>
+
                             <Hamburger active={this.state.active}
                                 type='spinCross'
                                 color='black'
@@ -34,39 +35,34 @@ export default class NaviBar extends Component {
                                     this.setState({ active: !this.state.active })
                                     this.props.toggleDrawer()
                                 }} />
-                        </View>
-                        {
-                            this.props.company ?
-                                <View>
-                                    <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }}
-                                        source={{ uri: this.props.picture }}
-                                        resizeMode='contain' />
 
-                                    <Text style={{
-                                        paddingTop: 15,
-                                        paddingLeft: 5
-                                    }}>{this.props.company}</Text>
+                            {
+                                this.props.company ?
+                                    <View>
+                                        <Image style={{ flex: 1, position: 'absolute', top: 10, left: 70, height: 30, width: 75 }}
+                                            source={{ uri: this.props.picture }}
+                                            resizeMode='contain' />
 
-                                </View>
-                                :
-                                <TouchableHighlight
-                                    onPress={
-                                        
-                                        () => {
-                                            console.log('thissdasd',this.props)
-                                            //navigate to new. this should be shared component
-                                            this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
+                                        <Text style={{
+                                            paddingTop: 15,
+                                            paddingLeft: 5
+                                        }}>{this.props.company}</Text>
+
+                                    </View>
+                                    :
+                                    <TouchableHighlight
+                                        onPress={
+                                            () => {
+                                                this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
+                                            }
                                         }
-                                    }
-                                    style={{
-                                        flex: 1,
-                                    }} >
-                                    <View style={{
-                                        flex: 1,
-                                    }}>
+                                        style={{
+                                            flex: 1, justifyContent: 'center'
+                                        }} >
+
                                         <View style={{
                                             justifyContent: 'flex-start',
-                                            alignItems: 'flex-end',
+                                            alignItems: 'center',
                                             flexDirection: 'row',
                                             height: '100%',
                                             width: '100%',
@@ -75,23 +71,25 @@ export default class NaviBar extends Component {
                                             <Icon style={{
                                                 marginBottom: 5,
                                                 marginLeft: 5
-                                            }} name="map-marker" size={20} color="white" />
+                                            }} name="map-marker" size={27} color="white" />
                                             <Text>{this.props.location}</Text>
                                         </View>
-                                    </View>
-                                </TouchableHighlight>
+                                    </TouchableHighlight>
 
 
-                        }
+                            }
+                        </View>
                     </View>
-
                     <View style={{
                         flex: 1, alignItems: 'flex-end', justifyContent: 'center'
                     }}>
                         <View style={{
-                            height: '100%', width: 70, paddingTop: 14
+                            height: '100%', width: 70, justifyContent: 'center', alignItems: 'center', position: 'absolute'
                         }}>
-                            <Icon style={{ marginLeft: 20 }} name="shopping-cart" size={25} color="black" />
+                            <View style={{ justifyContent: 'center', alignItems: 'center', height: 18, width: 18, borderRadius: 9, zIndex: 2, position: 'absolute', top: '0%', left: '50%', backgroundColor: 'white' }} >
+                                <Text style={{ fontSize: 10 }}>{this.props.items_In_Checkout}</Text>
+                            </View>
+                            <Icon style={{ zIndex: 1 }} name="shopping-cart" size={32} color="black" />
                         </View>
                     </View>
                 </View>
