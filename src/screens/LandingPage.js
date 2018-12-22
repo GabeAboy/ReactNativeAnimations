@@ -35,7 +35,8 @@ export default class LandingPage extends Component {
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user != null && user.providerData[0].providerId == 'facebook.com') {
-                this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation })
+                console.log('nav',this.props.navigation)
+                this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
             }
         })
     }

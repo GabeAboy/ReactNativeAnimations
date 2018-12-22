@@ -11,9 +11,7 @@ export default class UserProfileListUI extends Component {
         }
 
     }
-    componentDidMount() {
-        console.log("Here is where I get all ", this.props)
-    }
+
     render() {
         return (
             <View style={{
@@ -85,22 +83,14 @@ export default class UserProfileListUI extends Component {
                 </View>
                 <TouchableHighlight
                     onPress={() => {
-                        console.log('wrong state', this.props)
-                        var mountainId = this.props.firstName+this.props.lastName
+                        var mountainId = this.props.firstName + this.props.lastName
                         firebase.auth().onAuthStateChanged((profile) => {
                             if (profile) {
-                                // User is signed in.
-                                console.log('entered',mountainId,profile.uid)
                                 firebase.database()
                                     .ref(`/userProfiles/${profile.uid}`)
                                     .child(mountainId)
                                     .remove()
-                                console.log(`Item ${this.props.firstName} deleted`)
                                 this.props.onPressItem()
-
-
-                            } else {
-                                // No user is signed in.
                             }
                         });
 
@@ -120,42 +110,17 @@ export default class UserProfileListUI extends Component {
                     borderBottomColor: "#CED0CE",
                     borderBottomWidth: 1
                 }}
-                onPress={()=>{
-                    console.log("LETS EDIT")
-                }}
+                    onPress={() => {
+                        console.log("LETS EDIT", this.props)
+                        this.props.navigation.navigate('AddProfile',{data:this.props});
+
+
+                    }}
                 >
                     <Icon name="pencil-square-o" size={30} color="#CED0CE" />
 
                 </TouchableHighlight>
             </View>
-            // <View style={{ flex: 1.4, flexDirection: 'row',backgroundColor:'white' }}>
-            //     <View style={{ flex: 1 }} >
-            //         <Image style={{ height: "100%", borderRadius: 40, width: "100%" }}
-            //             source={this.state.photoURL ? source = { uri: this.state.photoURL } : require('../../../../img/default-user.png')}
-            //             resizeMode='contain' />
-            //     </View>
-
-            //     <View style={{ flex: 3 }} >
-            //         <View style={{ width: '100%' }}>
-            //             <Text style={{ fontSize: 31 }}>{this.props.firstName}</Text>
-            //         </View>
-
-            //         <View style={{
-            //             flex: 1,
-            //             flexDirection: 'row',
-            //         }} >
-            //             <View style={{ flex: 1 }}>
-            //                 <Text style={{ flex: 1, fontSize: 30 }}>Height</Text>
-            //                 <Text style={{ flex: 1, fontSize: 30 }}>{this.props.height}</Text>
-            //             </View>
-            //             <View style={{ flex: 1 }}>
-            //                 <Text style={{ flex: 1, fontSize: 30 }}>ShoeSize</Text>
-            //                 <Text style={{ flex: 1, fontSize: 30 }}>{this.props.shoeSize}</Text>
-            //             </View>
-            //         </View>
-            //     </View>
-            // </View>
-
         )
     }
 };

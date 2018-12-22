@@ -15,7 +15,7 @@ export default class MultiSelectList extends React.PureComponent {
     componentDidMount() {
         // Delete me
         this.setState({ data: this.props.data })
-        console.log('Show errors', this.state,this.props)
+        console.log('Show errors', this.props)
     }
 
     // renderHeader = () => {
@@ -53,7 +53,6 @@ export default class MultiSelectList extends React.PureComponent {
                 mountainId={item.mountainId}
                 userProfileId={this.props.userProfileId}
                 Birthday={item.Birthday}
-               
                 //selected={!!this.state.selected.get(item.id)}
 
                 navigation={this.props.navigation}

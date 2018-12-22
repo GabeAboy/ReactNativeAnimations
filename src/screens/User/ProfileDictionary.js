@@ -98,7 +98,7 @@ class ProfileDictionary extends Component {
                         <View style={styles.container} >
                             <NaviDrink navigation={this.props.navigation} profile={true} />
 
-                            <UserProfileFlatList data={this.state.UserProfiles} updateFunction={this.button} profileId={this.props.userProfileId} navigate={this.props.navigation} title='name' />
+                            <UserProfileFlatList data={this.state.UserProfiles} updateFunction={this.button} profileId={this.props.userProfileId} navigation={this.props.navigation} title='name' />
                             {/* </TouchableHighlight> */}
 
                         </View>

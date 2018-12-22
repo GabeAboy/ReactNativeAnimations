@@ -56,7 +56,7 @@ export default class Login extends Component {
                         .then((snapshot) => {
                             snapshot.val() ?
                                 navigate('MountainProfile', { navigation: navigate })
-                                : navigate('MountainFinder', { navigation: navigate })
+                                : navigate('DatePicker', { navigation: navigate })
                         });
                 })
         } catch (error) {

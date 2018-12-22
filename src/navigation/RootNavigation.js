@@ -8,13 +8,13 @@ import MountainFinder from '../screens/User/MountainFinder';
 import MountainStore from '../screens/User/MountainStore';
 import ProfileDictionary from '../screens/User/ProfileDictionary'
 import AddProfile from '../screens/User/AddProfile'
-
+import Navi from '../components/NaviBar'
 //Authentication
 import LogIn from '../screens/Authentication/LogIn';
 import SignUp from '../screens/Authentication/SignUp'
 import MountainRegistration from '../screens/Authentication/MountainRegistration'
 import PasswordReset from '../screens/Authentication/PasswordReset';
-
+import ShoppingCart from '../screens/User/ShoppingCart/ShoppingCart'
 //Mountain
 import MountainProfile from '../screens/Mountain/MountainProfile'
 import EditProfile from '../screens/Mountain/EditDiscription'
@@ -26,12 +26,15 @@ import LoadingGIF from '../components/eventHandlers/LoadingGIF'
 import DisplayError from '../components/eventHandlers/DisplayError'
 import GetLocation from '../components/GetLocation'
 import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipmentDisplay'
-
+import DatePicker from '../screens/User/DatePicker'
 const Routes = createStackNavigator(
     {
+        DatePicker: { screen: DatePicker },
         LandingPage: { screen: LandingPage },
+        ShoppingCart: { screen: ShoppingCart },
+        Navi: { screen: Navi },
         MountainStore: { screen: MountainStore },
-        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay},
+        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay },
         EditRentalEquipment: { screen: EditRentalEquipment },
         AddProfile: { screen: AddProfile },
         ProfileDictionary: { screen: ProfileDictionary },
