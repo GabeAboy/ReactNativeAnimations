@@ -16,6 +16,7 @@ export default class MultiSelectList extends React.PureComponent {
             ];
     }
     componentDidMount() {
+        console.log('GOT', this.props.skiDates)
         this.setState({data:this.props.data})
     }
 
@@ -46,12 +47,13 @@ export default class MultiSelectList extends React.PureComponent {
     _renderItem = ({ item }) => (
         <TouchableHighlight key={item.id} onPress={() =>{
             console.log(item)
-            this.props.navigate.navigate('MountainStore',{data:item,navigation:this.props.navigate})
+            this.props.navigate.navigate('MountainStore',{data:item,navigation:this.props.navigate, skiDates:this.props.skiDates})
         }
         } >
             <MountainListUI
                 key={item.id}
                 id={item.id}
+                skiDates={this.props.skiDates}
                 onPressItem={this._onPressItem}
                 mountainId={item.mountainId}
                 //selected={!!this.state.selected.get(item.id)}

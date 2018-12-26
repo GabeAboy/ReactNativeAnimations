@@ -3,7 +3,7 @@ import { View, Image, Text, TouchableHighlight } from 'react-native';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Container, Title, Content, Button, Right, Body, Left, Picker, Form, Item, Input, Label } from 'native-base';
-
+//TODO GET LOCATION IF location isn't on
 import { Constants, Location, Permissions } from 'expo';
 export default class NaviBar extends Component {
 
@@ -22,6 +22,7 @@ export default class NaviBar extends Component {
             this.setState({
                 errorMessage: 'Permission to access location was denied',
             });
+            alert("Enable location and try again.")
         }
 
         let location = await Location.getCurrentPositionAsync({});

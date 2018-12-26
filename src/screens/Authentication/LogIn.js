@@ -49,14 +49,14 @@ export default class Login extends Component {
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then((result) => {
                     const currentUser = result.user.uid;
-                    console.log("Logged in user ",currentUser)
+                    console.log("Logged in user ", currentUser)
                     firebase.database()
                         .ref('/permissions/' + currentUser)
                         .once('value')
                         .then((snapshot) => {
                             snapshot.val() ?
                                 navigate('MountainProfile', { navigation: navigate })
-                                : navigate('DatePicker', { navigation: navigate })
+                                : navigate('DatePicker', { navigation: navigate, MountainFinder: true })
                         });
                 })
         } catch (error) {
@@ -145,7 +145,7 @@ export default class Login extends Component {
                             </Text>
                     </TouchableHighlight>
                     <Text
-                        onPress={()=>{
+                        onPress={() => {
                             navigate('PasswordReset', { navigation: navigate })
                         }}
                         style={styles.textFont}>

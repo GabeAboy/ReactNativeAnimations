@@ -17,8 +17,9 @@ export default class MountainStore extends Component {
     }
   }
   componentDidMount() {
-    this.getTicketData()
-    this.getRentalData()
+    // console.log('GOT store??',this.props.nagivation.state.params.skiDates)
+    // this.getTicketData()
+    // this.getRentalData()
   }
 
   getTicketData = async () => {
@@ -109,7 +110,7 @@ export default class MountainStore extends Component {
   render() {
     return (
       <Container>
-        <NaviBar />
+        <NaviBar skiDates={this.props.navigation.state.params.skiDates} navigation={this.props.navigation} MountainFinder={false}/>
         {/* <Header searchBar={true} hasTabs /> */}
         <Tabs renderTabBar={() => <ScrollableTab style={{ backgroundColor: 'blue' }} />}>
           <Tab tabStyle={{ flex: 1 }} activeTabStyle={{ flex: 1 }} heading="Pictures">

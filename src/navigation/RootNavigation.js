@@ -29,8 +29,8 @@ import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipm
 import DatePicker from '../screens/User/DatePicker'
 const Routes = createStackNavigator(
     {
-        DatePicker: { screen: DatePicker },
         LandingPage: { screen: LandingPage },
+        DatePicker: { screen: DatePicker },
         ShoppingCart: { screen: ShoppingCart },
         Navi: { screen: Navi },
         MountainStore: { screen: MountainStore },

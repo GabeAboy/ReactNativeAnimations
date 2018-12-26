@@ -25,6 +25,7 @@ export default class MountainFinder extends Component {
         console.log('RECEIVING PROPS')
     }
     componentDidMount() {
+        console.log('finder', this.props.navigation.state.params.skiDates)
         //UAC
         //Get user location get all admins
         // in that location then filter admindiscription then call their images
@@ -36,7 +37,7 @@ export default class MountainFinder extends Component {
                 for (const key in users) {
                     users[key].mountainId = key
                     // State array should be updated this way see ProfileDictionary.js
-                    
+
                     // var joined = this.state.UserProfiles.concat(users);
                     // this.setState({ UserProfiles: joined })
                     this.state.AdminLiftTickets.push(users[key])
@@ -66,6 +67,7 @@ export default class MountainFinder extends Component {
                         >
                             <View style={{ flex: 1 }}>
                                 <NaviBar
+                                    skiDates={this.props.navigation.state.params.skiDates}
                                     toggleDrawer={this.openControlPanel}
                                     navigation={navigation}
                                     location={this.props.navigation.state.params.address
@@ -80,7 +82,7 @@ export default class MountainFinder extends Component {
 
                                     }}>
                                         {/* INFO DATA */}
-                                        <MountainListComp data={this.state.AdminLiftTickets} navigate={navigation} title='name' />
+                                        <MountainListComp skiDates={this.props.navigation.state.params.skiDates} data={this.state.AdminLiftTickets} navigate={navigation} title='name' />
                                     </View>
                                 </View>
                             </View>
