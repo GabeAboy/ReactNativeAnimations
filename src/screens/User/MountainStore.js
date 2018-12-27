@@ -18,8 +18,8 @@ export default class MountainStore extends Component {
   }
   componentDidMount() {
     // console.log('GOT store??',this.props.nagivation.state.params.skiDates)
-    // this.getTicketData()
-    // this.getRentalData()
+    this.getTicketData()
+    this.getRentalData()
   }
 
   getTicketData = async () => {
