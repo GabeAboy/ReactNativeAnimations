@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, Dimensions, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Asset, AppLoading } from 'expo';
 import GeoDistanceIcon from './GeoDistanceIcon';
 import firebase from 'firebase'
-const SCREEN_WIDTH = Dimensions.get('window').width;
-var icon;
 export default class MountainListUI extends Component {
 
     constructor(props) {
@@ -12,24 +11,47 @@ export default class MountainListUI extends Component {
         this.state = {
             count: 2,
             image: '',
-            isCloud: false
+            isCloud: false,
+            isReady: false
         }
+        this._getMountainIcon.bind(this)
     }
     componentDidMount() {
-        var pathReference = firebase.storage().ref(`${this.props.mountainId}/icon/mountainIcon`)
 
-        pathReference.getDownloadURL().then(function (url) {
-            this.setState({ image: url })
-            this.setState({isCloud: true})
-        }
-            .bind(this))
-            .catch((e) => {
-                var defaultImage = require('../../img/compLogo.jpg')
-                this.setState({ image: defaultImage })
-            });
+    }
+
+    _getMountainIcon = async () => {
+        var pathReference = firebase.storage().ref(`${this.props.mountainId}/icon/mountainIcon`)
+        await new Promise((resolve, reject) => {
+            pathReference.getDownloadURL().then(function (url) {
+                this.setState({ image: url })
+                this.setState({ isCloud: true })
+                this.props.autoHideSplash = false
+                resolve()
+            }.bind(this))
+                .catch((e) => {
+                    this.setState({ isCloud: false })
+                    var defaultImage = require('../../img/compLogo.jpg')
+                    this.setState({ image: defaultImage })
+                    reject()
+                })
+            resolve()
+        })
+
     }
     render() {
         const { brand } = this.props;
+
+        if (!this.state.isReady) {
+            return (
+                <AppLoading
+                    startAsync={this._getMountainIcon}
+                    onFinish={() => this.setState({ isReady: true })}
+                    onError={console.warn}
+                />
+            );
+        }
+
         return (
             <View style={{
                 width: '100%', height: 110,
@@ -40,6 +62,7 @@ export default class MountainListUI extends Component {
                     flex: 2, justifyContent: 'center', alignItems: 'center'
                 }}>
                     <Image
+
                         source={this.state.isCloud ? { uri: this.state.image } : this.state.image}
                         style={{
                             height: 60, width: 60, borderRadius: 30
@@ -121,7 +144,7 @@ export default class MountainListUI extends Component {
                     <Icon name="angle-right" size={55} color="#CED0CE" />
 
                 </View>
-            </View>
+            </View >
 
         );
     }
