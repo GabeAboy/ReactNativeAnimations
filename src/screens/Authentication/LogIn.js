@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableHighlight, Text, View, TextInput } from 'react-native';
+import { StyleSheet, TouchableHighlight, Text, View, TextInput, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase'
 import firebaseConfig from '../../../keys/firebasekeys'
@@ -40,6 +40,15 @@ export default class Login extends Component {
         ]
         this.state = (Credentials[0])
     }
+
+    _storeData = async (userID) => {
+        try {
+          await AsyncStorage.setItem('LoggedIn', userID);
+          console.log('finished')
+        } catch (error) {
+          // Error saving data
+        }
+      }
     logInUser = (navigate) => {
         try {
             if (this.state.password.length < 6) {
@@ -49,6 +58,7 @@ export default class Login extends Component {
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then((result) => {
                     const currentUser = result.user.uid;
+                    this._storeData(currentUser)
                     console.log("Logged in user ", currentUser)
                     firebase.database()
                         .ref('/permissions/' + currentUser)

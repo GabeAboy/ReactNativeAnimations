@@ -27,9 +27,12 @@ import DisplayError from '../components/eventHandlers/DisplayError'
 import GetLocation from '../components/GetLocation'
 import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipmentDisplay'
 import DatePicker from '../screens/User/DatePicker'
+import PurchaseItemDisplay from '../screens/User/ShoppingCart/PurchaseItemDisplay'
+
 const Routes = createStackNavigator(
     {
         LandingPage: { screen: LandingPage },
+        PurchaseItemDisplay: { screen: PurchaseItemDisplay },
         DatePicker: { screen: DatePicker },
         ShoppingCart: { screen: ShoppingCart },
         Navi: { screen: Navi },

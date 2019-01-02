@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, Video } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Image, Video, AsyncStorage} from 'react-native';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
 import * as firebase from 'firebase'
@@ -15,10 +15,9 @@ export default class LandingPage extends Component {
         console.ignoredYellowBox = [
             'Setting a timer'
         ];
+        this._retrieveData.bind(this)
     }
-    componentDidUpdate(){
-        console.log('update')
-    }
+ 
     componentDidMount() {
         console.log('moiunt')
         /* **TODO**
@@ -33,13 +32,28 @@ export default class LandingPage extends Component {
         // Try having spotify logged in.. logout of facebook and document what happens 
 
 
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user != null && user.providerData[0].providerId == 'facebook.com') {
-                console.log('nav',this.props.navigation)
-                this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
-            }
-        })
+        // firebase.auth().onAuthStateChanged((user) => {
+        //     if (user != null && user.providerData[0].providerId == 'facebook.com') {
+        //         console.log('nav',this.props.navigation)
+        //         this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
+        //     }
+        // })
+        this._retrieveData()
     }
+    _retrieveData = async () => {
+        console.log('Checking localStorage')
+        try {
+          const value = await AsyncStorage.getItem('LoggedIn');
+          if (value !== null) {
+            // We have data!!
+            console.log('We found ',value);
+            this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
+          }
+         } catch (error) {
+             console.log('err ',error)
+           // Error retrieving data
+         }
+      }
     async loginWithFacebook() {
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1634938636614030', {
             permissions: ['public_profile'],
