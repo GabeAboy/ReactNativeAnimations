@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Platform, View, Text } from 'react-native';
 import firebase from 'firebase'
 import firebaseConfig from '../../../keys/firebasekeys'
+import { Asset, AppLoading } from 'expo';
 import { Container, Header, Title, Content, Button, Icon, Right, Body, Left, Picker, Form, Item, Input, Label } from 'native-base';
 //Container, Header, Title, Content, Button, Icon, Right, Body, Left, Picker, Form
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
@@ -12,19 +13,35 @@ export default class EditDiscription extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            demoninator: "2",
-            numerator: "2",
-            businessName: '',
-            address: '',
-            snowCondition: ''
+            demoninator:  this.props.navigation.state.params.data.demoninator ? this.props.navigation.state.params.data.demoninator : '3',
+            numerator:  this.props.navigation.state.params.data.numerator ? this.props.navigation.state.params.data.numerator : '2',
+            businessName: this.props.navigation.state.params.data.businessName ? this.props.navigation.state.params.data.businessName : 'Business Name',
+            address:  this.props.navigation.state.params.data.address ? this.props.navigation.state.params.data.address : 'Address',
+            snowCondition:  this.props.navigation.state.params.data.snowCondition ? this.props.navigation.state.params.data.snowCondition : 'Snow Condition',
+            isReady: false
         };
+        // this.setTheState = this.setTheState.bind(this)
+    }
+    componentWillMount() {
+        console.log('Edit Discription for mount', this.props.navigation.state.params.data.businessName)
+
+        console.log('STATE\n\n\n\n', this.state)
+        // this.setTheState()
+    }
+    setTheState = () => {
+        // this.setState({ businessName: })
+        this.setState({ address: this.props.navigation.state.params.data.address })
+        this.setState({ demoninator: this.props.navigation.state.params.data.demoninator })
+        this.setState({ numerator: this.props.navigation.state.params.data.numerator })
+        this.setState({ snowCondition: this.props.navigation.state.params.data.snowCondition })
+        // this.props.autoHideSplash = false
     }
     updateDatabase() {
 
-        if(this.props.isEdit){
+        if (this.props.isEdit) {
             console.log('true')
         }
-        
+
         firebase.auth().onAuthStateChanged((profile) => {
             console.log(profile.uid)
             let mountainAdminId = profile.uid
@@ -45,6 +62,15 @@ export default class EditDiscription extends Component {
     }
 
     render() {
+        if (!this.state.isReady) {
+            return (
+                <AppLoading
+                    startAsync={this.setTheState}
+                    onFinish={() => this.setState({ isReady: true })}
+                    onError={console.warn}
+                />
+            );
+        }
         return (
             <Container>
 
@@ -54,11 +80,11 @@ export default class EditDiscription extends Component {
                 <Content>
                     <Form>
                         <Item floatingLabel>
-                            <Label>Business Name</Label>
+                            <Label>{this.state.businessName}</Label>
                             <Input onChangeText={(businessName) => this.setState({ businessName })} />
                         </Item>
                         <Item floatingLabel last>
-                            <Label>Address</Label>
+                            <Label>{this.state.address}</Label>
                             <Input onChangeText={(address) => this.setState({ address })} />
                         </Item>
                         <View style={{
@@ -140,7 +166,7 @@ export default class EditDiscription extends Component {
                             </Picker>
                         </View>
                         <Item floatingLabel last>
-                            <Label>Snow Condition</Label>
+                            <Label>{this.state.snowCondition}</Label>
                             <Input onChangeText={(snowCondition) => this.setState({ snowCondition })} />
                         </Item>
 

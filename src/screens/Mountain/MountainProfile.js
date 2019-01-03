@@ -38,8 +38,9 @@ class MountainProfile extends Component {
         // TODO next step is to catch update switch
         //with navigaiton if it came from add profile get profile info and 
         //same for tickets
-        console.log('entered the update')
+        // console.log('entered the update',this.state)
         if (this.state.EditLiftTickets) {
+            console.log('or here')
             this.getLiftTickets(this.state.profile)
             this.setState({ EditLiftTickets: false })
         }
@@ -202,7 +203,7 @@ class MountainProfile extends Component {
     }
 
     getRentalEquipment = async (mountainAdminId) => {
-        let liftTickets = new Promise((resolve, reject) => {
+        let rentalEquipment = new Promise((resolve, reject) => {
             firebase.database().ref('/rentalEquipment/' + this.state.profile)
                 .once('value')
                 .then((snapshot) => {
@@ -223,7 +224,7 @@ class MountainProfile extends Component {
                     reject(e)
                 })
         });
-        let answer = await rentalEqupment;
+        let answer = await rentalEquipment;
         // return answer;
     }
     getProfileImage = async (mountainAdminId) => {
@@ -372,7 +373,7 @@ class MountainProfile extends Component {
                                     borderBottomColor: 'gray',
                                     backgroundColor: 'white'
                                 }} >
-                                    <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditProfile', { navigation: this.props.navigation }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
+                                    <TouchableHighlight onPress={() => { this.props.navigation.navigate('EditProfile', { navigation: this.props.navigation, data: this.state }) }} style={{ width: '90%', height: '75%', borderWidth: 1, borderColor: 'blue', borderRadius: 5 }}>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flex: 1, }}>
                                             <Icon name='pencil-square-o'
                                                 size={15}

@@ -38,7 +38,7 @@ export default class Login extends Component {
                 password: 'connor12'
             },
         ]
-        this.state = (Credentials[0])
+        this.state = (Credentials[2])
     }
 
     _storeData = async (userID) => {
@@ -57,6 +57,8 @@ export default class Login extends Component {
             }
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then((result) => {
+                    console.log("USER OBJECT ", result)
+
                     const currentUser = result.user.uid;
                     this._storeData(currentUser)
                     console.log("Logged in user ", currentUser)

@@ -16,7 +16,9 @@ export default class DrawerHeader extends Component {
         // this should be transfered by parent state through props
         // var userId = firebase.auth().currentUser.providerData[0].uid;
         // console.log('user ',user)
-        this._getUserData()
+        // this._getUserData()
+        this.getProfileImage()
+
 
     }
 
@@ -29,7 +31,6 @@ export default class DrawerHeader extends Component {
                 this.getPermissionsAsync()
             }
         })
-        this.getProfileImage()
     }
     getCurrentLoggedinUser = async () => {
 
