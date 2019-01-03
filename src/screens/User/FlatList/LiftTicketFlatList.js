@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, Dimensions, FlatList, List } from 'react-native';
 import { SearchBar } from 'react-native-elements'
 import AdminLiftTicketDisplay from '../../Mountain/AdminLiftTicketDisplay';
+import { PricingCard } from 'react-native-elements'
+
 
 
 export default class LiftTicketFlatList extends React.PureComponent {
@@ -33,21 +35,15 @@ export default class LiftTicketFlatList extends React.PureComponent {
             <FlatList
                 style={{ backgroundColor: '#4286f4' }}
                 data={this.props.data}// Comes from state and before that didMount
-                renderItem={({ item }) => <AdminLiftTicketDisplay
-                    button={() => {
-                        this.setState({ EditLiftTickets: true })
-                    }}
-                    key={item.key}
-                    title={item.title}
-                    reguPrice={item.reguPrice}
-                    holiPrice={item.holiPrice}
-                    timeOne={item.timeOne}
-                    timeTwo={item.timeTwo}
-                    pathReference={item.pathReference}
-                    profile={this.state.profile}
-                    navigation={this.props.navigation}
-                    commerse={true}
-                />}
+                renderItem={({ item }) =>
+                    <PricingCard
+                        color='#4f9deb'
+                        title={item.title}
+                        price={`$${item.reguPrice}`}
+                        info={[item.timeOne, 'to', item.timeTwo]}
+                        button={{ title: 'GET STARTED', icon: 'flight-takeoff' }}
+                    />
+                }
             />
         </View>
     );

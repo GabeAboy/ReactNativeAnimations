@@ -16,7 +16,6 @@ export default class NaviBar extends Component {
     //TODO Checkout should not display a circle until an item has been added
     //Should disapear when there aren't any items in the shopping cart
     componentDidMount() {
-        console.log('POPS', this.props)
         this.setState({
             skiDates: `${this.props.skiDates.startDate} → ${this.props.skiDates.endDate}`
         })

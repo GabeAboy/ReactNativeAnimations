@@ -15,15 +15,11 @@ export default class NewPicker extends React.Component {
     }
     customButtonOnPress = () => {
         this.picker.onConfirm()
-        console.log('that.this ', this.picker.state)
         //Pass date down through props
         //If I navigate here then it will start at button then picker, then return to button
         //Avoid the return to button
-        console.log(this.picker.state.startDate.format('L'))
-        console.log(this.picker.state.endDate.format('L'))
         const startDate = this.picker.state.startDate.format('L');
         const endDate = this.picker.state.endDate.format('L')
-        console.log('nav',this.props)
         this.props.navigation.navigate('MountainFinder', { navigation: this.props.navigation, skiDates: { startDate: startDate, endDate: endDate } })
 
     }

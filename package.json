@@ -11,7 +11,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-28.0.0.tar.gz",
     "react-native-date-ranges": "^2.3.1",
     "react-native-drawer": "^2.5.0",
-    "react-native-elements": "^0.19.0",
+    "react-native-elements": "^0.19.1",
     "react-native-form-validator": "^0.2.0",
     "react-native-hamburger": "0.0.2",
     "react-native-star-rating": "^1.1.0",

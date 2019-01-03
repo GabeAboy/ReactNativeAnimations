@@ -16,7 +16,6 @@ export default class MultiSelectList extends React.PureComponent {
             ];
     }
     componentDidMount() {
-        console.log('GOT', this.props.skiDates)
         this.setState({data:this.props.data})
     }
 

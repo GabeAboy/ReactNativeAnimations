@@ -23,13 +23,16 @@ export default class DrawerContainer extends Component {
             }
         });
     }
+    //Mountains do not share profiles with users, send it boolean through props
+
+
     render() {
         return (
             <View style={styles.ball}>
                 <DrawerHeader profile={this.state} />
                 <View style={{ flex: 1, backgroundColor: '#222d3f' }}>
 
-                    <MenuButton icon='wrench' buttonName='Settings' />
+                    <MenuButton icon='wrench' buttonName='Billing' />
 
                     <TouchableOpacity onPress={
                         console.log()

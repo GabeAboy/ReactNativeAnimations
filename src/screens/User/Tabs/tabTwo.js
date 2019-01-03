@@ -14,18 +14,26 @@ export default class tabTwo extends Component {
         ];
     }
     componentDidUpdate() {
-        console.log('update',this.props)
+        console.log('update', this.props)
     }
     componentDidMount() {
-        console.log('moiunt',this.props)
+        console.log('moiunt', this.props)
     }
     static navigationOptions = {
         title: 'Welcome',
     };
     render() {
         return (
+            // <PricingCard
+            //     color='#4f9deb'
+            //     title='Free'
+            //     price='$0'
+            //     info={['1 User', 'Basic Support', 'All Core Features']}
+            //     button={{ title: 'GET STARTED', icon: 'flight-takeoff' }}
+            // />
             <View style={styles.container} >
-                <TicketFlatList data={this.props.data}  title='name' />
+
+                <TicketFlatList data={this.props.data} title='name' />
             </View>
             // updateFunction={this.button} profileId={this.props.userProfileId} navigate={this.props.navigation}
         )

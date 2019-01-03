@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, Video, AsyncStorage} from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Image, Video, AsyncStorage } from 'react-native';
 import TextCarousel from 'react-native-text-carousel';
 import Button from '../components/Button';
 import * as firebase from 'firebase'
@@ -17,7 +17,7 @@ export default class LandingPage extends Component {
         ];
         this._retrieveData.bind(this)
     }
- 
+
     componentDidMount() {
         console.log('moiunt')
         /* **TODO**
@@ -43,17 +43,17 @@ export default class LandingPage extends Component {
     _retrieveData = async () => {
         console.log('Checking localStorage')
         try {
-          const value = await AsyncStorage.getItem('LoggedIn');
-          if (value !== null) {
-            // We have data!!
-            console.log('We found ',value);
-            this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
-          }
-         } catch (error) {
-             console.log('err ',error)
-           // Error retrieving data
-         }
-      }
+            const value = await AsyncStorage.getItem('LoggedIn');
+            if (value !== null) {
+                // We have data!!
+                console.log('We found ', value);
+                this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
+            }
+        } catch (error) {
+            console.log('err ', error)
+            // Error retrieving data
+        }
+    }
     async loginWithFacebook() {
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1634938636614030', {
             permissions: ['public_profile'],
@@ -63,6 +63,9 @@ export default class LandingPage extends Component {
 
             firebase.auth()
                 .signInAndRetrieveDataWithCredential(credential)
+                .then(() => {
+                    this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
+                })
                 .catch((error) => {
                     console.log(error)
                 })
