@@ -15,11 +15,9 @@ export default class RentalFLatList extends React.PureComponent {
     componentDidMount() {
         // Delete me
         this.setState({ data: this.props.data })
-        console.log('Show errors', this.state, this.props)
     }
 
     _onPressItem() {
-        console.log('pressed')
         // this.props.updateFunction()
     }
     onPressItem = this._onPressItem.bind(this)

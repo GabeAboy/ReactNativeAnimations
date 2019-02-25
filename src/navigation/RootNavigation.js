@@ -28,10 +28,11 @@ import GetLocation from '../components/GetLocation'
 import RentalEquipmentDisplay from '../screens/Mountain/FlatList_UI/RentalEquipmentDisplay'
 import DatePicker from '../screens/User/DatePicker'
 import PurchaseItemDisplay from '../screens/User/ShoppingCart/PurchaseItemDisplay'
-
+import drawerHeader from '../components/drawer/DrawerHeader'
 const Routes = createStackNavigator(
     {
         LandingPage: { screen: LandingPage },
+        drawerHeader: { screen: drawerHeader},
         PurchaseItemDisplay: { screen: PurchaseItemDisplay },
         DatePicker: { screen: DatePicker },
         ShoppingCart: { screen: ShoppingCart },
@@ -47,7 +48,6 @@ const Routes = createStackNavigator(
         EditLiftTickets: { screen: EditLiftTickets },
         LoadingGIF: { screen: LoadingGIF },
         //Main frames
-
         MountainRegistration: { screen: MountainRegistration },
         EditProfile: { screen: EditProfile },
 

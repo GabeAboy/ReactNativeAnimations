@@ -23,10 +23,7 @@ export default class EditDiscription extends Component {
         // this.setTheState = this.setTheState.bind(this)
     }
     componentWillMount() {
-        console.log('Edit Discription for mount', this.props.navigation.state.params.data.businessName)
 
-        console.log('STATE\n\n\n\n', this.state)
-        // this.setTheState()
     }
     setTheState = () => {
         // this.setState({ businessName: })
@@ -39,11 +36,11 @@ export default class EditDiscription extends Component {
     updateDatabase() {
 
         if (this.props.isEdit) {
-            console.log('true')
+          
         }
 
         firebase.auth().onAuthStateChanged((profile) => {
-            console.log(profile.uid)
+
             let mountainAdminId = profile.uid
             if (profile) {
                 firebase.database().ref(`adminDiscription/${mountainAdminId}`).set({
@@ -53,7 +50,7 @@ export default class EditDiscription extends Component {
                     numerator: this.state.numerator,
                     demoninator: this.state.demoninator
                 }).then(() => {
-                    console.log('success')
+                    
                     this.props.navigation.navigate('MountainProfile', { EditDiscription: true })
                 }).catch((error) => { console.log('error ', error) })
 

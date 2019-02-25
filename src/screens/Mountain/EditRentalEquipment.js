@@ -49,7 +49,6 @@ export default class EditRentalEquipment extends Component {
     updateDatabase() {
         firebase.auth().onAuthStateChanged((profile) => {
             let mountainAdminId = profile.uid
-            console.log(profile)
             if (profile) {
                 firebase.database().ref(`RentalEquipment/${mountainAdminId}/${this.state.title}`).set({
                     title: this.state.title,
@@ -58,7 +57,6 @@ export default class EditRentalEquipment extends Component {
                     reguPrice: this.state.reguPrice,
                     holliPrice: this.state.holliPrice
                 }).then(() => {
-                    console.log('Successfuly updated LiftTicket database', this.props)
                     this.props.navigation.state.params.button()
                     this.props.navigation.navigate('MountainProfile')
                 }).catch((error) => {
@@ -90,7 +88,6 @@ export default class EditRentalEquipment extends Component {
                     starCount: this.state.starCount,
                 })
                 .then((e) => {
-                    console.log('fun', this.props.navigation.state.params)
                     this.props.navigation.state.params.button()
                     this.props.navigation.navigate('MountainProfile')
                 })

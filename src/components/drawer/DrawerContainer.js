@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import DrawerHeader from './DrawerHeader'
 import MenuButton from '../MenuButton'
 import * as firebase from 'firebase'
@@ -35,7 +35,7 @@ export default class DrawerContainer extends Component {
                     <MenuButton icon='wrench' buttonName='Billing' />
 
                     <TouchableOpacity onPress={
-                        console.log()
+                       console.log("...??")
                     }>
                         <MenuButton onPress={() => {
                         }} icon='history' buttonName='History' />
@@ -49,6 +49,15 @@ export default class DrawerContainer extends Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
+                        const deleteUserId = async () => {
+                            try {
+                                await AsyncStorage.removeItem('userId');
+                            } catch (error) {
+                                // Error retrieving data
+                                console.log(error.message);
+                            }
+                        }
+                        deleteUserId()
                         firebase.auth().signOut().then(() => {
                             // Sign-out successful.
                             this.props.navigation.navigate('LandingPage')
@@ -61,7 +70,7 @@ export default class DrawerContainer extends Component {
                             icon='times' buttonName='Logout' />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View >
         );
     }
 }

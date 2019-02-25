@@ -20,7 +20,7 @@ export default class SignUp extends Component {
         title: 'Welcome',
     };
     resetPassword() {
-        console.log('click')
+        
         firebase.auth().sendPasswordResetEmail(this.state.email).catch(e => { console.log('e', e) })
     }
     render() {

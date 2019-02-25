@@ -19,7 +19,6 @@ export default class NaviBar extends Component {
                 <View style={{ width: '100%', height: 24 }} />
                 <View style={styles.nav}>
                     <Icon onPress={() => {
-                        console.log('true')
                         this.props.navigation.goBack()
                     }} name="angle-left" size={35} color="white" />
                     {

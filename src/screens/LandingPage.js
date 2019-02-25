@@ -19,7 +19,7 @@ export default class LandingPage extends Component {
     }
 
     componentDidMount() {
-        console.log('moiunt')
+ 
         /* **TODO**
                 1. How does spotify keep me logged in?
                 2. Is there any case that onAuthStateChanged upon login automatically log me in
@@ -34,19 +34,17 @@ export default class LandingPage extends Component {
 
         // firebase.auth().onAuthStateChanged((user) => {
         //     if (user != null && user.providerData[0].providerId == 'facebook.com') {
-        //         console.log('nav',this.props.navigation)
         //         this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
         //     }
         // })
         this._retrieveData()
     }
     _retrieveData = async () => {
-        console.log('Checking localStorage')
+
         try {
             const value = await AsyncStorage.getItem('LoggedIn');
             if (value !== null) {
-                // We have data!!
-                console.log('We found ', value);
+             
                 this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
             }
         } catch (error) {
@@ -69,7 +67,7 @@ export default class LandingPage extends Component {
                 .catch((error) => {
                     console.log(error)
                 })
-            console.log('successs')
+           
         }
     }
     static navigationOptions = {

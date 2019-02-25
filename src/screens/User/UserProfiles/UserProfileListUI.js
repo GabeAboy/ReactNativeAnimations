@@ -111,7 +111,7 @@ export default class UserProfileListUI extends Component {
                     borderBottomWidth: 1
                 }}
                     onPress={() => {
-                        console.log("LETS EDIT", this.props)
+                 
                         this.props.navigation.navigate('AddProfile',{data:this.props});
 
 

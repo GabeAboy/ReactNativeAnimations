@@ -44,7 +44,7 @@ export default class Login extends Component {
     _storeData = async (userID) => {
         try {
           await AsyncStorage.setItem('LoggedIn', userID);
-          console.log('finished')
+   
         } catch (error) {
           // Error saving data
         }
@@ -57,11 +57,11 @@ export default class Login extends Component {
             }
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then((result) => {
-                    console.log("USER OBJECT ", result)
+                 
 
                     const currentUser = result.user.uid;
                     this._storeData(currentUser)
-                    console.log("Logged in user ", currentUser)
+                    
                     firebase.database()
                         .ref('/permissions/' + currentUser)
                         .once('value')

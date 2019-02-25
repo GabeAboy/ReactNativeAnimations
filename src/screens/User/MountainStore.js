@@ -30,7 +30,7 @@ export default class MountainStore extends Component {
         .then((snapshot) => {
           if (!_.isEmpty(snapshot.val())) {
 
-            console.log(snapshot)
+    
             const snap = snapshot.val()
 
             let result = Object.keys(snap).map((key) => {
@@ -38,7 +38,7 @@ export default class MountainStore extends Component {
               return snap[key];
             });
             this.setState({ LiftTickets: result })
-            console.log("\n\n\n Tickets ", result)
+   
             resolve(result)
             // for (const key in users) {
             //     users[key].mountainId = key
@@ -84,7 +84,7 @@ export default class MountainStore extends Component {
               return snap[key];
             });
             this.setState({ Rental: result })
-            console.log("\n\n\ndsaaddsa", result)
+        
             resolve(result)
             
           }

@@ -52,7 +52,6 @@ export default class RentalEquipmentDisplay extends React.Component {
                     onPress={() => {
                         if(this.props.commerse){
                             //add to cart 
-                            console.log('add to cart')
                         }
                         else{
                             this.props.navigation.navigate('EditRentalEquipment', {
@@ -94,7 +93,6 @@ export default class RentalEquipmentDisplay extends React.Component {
                                                             .ref(`/rentalEquipment/${profile.uid}`)
                                                             .child(rentalProduct)
                                                             .remove()
-                                                        console.log(`Item ${this.props.title} deleted`)
                                                         this.props.button()// for reload
                                                     } else {
                                                         // No user is signed in.

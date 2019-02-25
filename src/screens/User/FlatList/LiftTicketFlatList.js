@@ -22,7 +22,7 @@ export default class LiftTicketFlatList extends React.PureComponent {
     }
 
     _onPressItem() {
-        console.log('pressed')
+      
         // this.props.updateFunction()
     }
     onPressItem = this._onPressItem.bind(this)

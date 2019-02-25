@@ -29,7 +29,7 @@ export default class MultiSelectList extends React.PureComponent {
     //     )
     // };
     _onPressItem() {
-        console.log('pressed')
+      
         this.props.updateFunction()
     }
     onPressItem = this._onPressItem.bind(this)

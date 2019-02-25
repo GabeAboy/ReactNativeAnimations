@@ -25,7 +25,7 @@ export default class SignUp extends Component {
     clicked = () => {
     }
     signUpUser = (email, password) => {
-        console.log('Registering accoung')
+        
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
@@ -35,7 +35,7 @@ export default class SignUp extends Component {
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((result) => {
                     const userUID = result.user.uid;
-                    console.log('usersignup', userUID)
+                   
                     if (userUID) {
                         firebase.database().ref(`users/${userUID}`).set({
                             zipcode: null,
@@ -61,13 +61,9 @@ export default class SignUp extends Component {
         }
     }
     logIn = (email, password) => {
-        console.log(email, password)
-    }
-
-    componentDidMount() {
-        console.log('Entered SignUp', this.props)
 
     }
+
     static navigationOptions = {
         title: 'Welcome',
     };

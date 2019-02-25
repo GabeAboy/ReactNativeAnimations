@@ -23,7 +23,7 @@ export default class FriendItem extends React.Component {
             }}
                 onPress={() => {
                     if (this.props.commerse) {
-                        console.log('add ticket to cart')
+                    
                     }
                     else {
                         this.props.navigation.navigate('EditLiftTickets', {
@@ -58,13 +58,13 @@ export default class FriendItem extends React.Component {
 
                                     <TouchableHighlight
                                         onPress={() => {
-                                            console.log('wrong state', this.props)
+                                           
                                             firebase.database()
                                                 .ref('/liftTicketDiscription/' + this.props.profile)
                                                 .child(this.props.pathReference)
                                                 .remove()
 
-                                            console.log(`Item ${this.props.title} deleted`)
+                                          
                                             this.props.button()
                                         }}
                                         style={{

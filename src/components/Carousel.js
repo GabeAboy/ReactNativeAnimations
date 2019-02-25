@@ -32,7 +32,7 @@ const cards = [
 ]
 export default class DeckSwiperExample extends Component {
     delete = () => {
-        console.log('asd')
+        
     }
     render() {
         return (

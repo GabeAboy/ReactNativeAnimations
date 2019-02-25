@@ -108,10 +108,8 @@ export default class NaviBar extends Component {
                             </View>
                             <TouchableHighlight
                                 onPress={() => {
-                                    console.log(this.textInput)
 
                                     this.setState({ input: 'ff' })
-                                    console.log(this.state)
 
                                 }}
                                 style={{

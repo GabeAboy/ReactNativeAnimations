@@ -45,7 +45,7 @@ export default class MountainRegistration extends Component {
         })
     }
     signUpUser = (email, password) => {
-        console.log('Entered')
+ 
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
@@ -65,36 +65,34 @@ export default class MountainRegistration extends Component {
                         })
                     }
                 }).then(result => {
-                    console.log('Sending email ')
+                 
                     var user = firebase.auth().currentUser;
 
                     user.sendEmailVerification().then(function () {
                         // Email sent.
-                        console.log('email sent')
+                 
                     }).catch(function (error) {
                         // An error happened.
                     });
                     this.setState({ componentLoad: false })
                     firebase.auth().signOut()
                 }).then(() => {
-                    console.log('user made')
+                   
                     this.props.navigation.navigate('LogIn', { navigation: this.props.navigation })
                 }).catch((error) => {
-                    console.log('Error: ', error)
+                    
                     this.setState({ componentLoad: false })
                     this.props.navigation.navigate('DisplayError', { navigation: this.props.navigation })
 
                 })
         } catch (error) {
             this.setState({ componentLoad: false })
-            console.log(error.toString())
+           
             navigate('DisplayError', { navigation: navigate })
         }
     }
 
-    componentDidMount() {
-        console.log('MountainRegistration')
-    }
+
     static navigationOptions = {
         title: 'Welcome',
     };

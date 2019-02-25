@@ -17,7 +17,7 @@ export default class tabTwo extends Component {
         console.log('update', this.props)
     }
     componentDidMount() {
-        console.log('moiunt', this.props)
+        console.log('mount', this.props)
     }
     static navigationOptions = {
         title: 'Welcome',

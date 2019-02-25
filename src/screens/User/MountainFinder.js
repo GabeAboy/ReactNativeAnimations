@@ -21,11 +21,9 @@ export default class MountainFinder extends Component {
     openControlPanel = () => {
         this._drawer.open()
     };
-    componentWillReceiveProps() {
-        console.log('RECEIVING PROPS')
-    }
+
     componentDidMount() {
-        console.log('finder', this.props.navigation.state.params.skiDates)
+       
         //UAC
         //Get user location get all admins
         // in that location then filter admindiscription then call their images

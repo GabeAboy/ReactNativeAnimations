@@ -15,7 +15,7 @@ export default class DrawerHeader extends Component {
     componentDidMount() {
         // this should be transfered by parent state through props
         // var userId = firebase.auth().currentUser.providerData[0].uid;
-        // console.log('user ',user)
+        
         // this._getUserData()
         this.getProfileImage()
 
@@ -36,7 +36,7 @@ export default class DrawerHeader extends Component {
 
         let firebasevar = new Promise((resolve, reject) => {
             firebase.auth().onAuthStateChanged((profile) => {
-                console.log(profile)
+                
                 let mountainAdminId = profile.uid
                 this.setState({ profile: mountainAdminId });
                 resolve(mountainAdminId)
@@ -47,7 +47,7 @@ export default class DrawerHeader extends Component {
     }
     getProfileImage = async () => {
         const userUid = this.state.uid;
-        console.log('State is here ', this.state)
+       
         var storage = firebase.storage();
         var pathReference = storage.ref(`${userUid}/icon/userProfilePicture`);
         // Get the download URL
@@ -57,7 +57,6 @@ export default class DrawerHeader extends Component {
                     this.setState({ photoURL: url })
                     resolve(url)
                 }).catch((error) => {
-                    console.log('type of ', error.code)
                     // A full list of error codes is available at
                     // https://firebase.google.com/docs/storage/web/handle-errors
                     switch (error.code) {
@@ -91,7 +90,6 @@ export default class DrawerHeader extends Component {
 
     getPermissionsAsync = async () => {
         const { Location, Permissions } = Expo;
-        console.log('checking your platform')
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status === 'granted') {
             return;
@@ -100,7 +98,6 @@ export default class DrawerHeader extends Component {
         }
     }
     _pickImage = async () => {
-        console.log('Entered')
         let pickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: false,
             base64: true,
@@ -114,7 +111,6 @@ export default class DrawerHeader extends Component {
             this.setState({ uploading: true });
             if (!pickerResult.cancelled) {
                 uploadUrl = await this.uploadImageAsync(pickerResult.uri);
-                console.log('ASDASD', uploadUrl)
                 this.setState({ photoURL: pickerResult.uri });
                 firebase.database()
                     .ref(`userPicture/${this.state.uid}`)
@@ -131,7 +127,6 @@ export default class DrawerHeader extends Component {
         }
     };
     uploadImageAsync = async (uri) => {
-        console.log('got this far ', uri)
         const response = await fetch(uri);
         const blob = await response.blob();
         const ref = firebase
@@ -148,19 +143,12 @@ export default class DrawerHeader extends Component {
         return (
             <View style={{ height: '20%', width: '100%' }}>
                 <View style={styles.headerContainer}>
-                 
-                {/* <View style={{
-                        flex: 1,
-                        backgroundColor: 'red',
-                        zIndex: 5
-                    }}>
 
-                    </View>
                     <View style={styles.top} >
                         <TouchableHighlight
                             onPress={this._pickImage}
                             style={{
-                                borderWidth: 1,
+                                borderWidth: 2,
                                 borderColor: 'white',
                                 backgroundColor: 'gray',
                                 width: 75,
@@ -178,11 +166,11 @@ export default class DrawerHeader extends Component {
 
                                 }}
                                 source={this.state.photoURL ? source = { uri: this.state.photoURL } : require('../../../img/default-user.png')}
-                                resizeMode='cover' />
+                                resizeMode='stretch' />
 
 
                         </TouchableHighlight>
-                    </View> */}
+                    </View>
 
 
                 </View>
@@ -192,16 +180,15 @@ export default class DrawerHeader extends Component {
 }
 const styles = {
     headerContainer: {
-        flex:1,
+        flex: 1,
+
         // backgroundColor: 'white',
-        // justifyContent: 'flex-end',
-        // position: 'absolute',
-        // zIndex: 2,
-        backgroundColor: 'blue'
+        justifyContent: 'flex-end',
     },
     top: {
         backgroundColor: 'white',
-        flex: 1,
+        width:'100%',
+        height:'50%',
         zIndex: 5
     },
     font: {

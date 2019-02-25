@@ -15,10 +15,10 @@ export default class tabTwo extends Component {
         ];
     }
     componentDidUpdate() {
-        console.log('update',this.props)
+ 
     }
     componentDidMount() {
-        console.log('moiunt',this.props)
+     
     }
     static navigationOptions = {
         title: 'Welcome',

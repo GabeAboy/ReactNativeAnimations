@@ -50,7 +50,7 @@ class ProfileDictionary extends Component {
                 .then((snapshot) => {
                     if (!_.isEmpty(snapshot.val())) {
 
-                        console.log(snapshot)
+     
                         const snap = snapshot.val()
 
                         let result = Object.keys(snap).map((key) => {

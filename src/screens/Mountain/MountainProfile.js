@@ -25,6 +25,7 @@ class MountainProfile extends Component {
             numerator: '0',
             snowCondition: 'Weather',
             image: null,
+            locationImages: null,
             uploading: false,
             profile: null,
             liftTickets: [],
@@ -68,6 +69,10 @@ class MountainProfile extends Component {
 
     }
 
+    getPhotos = async () => {
+
+
+    }
     InfoProxy = async () => {
         let thingProfile = await this.getCurrentLoggedinUser()
 
@@ -75,9 +80,11 @@ class MountainProfile extends Component {
         this.getAdminDiscription(thingProfile)
         this.getLiftTickets(thingProfile)
         this.getProfileImage(thingProfile)
+        this.getLocationImages(thingProfile)
         this.getRentalEquipment(thingProfile)
         this.setState({ dataLoaded: true })
     }
+    // This doesn't make sence either async or promises 
     getCurrentLoggedinUser = async () => {
 
         let firebasevar = new Promise((resolve, reject) => {
@@ -103,29 +110,49 @@ class MountainProfile extends Component {
             throw new Error('Permission permission not granted');
         }
     }
-    _pickImage = async () => {
+    _pickImage = async (imageNumber) => {
 
         let pickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: false,
             base64: true,
             aspect: [4, 3]
         });
-        this._handleImagePicked(pickerResult);
+        this._handleImagePicked(pickerResult, imageNumber);
     };
 
-    _handleImagePicked = async pickerResult => {
+
+    //Function should save 7 different images into their own
+    //Profile x 1 and aboutPictures x6
+    _handleImagePicked = async (pickerResult, imageNumber) => {
         try {
             this.setState({ uploading: true });
             if (!pickerResult.cancelled) {
-                uploadUrl = await this.uploadImageAsync(pickerResult.uri);
+                uploadUrl = await this.uploadImageAsync(pickerResult.uri, imageNumber);
                 console.log('ASDASD', uploadUrl)
-                this.setState({ image: pickerResult.uri });
-                firebase.database()
-                    .ref(`adminDiscription/${this.state.profile}`)
-                    .update({
-                        profileImage: uploadUrl
-                    })
-                    .catch((error) => { console.log('error ', error) })
+                switch (imageNumber) {
+                    case true:
+                        // code block
+                        this.setState({ image: pickerResult.uri });
+                        firebase.database()
+                            .ref(`adminDiscription/${this.state.profile}`)
+                            .update({
+                                profileImage: uploadUrl
+                            })
+                            .catch((error) => { console.log('error ', error) })
+                        break;
+                    default:
+                        //Is it necessary to post on db? or keep in db
+                        uploadUrl = await this.uploadImageAsync(pickerResult.uri, imageNumber);
+                    // this.setState({ image: pickerResult.uri });
+                    // firebase.database()
+                    //     .ref(`adminDiscription/${this.state.profile}`)
+                    //     .update({
+                    //         profileImage: uploadUrl
+                    //     })
+                    //     .catch((error) => { console.log('error ', error) })
+                    // code block
+                }
+
             }
         } catch (e) {
             console.log(e);
@@ -134,16 +161,34 @@ class MountainProfile extends Component {
             this.setState({ uploading: false });
         }
     };
-    uploadImageAsync = async (uri) => {
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const ref = firebase
-            .storage()
-            .ref(`${this.state.profile}/icon`)
-            .child('mountainIcon');
-        const snapshot = await ref.put(blob);
-        let downloadURL = `gs://${snapshot.metadata.bucket}/${snapshot.metadata.fullPath}`
-        //gs://skieasy-e12b4.appspot.com/WbyF9PD6MDZJeFhAIe8yvkZ2eUE3/icon/mountainIcon
+    uploadImageAsync = async (uri, imageNumber) => {
+        let downloadURL
+        console.log(imageNumber)
+        if (imageNumber == true && imageNumber !== 1) {
+            console.log('HAVE I GOTTEN HERE')
+            const response = await fetch(uri);
+            const blob = await response.blob();
+            const ref = firebase
+                .storage()
+                .ref(`${this.state.profile}/icon`)
+                .child('mountainIcon');
+            const snapshot = await ref.put(blob);
+            downloadURL = `gs://${snapshot.metadata.bucket}/${snapshot.metadata.fullPath}`
+            //gs://skieasy-e12b4.appspot.com/WbyF9PD6MDZJeFhAIe8yvkZ2eUE3/icon/mountainIcon
+        }
+        else {
+            console.log('shouldnt be here')
+            const response = await fetch(uri);
+            const blob = await response.blob();
+            const ref = firebase
+                .storage()
+                .ref(`${this.state.profile}/locationImages`)
+                .child(`image${imageNumber}`)
+            const snapshot = await ref.put(blob);
+            downloadURL = `gs://${snapshot.metadata.bucket}/${snapshot.metadata.fullPath}`
+
+        }
+
         return downloadURL;
     }
 
@@ -226,6 +271,27 @@ class MountainProfile extends Component {
         });
         let answer = await rentalEquipment;
         // return answer;
+    }
+    getLocationImages = async (mountainAdminId) => {
+        var storage = firebase.storage();
+        var array = []
+        let profileImage = new Promise((resolve, reject) => {
+            for (var i = 1; i <= 6; i++) {
+                var pathReference = storage.ref(`${mountainAdminId}/locationImages/image${i}`);
+                console.log("pathreference = ",pathReference)
+                pathReference.getDownloadURL()
+                    .then((url) => {
+                        console.log('here are images', url)
+                        array.push(url)
+                        resolve(array)
+                    }).catch((error) => {
+                        console.log('error', error)
+                    })
+            }
+        })
+        console.log('array', array)
+        
+        await this.setState({ locationImages: array })
     }
     getProfileImage = async (mountainAdminId) => {
         var storage = firebase.storage();
@@ -316,7 +382,9 @@ class MountainProfile extends Component {
                                         flexDirection: 'row',
                                         backgroundColor: 'white'
                                     }}>
-                                    <TouchableHighlight onPress={this._pickImage} style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }} >
+                                    <TouchableHighlight onPress={() => {
+                                        this._pickImage(true)
+                                    }} style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }} >
                                         <View style={{ width: '100%', height: '100%' }}>
                                             <Image
                                                 style={{ width: '100%', height: '100%' }}
@@ -418,66 +486,132 @@ class MountainProfile extends Component {
                                             paddingBottom: 10,
                                             paddingLeft: 10
                                         }}>Choose up to 6 photos of your business</Text>
+
                                         <View style={{ flex: 1, flexDirection: 'row' }}>
                                             <View style={{
                                                 flex: 1,
                                                 justifyContent: 'center',
                                                 alignItems: 'center'
                                             }} >
-                                                <View style={{
-                                                    width: '70%',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center', height: '70%',
-                                                    borderRadius: 10,
-                                                    backgroundColor: 'orange'
-                                                }} >
+                                                <View>{console.log(
+                                                    'localtion', this.state.locationImages)}</View>
+                                                <TouchableHighlight
+                                                    onPress={() => {
+                                                        this._pickImage(1)
+                                                    }}
+                                                    style={{
+                                                        width: '70%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center', height: '70%',
+                                                        borderRadius: 10,
+                                                        backgroundColor: 'orange'
+                                                    }} >
+                                                    {
+                                                        false ?
+                                                            <Image
+                                                                style={{ width: '100%', height: '100%' }}
+                                                                source={{ uri: this.state.locationImages[0] }}
+                                                                resizeMode='cover' />
+                                                            :
+                                                            <Icon name='file-image-o'
+                                                                size={25}
+                                                                color="black"
+                                                            />
+                                                    }
+                                                </TouchableHighlight>
+                                            </View>
+
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                                                <TouchableHighlight
+                                                    onPress={() => {
+                                                        this._pickImage(2)
+                                                    }}
+                                                    style={{
+                                                        width: '70%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center', height: '70%',
+                                                        borderRadius: 10,
+                                                        backgroundColor: 'orange'
+                                                    }} >
                                                     <Icon name='file-image-o'
                                                         size={25}
                                                         color="black"
                                                     />
-                                                </View>
+                                                </TouchableHighlight>
                                             </View>
                                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                <TouchableHighlight
+                                                    onPress={() => {
+                                                        this._pickImage(3)
+                                                    }}
+                                                    style={{
+                                                        width: '70%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center', height: '70%',
+                                                        borderRadius: 10,
+                                                        backgroundColor: 'orange'
+                                                    }} >
                                                     <Icon name='file-image-o'
                                                         size={25}
                                                         color="black"
                                                     />
-                                                </View>
-                                            </View>
-                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '85%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
-                                                    <Icon name='file-image-o'
-                                                        size={25}
-                                                        color="black"
-                                                    />
-                                                </View>
+                                                </TouchableHighlight>
                                             </View>
                                         </View>
                                         <View style={{ flex: 1, flexDirection: 'row' }}>
                                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                <TouchableHighlight
+                                                    onPress={() => {
+                                                        this._pickImage(4)
+                                                    }}
+                                                    style={{
+                                                        width: '70%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center', height: '70%',
+                                                        borderRadius: 10,
+                                                        backgroundColor: 'orange'
+                                                    }} >
                                                     <Icon name='plus-square-o'
                                                         size={25}
                                                         color="black"
                                                     />
-                                                </View>
+                                                </TouchableHighlight>
                                             </View>
                                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                <TouchableHighlight
+                                                    onPress={() => {
+                                                        this._pickImage(5)
+                                                    }}
+                                                    style={{
+                                                        width: '70%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center', height: '70%',
+                                                        borderRadius: 10,
+                                                        backgroundColor: 'orange'
+                                                    }} >
                                                     <Icon name='plus-square-o'
                                                         size={25}
                                                         color="black"
                                                     />
-                                                </View>
+                                                </TouchableHighlight>
                                             </View>
                                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '70%', height: '70%', borderRadius: 10, backgroundColor: 'gray' }} >
+                                                <TouchableHighlight
+                                                    onPress={() => {
+                                                        this._pickImage(6)
+                                                    }}
+                                                    style={{
+                                                        width: '70%',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center', height: '70%',
+                                                        borderRadius: 10,
+                                                        backgroundColor: 'orange'
+                                                    }} >
                                                     <Icon name='file-image-o'
                                                         size={25}
                                                         color="black"
                                                     />
-                                                </View>
+                                                </TouchableHighlight>
                                             </View>
                                         </View>
                                     </View>

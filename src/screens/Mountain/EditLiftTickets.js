@@ -23,8 +23,7 @@ export default class EditLiftTickets extends Component {
         this.updateDatabase.bind(this)
     }
     componentDidMount() {
-        //this.getData()
-        console.log('good things', this.props.navigation.state.params.properties)
+       
         if (this.props.navigation.state.params.isEdit) {
             this.setState({ title: this.props.navigation.state.params.properties.title })
             this.setState({ timeOne: this.props.navigation.state.params.properties.timeOne })
@@ -37,7 +36,7 @@ export default class EditLiftTickets extends Component {
     updateDatabase() {
         firebase.auth().onAuthStateChanged((profile) => {
             let mountainAdminId = profile.uid
-            console.log(profile)
+            
             if (profile) {
                 firebase.database().ref(`liftTicketDiscription/${mountainAdminId}/${this.state.title}`).set({
                     title: this.state.title,
@@ -46,7 +45,7 @@ export default class EditLiftTickets extends Component {
                     reguPrice: this.state.reguPrice,
                     holliPrice: this.state.holliPrice
                 }).then(() => {
-                    console.log('Successfuly updated LiftTicket database', this.props)
+                   
                     this.props.navigation.state.params.button()
                     this.props.navigation.navigate('MountainProfile')
                 }).catch((error) => {
@@ -57,12 +56,11 @@ export default class EditLiftTickets extends Component {
         })
     }
     routingFunction = () => {
-        console.log('FINDER\n\n\nNow..', this.props.navigation.state.params.isEdit)
+        
         this.props.navigation.state.params.isEdit ? this.EditLiftTickets() : this.updateDatabase()
     }
     EditLiftTickets = () => {
-        console.log('entered the funciton\n\n\n', this.props.navigation.state.params.properties.pathReference)
-        //props already has profile id
+                //props already has profile id
         firebase.auth().onAuthStateChanged((profile) => {
             let mountainAdminId = profile.uid
             firebase.database()
@@ -74,7 +72,7 @@ export default class EditLiftTickets extends Component {
                     reguPrice: this.state.reguPrice,
                 })
                 .then((e) => {
-                    console.log('fun', this.props.navigation.state.params)
+             
                     this.props.navigation.state.params.button()
                     this.props.navigation.navigate('MountainProfile')
                 })

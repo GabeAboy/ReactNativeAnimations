@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, AsyncStorage } from 'react-native';
 
 import Router from './src/navigation/RootNavigation'
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -7,7 +7,17 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 //TODO: Global config provided here
 console.disableYellowBox = true
 export default class App extends React.Component {
-
+  componentWillUnmount() {
+    const deleteUserId = async () => {
+      try {
+        await AsyncStorage.removeItem('userId');
+      } catch (error) {
+        // Error retrieving data
+        console.log(error.message);
+      }
+    }
+    deleteUserId()
+  }
   render() {
     return (
       <View style={{ flex: 1 }}>
