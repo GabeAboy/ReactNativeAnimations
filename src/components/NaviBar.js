@@ -19,17 +19,13 @@ export default class NaviBar extends Component {
         this.setState({
             skiDates: `${this.props.skiDates.startDate} → ${this.props.skiDates.endDate}`
         })
-        // else {
-        //     this.setState({
-        //         skiDates: `${this.props.skiDates.startDate} → ${this.props.skiDates.endDate}`
-        //     })
-        // }
+
     }
 
     render() {
         return (
             <View style={styles.header}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                <View style={{ flex: 2, paddingLeft:10, justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row' }}>
                     <Hamburger active={this.state.active}
                         type='spinCross'
                         color='black'
@@ -52,42 +48,25 @@ export default class NaviBar extends Component {
 
                             </View>
                             :
-                            <TouchableHighlight
-                                onPress={
-                                    () => {
-                                        this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
-                                    }
-                                }
-                                style={{
-                                    flex: 1, justifyContent: 'center'
-                                }} >
+                            <View >
 
-                                <View style={{
-                                    justifyContent: 'flex-start',
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    height: '100%',
-                                    width: '100%',
-                                }} >
+                                <Image
+                                     style={styles.logo}
+                                    source={require('../../img/myLogo.png')}
 
-                                    <Icon style={{
-                                        marginBottom: 5,
-                                        marginLeft: 5
-                                    }} name="map-marker" size={27} color="white" />
-                                    <Text>{this.props.location}</Text>
-                                </View>
-                            </TouchableHighlight>
-
+                                />
+                            </View>
 
                     }
                 </View>
-                <TouchableHighlight
+                <View style={{ flex: 2 }}></View>
+                {/* <TouchableHighlight
                     onPress={() => {
                         this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation, MountainFinder: false })
                     }}
                     style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>{this.state.skiDates}</Text>
-                </TouchableHighlight>
+                </TouchableHighlight> */}
                 <View style={{
                     flex: 1, alignItems: 'flex-end', justifyContent: 'center',
                 }}>
@@ -114,6 +93,11 @@ const styles = {
         padding: 10,
         fontSize: 18,
         height: 44,
+    },
+    logo: {
+        height: 30,
+        width: 65,
+       
     },
     burgerKing: {
         flex: 1, justifyContent: 'flex-start', flexDirection: 'row',

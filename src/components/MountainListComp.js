@@ -1,51 +1,103 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, Dimensions, FlatList, List } from 'react-native';
+import { View, TouchableHighlight, Dimensions, FlatList, List, Text } from 'react-native';
 import MountainListUI from './MountainListUI';
-import { SearchBar } from 'react-native-elements'
+import { Container, Header, Item, Input, Button, } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default class MultiSelectList extends React.PureComponent {
-    
+
     constructor(props) {
         super(props);
         this.state = {
-            
+
         }
+        //     <View style={{ width: '90%', flexDirection: 'row' }}>
+        //         <Item>
+        //             <Icon name="ios-search" />
+        //             <Input placeholder="Search" />
+        //             <Icon name="ios-people" />
+        //         </Item>
+        //         <Icon style={{
+        //             marginBottom: 5,
+        //             marginLeft: 5
+        //         }} name="map-marker" size={27} color="white" />
+        //     </View>
         console.ignoredYellowBox = [
             'Setting a timer'
-            ];
+        ];
     }
     componentDidMount() {
-        this.setState({data:this.props.data})
+        this.setState({ data: this.props.data })
     }
 
     renderHeader = () => {
         return (
             <View style={{
-                height: 110, backgroundColor: '#4286f4', alignItems: 'center'
+                height: 55,
+                flexDirection: 'row'
             }}>
-                <View style={{ width: '90%', backgroundColor: '#4286f4' }}>
-                    <SearchBar
-                        onChangeText={(text) => this.onChange(text)}
-                        placeholder="Type Here..."
-                    />
-                </View>
-                <View style={{
-                    paddingLeft: 40,
-                    width: '100%', height: 50, backgroundColor: '#4286f4', justifyContent: 'flex-start',
-                    flexDirection: 'row', alignItems: 'center'
-                }}>
-                    <Text style={styles.font}>Mountains</Text><Text style={styles.font}>Stores</Text>
-                </View>
+                <Container>
+                    <Header noShadow={true} searchBar style ={{backgroundColor:'#4286F4'}}>
+                        <Item>
+
+                            <Input placeholder="Search" />
+                            <View style={{
+                                backgroundColor: '#2A569C',
+                                height: '100%',
+                                width: 50,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Icon style={{
+                                
+                                }} name="search" size={20} color="#CBDEFC" />
+                            </View>
+
+                        </Item>
+                        <Button transparent>
+                            <Text>Search</Text>
+                        </Button>
+
+                    </Header>
+
+                </Container>
+                <TouchableHighlight
+                    onPress={
+                        () => {
+                            this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
+                        }
+                    }
+                    style={{
+                        justifyContent: 'center',
+                        alignItems:'center',
+                        width:50,
+                        backgroundColor:"#4286F4"
+                    }} >
+
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        height: '100%',
+                        width: '100%',
+                    }} >
+
+                        <Icon style={{
+                       
+                        }} name="map-marker" size={25} color="#CBDEFC" />
+                        <Text>{this.props.location}</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         )
     };
-    _onPressItem(){
+    _onPressItem() {
     }
     _renderItem = ({ item }) => (
-        <TouchableHighlight key={item.id} onPress={() =>{
-        
-            this.props.navigate.navigate('MountainStore',{data:item,navigation:this.props.navigate, skiDates:this.props.skiDates})
+        <TouchableHighlight key={item.id} onPress={() => {
+
+            this.props.navigate.navigate('MountainStore', { data: item, navigation: this.props.navigate, skiDates: this.props.skiDates })
         }
         } >
             <MountainListUI
@@ -61,14 +113,14 @@ export default class MultiSelectList extends React.PureComponent {
                 weatherReport={item.snowCondition}
                 brand={item.businessName}
                 navigation={this.props.navigation}
-                
+
             />
         </TouchableHighlight>
     );
 
 
     render() {
-        
+
         return (
 
             <FlatList
