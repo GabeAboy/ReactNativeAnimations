@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableHighlight } from 'react-native';
+import { View, Image, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Hamburger from 'react-native-hamburger';
 import { Drawer } from 'native-base';
@@ -48,14 +48,24 @@ export default class NaviBar extends Component {
 
                             </View>
                             :
-                            <View >
+                            <TouchableOpacity onPress={()=>{
+                                console.log("Change to main iff on another page disable otherwise, ")
+                                console.log(this.props.navigation.state.routeName + " == MountainFinder")
+                                console.log(typeof this.props.navigation.state.routeName)
+                                console.log(!(this.props.navigation.state.routeName == "MountainFinder"))
+                                if(!(this.props.navigation.state.routeName == "MountainFinder")){
+                                    // TODO This introduce problems with state or transfer props with MF
+                                    this.props.navigation.goBack()
+                                }
+                                console.log(this.props.navigation.state.routeName)
+                            }}>
 
                                 <Image
                                      style={styles.logo}
                                     source={require('../../img/myLogo.png')}
 
                                 />
-                            </View>
+                            </TouchableOpacity>
 
                     }
                 </View>

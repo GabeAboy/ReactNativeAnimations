@@ -65,7 +65,7 @@ export default class MultiSelectList extends React.PureComponent {
                 <TouchableHighlight
                     onPress={
                         () => {
-                            this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
+                            this.props.navigation('GetLocation', { navigation: this.props.navigation })
                         }
                     }
                     style={{
