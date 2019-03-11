@@ -11,7 +11,7 @@ export default class tabOne extends Component {
         this.state = {
             ticketValue: 1,
             total: 100,
-            price:100
+            price: 100
         }
         console.ignoredYellowBox = [
             'Setting a timer'
@@ -28,38 +28,63 @@ export default class tabOne extends Component {
     };
     render() {
         return (
-            <View style = {{flex:1,backgroundColor:'white',justifyContent:'center',alignItems:'center'}}>
-            <View style={styles.container} >
-                <View style={{
-                    flex: 5,
-                    // backgroundColor: 'white'
-                }}>
-                    <Text >TITLE</Text>
-                    <Text style={{
-                        fontWeight: "bold"
-                    }}>${this.state.total}</Text>
-                    <Text>$100 Per Day</Text>
-                </View>
-                <View style={{
-                    flex: 2,
+            <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                <View style={styles.container} >
+                    <View style={{
+                        flex: 5,
+                        // backgroundColor: 'white'
+                        paddingLeft: 15,
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{ fontSize: 25 }}>All day ski pass</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            fontWeight: "bold"
+                        }}>${this.state.total}</Text>
+                        <Text style={{ color: "#4286F4", paddingTop:5 }}>$100 PER DAY</Text>
+                    </View>
+                    <View style={{
+                        flex: 3,
+                        // backgroundColor: 'blue',
+                        paddingRight: 15,
+                        paddingBottom:20
+                    }}>
+                    <View style = {{
+                        flex:4,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
 
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-
-                    <TouchableOpacity onPress={() => {
-                        this.state.ticketValue != 0 ?
-                            this.setState({ ticketValue: this.state.ticketValue -= 1, total:this.state.total-=this.state.price }) :
+                    }}>
+                        <TouchableOpacity onPress={() => {
+                            this.state.ticketValue != 0 ?
+                            this.setState({ ticketValue: this.state.ticketValue -= 1, total: this.state.total -= this.state.price }) :
                             null
-                        console.log(this.state.ticketValue)
-                    }} style={styles.circle}><Text style={styles.numFont}>-</Text></TouchableOpacity>
-                    <Text>{this.state.ticketValue}</Text>
-                    <TouchableOpacity onPress={() => {
-                        this.setState({ ticketValue: this.state.ticketValue += 1, total:this.state.total+=this.state.price })
-                    }} style={styles.circle}><Text>+</Text></TouchableOpacity>
+                            console.log(this.state.ticketValue)
+                        }} style={styles.circle}><Text style={{ fontSize: 40 }}>-</Text></TouchableOpacity>
+                        <Text style={{ fontSize: 50 }}>{this.state.ticketValue}</Text>
+                        <TouchableOpacity onPress={() => {
+                            this.setState({ ticketValue: this.state.ticketValue += 1, total: this.state.total += this.state.price })
+                        }} style={styles.circle}><Text style={styles.numFont}>+</Text></TouchableOpacity>
+
+                        </View>
+                        <TouchableOpacity 
+                        onPress={()=>{
+                            // Post to user cart
+                            // Have cart component watch this field in Storage
+                            console.log("clicked")
+                        }}
+                        style={{
+                            flex:1,
+                            
+                            backgroundColor: '#556073',
+                            justifyContent:'center',
+                            alignItems:'center'
+                        }}>
+                            <Text style = {{color:'white'}}>ADD TO CART</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
             </View>
         )
     }
@@ -75,23 +100,23 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.46,
         shadowRadius: 11.14,
-        
+
         elevation: 17,
         flexDirection: 'row',
         marginTop: 10,
-        marginBottom:10,
+        marginBottom: 10,
         height: 125,
         width: "90%",
-        backgroundColor:'white'
+        backgroundColor: 'white'
     },
     circle: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 25,
-        height: 25,
+        width: 37,
+        height: 37,
         borderColor: 'black',
         borderWidth: 1,
-        borderRadius: 12
+        borderRadius: 18
     },
     numFont: {
         fontSize: 30
