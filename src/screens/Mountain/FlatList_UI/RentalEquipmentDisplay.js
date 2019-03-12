@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from 'firebase'
 import firebaseConfig from '../../../../keys/firebasekeys'
-
+import Modal from "react-native-modal"
 import StarRating from 'react-native-star-rating'
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 var image;
 export default class RentalEquipmentDisplay extends React.Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            modalVisible: false,
+        }
+        this.setModalVisible = this.setModalVisible.bind(this);
     }
     componentDidMount() {
 
@@ -37,23 +40,42 @@ export default class RentalEquipmentDisplay extends React.Component {
                 return require('../../../../img/rentalImages/snowboard_boot.png')
         }
     }
+    setModalVisible() {
+        this.setState({ modalVisible: !this.state.modalVisible })
+    }
     render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-            
+            <View>
+
+                <Modal isVisible={this.state.modalVisible}>
+                    <View style={{ flex: 1 }}>
+                        <Text>Hello world!</Text>
+                        <TouchableOpacity onPress={this.setModalVisible}>
+                            <Text>Hide me!</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
                 <TouchableHighlight style={{
                     height: 125,
-                    width: '100%',
+                    width: '90%',
                     marginBottom: 5,
-                    borderWidth: 1,
-                    borderColor: 'gray',
                     backgroundColor: 'white',
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    
+                    elevation: 5,
                 }}
                     onPress={() => {
-                        if(this.props.commerse){
+                        if (this.props.commerse) {
                             //add to cart 
                         }
-                        else{
+                        else {
+                            this.setModalVisible();
                             this.props.navigation.navigate('EditRentalEquipment', {
                                 properties: this.props,
                                 pathReference: this.props.pathReference,
@@ -64,22 +86,27 @@ export default class RentalEquipmentDisplay extends React.Component {
                     }}
                 >
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'space-around' }}>
+                        <View style={{
+                            flex: 2,
+                            alignItems: 'center',
+                            justifyContent: 'space-around',
+
+                        }}>
                             <Image style={{ height: "60%", borderRadius: 40, width: "60%", paddingTop: 5 }}
                                 source={this.getImage()}
                                 resizeMode='contain' />
                             {/* For the image needs tomake if statements to see what category is */}
-                            <StarRating
-                                style={{ witdh: 10, height: 10 }}
-                                disabled={true}
-                                maxStars={5}
-                                rating={this.props.starCount}
-                                starSize={25}
-                                fullStarColor={'#4286f4'}
-                            />
+
                         </View>
-                        <View style={{ flex: 4 }}>
-                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} >
+                        <View style={{ flex: 4, }}>
+                            <View style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                alignItems: 'flex-end',
+                                justifyContent: 'space-between'
+                            }} >
                                 <Text style={style.title}>{'IBEX 9000'}</Text>
                                 {
                                     !this.props.commerse ?
@@ -113,31 +140,35 @@ export default class RentalEquipmentDisplay extends React.Component {
                                 }
 
                             </View>
-                            <View style={{ flex: 1 }} >
-                                <Text style={style.title}>{'Burton'}</Text>
-                            </View>
-                            <View style={{ flex: 2, flexDirection: 'row', }} >
-                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                                    <Text style={style.title}>Size</Text>
-                                    <Text>{160}</Text>
-                                </View>
-                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={style.title}>Metric</Text>
-                                    <Text>{'cm'}</Text>
-                                </View>
-                                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }} >
-                                    <View style={{ width: '80%', height: '100%', backgroundColor: '#6496e5' }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                                            <Text style={{ fontSize: 30 }}>$</Text><Text style={{ fontSize: 15 }}>{'30'} {'USD'}</Text>
-                                        </View>
-                                        <View>
-
-                                            <Text>Per/Day</Text>
-                                        </View>
+                            <View style={{ flex: 2, flexDirection: 'row', }}>
+                                <View style={{
+                                    flex: 3,
+                                    paddingLeft: 10,
+                                }}>
+                                <View style = {{width:'85%',paddingBottom:5}}> 
+                                    <StarRating
+                                        style={{ witdh: 10, height: 10 }}
+                                        disabled={true}
+                                        maxStars={5}
+                                        rating={this.props.starCount}
+                                        starSize={25}
+                                        fullStarColor={'#4286f4'}
+                                    />
                                     </View>
-                                </View>
+                                    <Text style={{ fontSize: 15 }}>Size</Text>
+                                    <Text style={{ color: "#4286F4" }} >40cm</Text>
 
+
+                                </View>
+                                <View style={{
+                                    flex: 2,
+                                    justifyContent: 'center',
+                                    alignItems: 'flex-end',
+                                    paddingRight:12
+                                }}>
+                                    <Text style={{ fontSize: 35,  }}>$300</Text>
+                                </View>
                             </View>
 
                         </View>
@@ -151,8 +182,7 @@ const style = StyleSheet.create({
 
 
     title: {
-        fontSize: 15,
-        paddingLeft: 5
+        fontSize: 20,
     }
 
 });
