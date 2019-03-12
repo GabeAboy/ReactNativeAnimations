@@ -111,14 +111,14 @@ export default class MountainStore extends Component {
       <Container>
         <NaviBar skiDates={this.props.navigation.state.params.skiDates} navigation={this.props.navigation} MountainFinder={false}/>
         {/* <Header searchBar={true} hasTabs /> */}
-        <Tabs renderTabBar={() => <ScrollableTab style={{ backgroundColor: 'blue' }} />}>
-          <Tab tabStyle={{ flex: 1 }} activeTabStyle={{ flex: 1 }} heading="Pictures">
+        <Tabs renderTabBar={() => <ScrollableTab backgroundColor='#4286f4' />}>
+          <Tab tabStyle={{ flex: 1, backgroundColor:'#4286f4'}} activeTabStyle={{ flex: 1,backgroundColor:'#4286f4' }} heading="Pictures">
             <Tab1 />
           </Tab>
-          <Tab tabStyle={{ flex: 1 }} activeTabStyle={{ flex: 1 }} heading="Tickets">
+          <Tab tabStyle={{ flex: 1,backgroundColor:'#4286f4' }} activeTabStyle={{ flex: 1,backgroundColor:'#4286f4' }} heading="Tickets">
             <Tab2 data={this.state.LiftTickets} />
           </Tab>
-          <Tab tabStyle={{ flex: 1 }} activeTabStyle={{ flex: 1 }} heading="Rentals">
+          <Tab tabStyle={{ flex: 1,backgroundColor:'#4286f4' }} activeTabStyle={{ flex: 1,backgroundColor:'#4286f4' }} heading="Rentals">
             <Tab3 data={this.state.Rental}/>
           </Tab>
         </Tabs>

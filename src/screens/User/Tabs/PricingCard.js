@@ -9,7 +9,7 @@ export default class tabOne extends Component {
     constructor() {
         super();
         this.state = {
-            ticketValue: 1,
+            ticketValue: 0,
             total: 100,
             price: 100
         }
@@ -72,7 +72,9 @@ export default class tabOne extends Component {
                         onPress={()=>{
                             // Post to user cart
                             // Have cart component watch this field in Storage
-                            console.log("clicked")
+                            if(this.state.ticketValue > 0){
+                                console.log("Post")
+                            }
                         }}
                         style={{
                             flex:1,
@@ -96,12 +98,12 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 8,
+            height: 2,
         },
-        shadowOpacity: 0.46,
-        shadowRadius: 11.14,
-
-        elevation: 17,
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        
+        elevation: 5,
         flexDirection: 'row',
         marginTop: 10,
         marginBottom: 10,
