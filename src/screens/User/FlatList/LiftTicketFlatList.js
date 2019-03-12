@@ -29,7 +29,7 @@ export default class LiftTicketFlatList extends React.PureComponent {
 
         <View
 
-            style={{ backgroundColor: 'black', justifyContent:'center'}}
+            style={{ justifyContent:'center'}}
             key={item.id} >
             <FlatList
                 style={{ backgroundColor: '#4286f4', }}

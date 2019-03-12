@@ -45,8 +45,8 @@ export default class RentalEquipmentDisplay extends React.Component {
     }
     render() {
         return (
-            <View>
-
+            <View style={{ flex: 1, justifyContent: 'center',alignItems:'center' }}>
+            <View style = {style.container}>
                 <Modal isVisible={this.state.modalVisible}>
                     <View style={{ flex: 1 }}>
                         <Text>Hello world!</Text>
@@ -60,15 +60,15 @@ export default class RentalEquipmentDisplay extends React.Component {
                     width: '90%',
                     marginBottom: 5,
                     backgroundColor: 'white',
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
+                    // shadowColor: "#000",
+                    // shadowOffset: {
+                    //     width: 0,
+                    //     height: 2,
+                    // },
+                    // shadowOpacity: 0.25,
+                    // shadowRadius: 3.84,
                     
-                    elevation: 5,
+                    // elevation: 5,
                 }}
                     onPress={() => {
                         if (this.props.commerse) {
@@ -174,13 +174,30 @@ export default class RentalEquipmentDisplay extends React.Component {
                         </View>
                     </View>
                 </TouchableHighlight>
+                </View>
             </View >
         )
     }
 }
 const style = StyleSheet.create({
 
-
+    container: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        
+        elevation: 5,
+        flexDirection: 'row',
+        marginTop: 10,
+        marginBottom: 10,
+        height: 125,
+        width: "90%",
+        backgroundColor: 'white'
+    },
     title: {
         fontSize: 20,
     }

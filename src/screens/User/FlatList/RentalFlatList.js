@@ -25,10 +25,10 @@ export default class RentalFLatList extends React.PureComponent {
 
         <View
 
-            style={{ backgroundColor: 'white' }}
+            style={{ justifyContent: 'center' }}
             key={item.id} >
             <FlatList
-                style={{ backgroundColor: '#4286f4' }}
+                style={{ flex:1 }}
                 data={this.state.data}// Comes from state and before that didMount
                 renderItem={({ item }) =>
                     <RentalListUI
