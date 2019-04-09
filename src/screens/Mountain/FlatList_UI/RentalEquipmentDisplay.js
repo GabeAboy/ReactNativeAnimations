@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from 'firebase'
 import firebaseConfig from '../../../../keys/firebasekeys'
 import Modal from "react-native-modal"
 import StarRating from 'react-native-star-rating'
+import Button from '../../../components/Button'
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 var image;
 export default class RentalEquipmentDisplay extends React.Component {
@@ -18,6 +19,9 @@ export default class RentalEquipmentDisplay extends React.Component {
     componentDidMount() {
 
     }
+    // componentWillUnmount(){
+    //     this.setModalVisible();
+    // }
     getImage() {
         var cat = this.props.category
         switch (cat) {
@@ -41,139 +45,149 @@ export default class RentalEquipmentDisplay extends React.Component {
         }
     }
     setModalVisible() {
+        console.log("open close")
         this.setState({ modalVisible: !this.state.modalVisible })
     }
     render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center',alignItems:'center' }}>
-            <View style = {style.container}>
-                <Modal isVisible={this.state.modalVisible}>
-                    <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={style.container}>
+                <Modal propagateSwipe isVisible={this.state.modalVisible}
+                    style={{
+                        margin: 0,
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems:'center'
+                    }}>
+
+
+                    <View style={{ height: '40%',
+                     width: '80%', 
+                     backgroundColor: 'red',
+                     marginBottom:10 }}>
                         <Text>Hello world!</Text>
                         <TouchableOpacity onPress={this.setModalVisible}>
                             <Text>Hide me!</Text>
                         </TouchableOpacity>
                     </View>
+                    <Button  onPress = {this.setModalVisible} title="cancel" backgroundColor="blue" textColor="white" />
+
+
+
                 </Modal>
-                <TouchableHighlight style={{
-                    height: 125,
-                    width: '90%',
-                    marginBottom: 5,
-                    backgroundColor: 'white',
-                    // shadowColor: "#000",
-                    // shadowOffset: {
-                    //     width: 0,
-                    //     height: 2,
-                    // },
-                    // shadowOpacity: 0.25,
-                    // shadowRadius: 3.84,
-                    
-                    // elevation: 5,
-                }}
-                    onPress={() => {
-                        if (this.props.commerse) {
-                            //add to cart 
-                        }
-                        else {
-                            this.setModalVisible();
-                            this.props.navigation.navigate('EditRentalEquipment', {
-                                properties: this.props,
-                                pathReference: this.props.pathReference,
-                                isEdit: true,
-                                button: this.props.button
-                            })
-                        }
+                    <TouchableOpacity style={{
+                        flex: 1,
+                        marginBottom: 5,
+                        backgroundColor: 'white',
+
                     }}
-                >
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <View style={{
-                            flex: 2,
-                            alignItems: 'center',
-                            justifyContent: 'space-around',
+                        onPress={() => {
+                            if (this.props.commerse) {
+                                //add to cart 
+                                console.log("thouch")
+                                console.log(this.props.profile)
 
-                        }}>
-                            <Image style={{ height: "60%", borderRadius: 40, width: "60%", paddingTop: 5 }}
-                                source={this.getImage()}
-                                resizeMode='contain' />
-                            {/* For the image needs tomake if statements to see what category is */}
-
-                        </View>
-                        <View style={{ flex: 4, }}>
+                                this.setModalVisible();
+                            }
+                            else {
+                                // this.props.navigation.navigate('EditRentalEquipment', {
+                                //     properties: this.props,
+                                //     pathReference: this.props.pathReference,
+                                //     isEdit: true,
+                                //     button: this.props.button
+                                // })
+                            }
+                        }}
+                    >
+                        <View style={{ flex: 1, flexDirection: 'row', }}>
                             <View style={{
-                                flex: 1,
-                                flexDirection: 'row',
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                alignItems: 'flex-end',
-                                justifyContent: 'space-between'
-                            }} >
-                                <Text style={style.title}>{'IBEX 9000'}</Text>
-                                {
-                                    !this.props.commerse ?
-                                        <TouchableHighlight
-                                            onPress={() => {
-                                                var rentalProduct = this.props.title
-                                                firebase.auth().onAuthStateChanged((profile) => {
-                                                    if (profile) {
-                                                        // User is signed in.
-                                                        firebase.database()
-                                                            .ref(`/rentalEquipment/${profile.uid}`)
-                                                            .child(rentalProduct)
-                                                            .remove()
-                                                        this.props.button()// for reload
-                                                    } else {
-                                                        // No user is signed in.
-                                                    }
-                                                });
+                                flex: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
 
-                                            }}
-                                            style={{
-                                                paddingRight: 5,
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                borderColor: '#CED0CE',
-                                            }}>
-                                            <Icon name="times" size={30} color="red" />
-                                        </TouchableHighlight>
-                                        :
-                                        null
-                                }
+                            }}>
+                                <Image style={{ height: "60%", borderRadius: 40, width: "60%", }}
+                                    source={this.getImage()}
+                                    resizeMode='contain' />
+                                {/* For the image needs tomake if statements to see what category is */}
 
                             </View>
-
-                            <View style={{ flex: 2, flexDirection: 'row', }}>
+                            <View style={{ flex: 4, }}>
                                 <View style={{
-                                    flex: 3,
-                                    paddingLeft: 10,
-                                }}>
-                                <View style = {{width:'85%',paddingBottom:5}}> 
-                                    <StarRating
-                                        style={{ witdh: 10, height: 10 }}
-                                        disabled={true}
-                                        maxStars={5}
-                                        rating={this.props.starCount}
-                                        starSize={25}
-                                        fullStarColor={'#4286f4'}
-                                    />
-                                    </View>
-                                    <Text style={{ fontSize: 15 }}>Size</Text>
-                                    <Text style={{ color: "#4286F4" }} >40cm</Text>
-
-
-                                </View>
-                                <View style={{
-                                    flex: 2,
-                                    justifyContent: 'center',
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    marginLeft: 10,
+                                    marginRight: 10,
                                     alignItems: 'flex-end',
-                                    paddingRight:12
-                                }}>
-                                    <Text style={{ fontSize: 35,  }}>$300</Text>
-                                </View>
-                            </View>
+                                    justifyContent: 'space-between',
+                                }} >
+                                    <Text style={style.title}>{'IBEX 9000'}</Text>
+                                    {
+                                        !this.props.commerse ?
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    var rentalProduct = this.props.title
+                                                    firebase.auth().onAuthStateChanged((profile) => {
+                                                        if (profile) {
+                                                            // User is signed in.
+                                                            firebase.database()
+                                                                .ref(`/rentalEquipment/${profile.uid}`)
+                                                                .child(rentalProduct)
+                                                                .remove()
+                                                            this.props.button()// for reload
+                                                        } else {
+                                                            // No user is signed in.
+                                                        }
+                                                    });
 
+                                                }}
+                                                style={{
+                                                    marginRight: 5,
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    borderColor: '#CED0CE',
+                                                }}>
+                                                <Icon name="times" size={30} color="red" />
+                                            </TouchableOpacity>
+                                            :
+                                            null
+                                    }
+                                </View>
+
+                                <View style={{ flex: 2, flexDirection: 'row', }}>
+                                    <View style={{
+                                        flex: 3,
+                                        marginLeft: 10,
+                                    }}>
+                                        <View style={{ width: '85%', marginBottom: 5 }}>
+                                            <StarRating
+                                                style={{ width: 10, height: 10 }}
+                                                disabled={true}
+                                                maxStars={5}
+                                                rating={this.props.starCount}
+                                                starSize={25}
+                                                fullStarColor={'#4286f4'}
+                                            />
+                                        </View>
+                                        <Text style={{ fontSize: 15 }}>Size</Text>
+                                        <Text style={{ color: "#4286F4" }} >40cm</Text>
+
+
+                                    </View>
+                                    <View style={{
+                                        flex: 2,
+                                        justifyContent: 'center',
+                                        alignItems: 'flex-end',
+                                        marginRight: 12,
+                                        paddingTop: 5,
+                                    }}>
+                                        <Text style={{ fontSize: 35, }}>$300</Text>
+                                    </View>
+                                </View>
+
+                            </View>
                         </View>
-                    </View>
-                </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
             </View >
         )
@@ -189,7 +203,7 @@ const style = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        
+
         elevation: 5,
         flexDirection: 'row',
         marginTop: 10,
