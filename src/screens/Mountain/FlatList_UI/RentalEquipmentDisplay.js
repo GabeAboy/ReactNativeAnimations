@@ -6,6 +6,7 @@ import firebaseConfig from '../../../../keys/firebasekeys'
 import Modal from "react-native-modal"
 import StarRating from 'react-native-star-rating'
 import Button from '../../../components/Button'
+import UserProfileFlatList from '../../User/UserProfiles/UserProfileFlatList'
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 var image;
 export default class RentalEquipmentDisplay extends React.Component {
@@ -45,7 +46,7 @@ export default class RentalEquipmentDisplay extends React.Component {
         }
     }
     setModalVisible() {
-        console.log("open close")
+        console.log("open close", this.props)
         this.setState({ modalVisible: !this.state.modalVisible })
     }
     render() {
@@ -63,14 +64,11 @@ export default class RentalEquipmentDisplay extends React.Component {
 
                     <View style={{ height: '40%',
                      width: '80%', 
-                     backgroundColor: 'red',
+                     backgroundColor: 'white',
                      marginBottom:10 }}>
-                        <Text>Hello world!</Text>
-                        <TouchableOpacity onPress={this.setModalVisible}>
-                            <Text>Hide me!</Text>
-                        </TouchableOpacity>
+                       <UserProfileFlatList rental={true} data={this.props.profile} title='name' />
                     </View>
-                    <Button  onPress = {this.setModalVisible} title="cancel" backgroundColor="blue" textColor="white" />
+                    <Button  onPress = {this.setModalVisible} title="cancel" backgroundColor="#2fb768" textColor="white" />
 
 
 

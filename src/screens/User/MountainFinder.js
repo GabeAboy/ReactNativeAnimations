@@ -80,7 +80,7 @@ export default class MountainFinder extends Component {
 
                                     }}>
                                         {/* INFO DATA */}
-                                        <MountainListComp skiDates={this.props.navigation.state.params.skiDates} data={this.state.AdminLiftTickets} navigate={navigation} title='name' />
+                                        <MountainListComp skiDates={this.props.navigation.state.params.skiDates} data={this.state.AdminLiftTickets} navigation={navigation} title='name' />
                                     </View>
                                 </View>
                             </View>

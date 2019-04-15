@@ -77,13 +77,15 @@ class MountainProfile extends Component {
     }
     InfoProxy = async () => {
         let profileUID = await this.getCurrentLoggedinUser()
-        this.setState({ uid: profileUID })
-        this.getAdminDiscription(profileUID)
-        this.getLiftTickets(profileUID)
-        this.getProfileImage(profileUID)
-        // this.getLocationImages(thingProfile)
-        this.getRentalEquipment(profileUID)
-        this.setState({ profileUID: true })
+        .then(this.setState({ uid: profileUID }))
+        .then(this.getAdminDiscription(profileUID))
+        .then(this.getLiftTickets(profileUID))
+        .then(this.getProfileImage(profileUID))
+        .then(this.getRentalEquipment(profileUID))
+        .then(this.setState({profileUID:true}))
+        .then(this.setState({isReady:true}))
+        // this.getLocationImages(profileUID)
+        
     }
     // This doesn't make sence either async or promises 
     getCurrentLoggedinUser = async () => {
@@ -153,6 +155,7 @@ class MountainProfile extends Component {
                     // code block
                 }
 
+        
             }
         } catch (e) {
             console.log(e);
@@ -286,7 +289,14 @@ class MountainProfile extends Component {
     }
 
     getLocationImages = async () => {
-        mountainAdminId = this.state.uid;
+        var mountainAdminId;
+        
+        firebase.auth().onAuthStateChanged((profile) => {
+            console.log("Here is ", profile.uid)
+            mountainAdminId = profile.uid;
+        })
+        console.log("Profile ",this.state.profile)
+        console.log("HERSDFSDFSDF  adsdfsdf\n\n\n",mountainAdminId)
         var storage = firebase.storage();
         var array = []
         new Promise((resolve, reject) => {
@@ -353,6 +363,9 @@ class MountainProfile extends Component {
     render() {
         console.log("Focused here? ", this.props.isFocused)
         const { navigate } = this.props.navigation;
+
+
+
         return (
             <View style={{ flex: 1 }}>
                 {

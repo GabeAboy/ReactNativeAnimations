@@ -29,6 +29,7 @@ export default class MultiSelectList extends React.PureComponent {
     }
     componentDidMount() {
         this.setState({ data: this.props.data })
+        console.log(this.props)
     }
 
     renderHeader = () => {
@@ -65,7 +66,7 @@ export default class MultiSelectList extends React.PureComponent {
                 <TouchableHighlight
                     onPress={
                         () => {
-                            this.props.navigation('GetLocation', { navigation: this.props.navigation })
+                            this.props.navigation.navigate('GetLocation', { navigation: this.props.navigation })
                         }
                     }
                     style={{
@@ -97,7 +98,7 @@ export default class MultiSelectList extends React.PureComponent {
     _renderItem = ({ item }) => (
         <TouchableHighlight key={item.id} onPress={() => {
 
-            this.props.navigate.navigate('MountainStore', { data: item, navigation: this.props.navigate, skiDates: this.props.skiDates })
+            this.props.navigation.navigate('MountainStore', { data: item, navigation: this.props.navigate, skiDates: this.props.skiDates })
         }
         } >
             <MountainListUI

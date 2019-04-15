@@ -6,16 +6,24 @@ import Tab2 from './Tabs/tabTwo';
 import Tab3 from './Tabs/tabThree';
 import NaviBar from '../../components/NaviBar';
 import firebase from 'firebase'
-
+import Drawer from 'react-native-drawer'
+import DrawerContainer from '../../components/drawer/DrawerContainer';
 import RentalEquipmentDisplay from '../Mountain/FlatList_UI/RentalEquipmentDisplay'
 export default class MountainStore extends Component {
   constructor(props) {
     super(props)
     this.state = {
       LiftTickets: [],
-      Rental:[]
+      Rental: []
     }
+    this.closeControlPanel = this.closeControlPanel.bind(this);
   }
+  closeControlPanel = () => {
+      this._drawer.close()
+  };
+  openControlPanel = () => {
+      this._drawer.open()
+  };
   componentDidMount() {
     this.getTicketData()
     this.getRentalData()
@@ -30,7 +38,7 @@ export default class MountainStore extends Component {
         .then((snapshot) => {
           if (!_.isEmpty(snapshot.val())) {
 
-    
+
             const snap = snapshot.val()
 
             let result = Object.keys(snap).map((key) => {
@@ -38,7 +46,7 @@ export default class MountainStore extends Component {
               return snap[key];
             });
             this.setState({ LiftTickets: result })
-   
+
             resolve(result)
             // for (const key in users) {
             //     users[key].mountainId = key
@@ -76,7 +84,7 @@ export default class MountainStore extends Component {
         .then((snapshot) => {
           if (!_.isEmpty(snapshot.val())) {
 
-            console.log('Rental',snapshot)
+            console.log('Rental', snapshot)
             const snap = snapshot.val()
 
             let result = Object.keys(snap).map((key) => {
@@ -84,9 +92,9 @@ export default class MountainStore extends Component {
               return snap[key];
             });
             this.setState({ Rental: result })
-        
+
             resolve(result)
-            
+
           }
           else {
             this.setState({ Rental: [] })
@@ -107,28 +115,42 @@ export default class MountainStore extends Component {
     return answer;
   };
   render() {
+    const { navigation } = this.props;
     return (
       <Container>
-        <NaviBar skiDates={this.props.navigation.state.params.skiDates} navigation={this.props.navigation} MountainFinder={false}/>
+        <Drawer
+          type="overlay"
+          tapToClose={true}
+          ref={(ref) => this._drawer = ref}
+          openDrawerOffset={0.2}
+          closedDrawerOffset={-3}
+          styles={drawerStyles}
+          content={<DrawerContainer navigation={navigation} />}
+        >
+        <NaviBar toggleDrawer={this.openControlPanel} skiDates={this.props.navigation.state.params.skiDates} navigation={this.props.navigation} MountainFinder={false} />
         {/* <Header searchBar={true} hasTabs /> */}
         <Tabs renderTabBar={() => <ScrollableTab backgroundColor='#4286f4' />}>
-          <Tab tabStyle={{ flex: 1, backgroundColor:'#4286f4'}} activeTabStyle={{ flex: 1,backgroundColor:'#4286f4' }} heading="Pictures">
+          <Tab tabStyle={{ flex: 1, backgroundColor: '#4286f4' }} activeTabStyle={{ flex: 1, backgroundColor: '#4286f4' }} heading="Pictures">
             <Tab1 />
           </Tab>
-          <Tab tabStyle={{ flex: 1,backgroundColor:'#4286f4' }} activeTabStyle={{ flex: 1,backgroundColor:'#4286f4' }} heading="Tickets">
+          <Tab tabStyle={{ flex: 1, backgroundColor: '#4286f4' }} activeTabStyle={{ flex: 1, backgroundColor: '#4286f4' }} heading="Tickets">
             <Tab2 data={this.state.LiftTickets} />
           </Tab>
-          <Tab tabStyle={{ flex: 1,backgroundColor:'#4286f4' }} activeTabStyle={{ flex: 1,backgroundColor:'#4286f4' }} heading="Rentals">
-            <Tab3 data={this.state.Rental}/>
+          <Tab tabStyle={{ flex: 1, backgroundColor: '#4286f4' }} activeTabStyle={{ flex: 1, backgroundColor: '#4286f4' }} heading="Rentals">
+            <Tab3 data={this.state.Rental} />
           </Tab>
         </Tabs>
-      </Container>
+        </Drawer>
+      </Container >
     );
   }
 }
-const styles = {
-  ball: {
-
-    flex: 1, justifyContent: 'space-around'
-  }
+const drawerStyles = {
+  drawer: {
+      shadowColor: '#000000',
+      shadowOpacity: 0.8,
+      shadowRadius: 3,
+      backgroundColor: 'white'
+  },
+  main: { paddingLeft: 3 },
 }
