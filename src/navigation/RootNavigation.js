@@ -32,13 +32,13 @@ import drawerHeader from '../components/drawer/DrawerHeader'
 const Routes = createStackNavigator(
     {
         LandingPage: { screen: LandingPage },
+        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay },
         drawerHeader: { screen: drawerHeader},
         PurchaseItemDisplay: { screen: PurchaseItemDisplay },
         DatePicker: { screen: DatePicker },
         ShoppingCart: { screen: ShoppingCart },
         Navi: { screen: Navi },
         MountainStore: { screen: MountainStore },
-        RentalEquipmentDisplay: { screen: RentalEquipmentDisplay },
         EditRentalEquipment: { screen: EditRentalEquipment },
         AddProfile: { screen: AddProfile },
         ProfileDictionary: { screen: ProfileDictionary },

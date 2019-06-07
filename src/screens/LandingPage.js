@@ -19,14 +19,15 @@ export default class LandingPage extends Component {
     }
 
     componentDidMount() {
- 
+
+        
         /* **TODO**
-                1. How does spotify keep me logged in?
-                2. Is there any case that onAuthStateChanged upon login automatically log me in
-                    #Cache
+        1. How does spotify keep me logged in?
+        2. Is there any case that onAuthStateChanged upon login automatically log me in
+        #Cache
                     #State
                     #FB Integration
-        */
+                    */
         // Does this ever find a user when its the first time you load?
         // How does spotify keep me logged in
         // Try having spotify logged in.. logout of facebook and document what happens 
@@ -39,18 +40,22 @@ export default class LandingPage extends Component {
         // })
         this._retrieveData()
     }
+    componentWillUnmount() {
+        this.authSubscription();
+    }
     _retrieveData = async () => {
-
-        try {
-            const value = await AsyncStorage.getItem('LoggedIn');
-            if (value !== null) {
-             
-                this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
-            }
-        } catch (error) {
-            console.log('err ', error)
-            // Error retrieving data
-        }
+        var userr;
+        this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+            userr=user
+            this.setState({
+              loading: false,
+              user,
+            });
+          });
+          if(userr){
+            this.props.navigation.navigate('DatePicker', { navigation: this.props.navigation })
+          }
+     
     }
     async loginWithFacebook() {
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1634938636614030', {
@@ -67,7 +72,7 @@ export default class LandingPage extends Component {
                 .catch((error) => {
                     console.log(error)
                 })
-           
+
         }
     }
     static navigationOptions = {

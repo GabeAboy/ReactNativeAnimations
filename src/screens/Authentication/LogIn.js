@@ -3,6 +3,7 @@ import { StyleSheet, TouchableHighlight, Text, View, TextInput, AsyncStorage } f
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase'
 import firebaseConfig from '../../../keys/firebasekeys'
+import currentlyLoggedInUser from '../../../service/authentication'
 // Container for initial launch
 // UAC login/signUp
 //     facebook passport
@@ -38,30 +39,30 @@ export default class Login extends Component {
                 password: 'connor12'
             },
         ]
-        this.state = (Credentials[2])
+        this.state = (Credentials[0])
     }
-
+    
+    //TODO REFACTOR,
     _storeData = async (userID) => {
         try {
-          await AsyncStorage.setItem('LoggedIn', userID);
-   
+            await AsyncStorage.setItem('LoggedIn', userID);
+
         } catch (error) {
-          // Error saving data
+            // Error saving data
         }
-      }
+    }
     logInUser = (navigate) => {
         try {
             if (this.state.password.length < 6) {
                 alert('Please enter more than 6 characters')
                 return;
             }
+
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then((result) => {
-                 
-
                     const currentUser = result.user.uid;
                     this._storeData(currentUser)
-                    
+                    console.log("LOGGEDIN",currentlyLoggedInUser())
                     firebase.database()
                         .ref('/permissions/' + currentUser)
                         .once('value')
@@ -70,10 +71,22 @@ export default class Login extends Component {
                                 navigate('MountainProfile', { navigation: navigate })
                                 : navigate('DatePicker', { navigation: navigate, MountainFinder: true })
                         });
+                }).then(()=>{
+                    this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+                        this.setState({
+                            loading: false,
+                            user,
+                        });
+                        firebase.auth().currentUser.getIdTokenResult().then((data)=>{
+                            this._storeData(data.token)
+                        })
+                    });
                 })
+
+                
         } catch (error) {
             console.log(error.toString())
-            navigate('DisplayError', { navigation, navigate })
+            // navigate('DisplayError', { navigation, navigate })
         }
     }
 
